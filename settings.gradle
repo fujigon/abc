@@ -1,0 +1,6 @@
+rootProject.name = 'abc'
+
+include 'abc123:abc123a'
+include 'abc123:abc123b'
+include 'abc123:abc123c'
+include 'abc123:abc123d'
