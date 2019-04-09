@@ -12,6 +12,35 @@ public class Main {
         int xi;
         int yi;
         int zi;
+
+        long sum;
+
+        public long getSum() {
+            return sum;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Indexes indexes = (Indexes) o;
+
+            if (xi != indexes.xi) return false;
+            if (yi != indexes.yi) return false;
+            if (zi != indexes.zi) return false;
+            return sum == indexes.sum;
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = xi;
+            result = 31 * result + yi;
+            result = 31 * result + zi;
+            result = 31 * result + (int) (sum ^ (sum >>> 32));
+            return result;
+        }
     }
 
     static void solve(InputStream is, PrintStream os) {
@@ -47,41 +76,72 @@ public class Main {
         Collections.reverse(ys);
         Collections.reverse(zs);
 
-        Indexes dp[] = new Indexes[k];
-        dp[0] = new Indexes();
-        dp[0].xi = 0;
-        dp[0].yi = 0;
-        dp[0].zi = 0;
+        Queue<Indexes> queue = new PriorityQueue<>(
+                Comparator.comparingLong(Indexes::getSum).reversed()
+        );
 
-        for (int i = 0; i < k; i++) {
-            long xdiff = 0;
-            if (dp[i].xi + 1 < x) {
-                xdiff = xs.get(dp[i].xi) - xs.get(dp[i].xi + 1);
+        Indexes initial = new Indexes();
+        initial.xi = 0;
+        initial.yi = 0;
+        initial.zi = 0;
+        calculateSum(initial, xs, ys, zs);
+        queue.add(initial);
+
+        Set<Indexes> queued = new HashSet<>();
+        queued.add(initial);
+
+        for (long i = 0; i < k; i++) {
+            Indexes indexes = queue.remove();
+
+            os.println(indexes.sum);
+
+            if (indexes.xi < x - 1) {
+                Indexes xInc = new Indexes();
+                xInc.xi = indexes.xi + 1;
+                xInc.yi = indexes.yi;
+                xInc.zi = indexes.zi;
+
+                calculateSum(xInc, xs, ys, zs);
+
+                if (!queued.contains(xInc)) {
+                    queue.add(xInc);
+                    queued.add(xInc);
+                }
             }
-            long ydiff = 0;
-            if (dp[i].yi + 1 < y) {
-                ydiff = ys.get(dp[i].yi) - ys.get(dp[i].yi + 1);
+
+            if (indexes.yi < y - 1) {
+                Indexes yInc = new Indexes();
+
+                yInc.xi = indexes.xi;
+                yInc.yi = indexes.yi + 1;
+                yInc.zi = indexes.zi;
+
+                calculateSum(yInc, xs, ys, zs);
+
+                if (!queued.contains(yInc)) {
+                    queue.add(yInc);
+                    queued.add(yInc);
+                }
             }
-            long zdiff = 0;
-            if (dp[i].yi + 1 < z) {
-                zdiff = zs.get(dp[i].zi) - zs.get(dp[i].zi + 1);
+
+            if (indexes.zi < z - 1) {
+                Indexes zInc = new Indexes();
+                zInc.xi = indexes.xi;
+                zInc.yi = indexes.yi;
+                zInc.zi = indexes.zi + 1;
+
+                calculateSum(zInc, xs, ys, zs);
+
+                if (!queued.contains(zInc)) {
+                    queue.add(zInc);
+                    queued.add(zInc);
+                }
             }
-            dp[i + 1] = new Indexes();
-            if (xdiff <= ydiff && xdiff <= zdiff) {
-                dp[i + 1].xi = dp[i].xi + 1;
-                dp[i + 1].yi = dp[i].yi;
-                dp[i + 1].zi = dp[i].zi;
-            } else if (ydiff <= zdiff) {
-                dp[i + 1].xi = dp[i].xi;
-                dp[i + 1].yi = dp[i].yi + 1;
-                dp[i + 1].zi = dp[i].zi;
-            } else {
-                dp[i + 1].xi = dp[i].xi;
-                dp[i + 1].yi = dp[i].yi;
-                dp[i + 1].zi = dp[i].zi + 1;
-            }
-            os.println(xs.get(dp[i].xi) + ys.get(dp[i].yi) + zs.get(dp[i].zi));
         }
+    }
+
+    private static void calculateSum(Indexes indexes, List<Long> xs, List<Long> ys, List<Long> zs) {
+        indexes.sum = xs.get(indexes.xi) + ys.get(indexes.yi) + zs.get(indexes.zi);
     }
 
 }
