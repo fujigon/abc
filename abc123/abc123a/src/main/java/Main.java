@@ -14,14 +14,10 @@ public class Main {
             p[i] = sc.nextInt();
         }
         int k = sc.nextInt();
-        for (int i = 0; i < p.length; i++) {
-            for (int j = 0; j < p.length; j++) {
-                if (Math.abs(p[j] - p[i]) > k) {
-                    os.println(":(");
-                    return;
-                }
-            }
+        if (p[4] - p[0] > k) {
+            os.println(":(");
+        } else {
+            os.println("Yay!");
         }
-        os.println("Yay!");
     }
 }

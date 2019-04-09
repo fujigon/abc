@@ -33,11 +33,7 @@ public class Main {
             if (i == lastIndex) {
                 count += w[i];
             } else {
-                if (w[i] % 10 == 0) {
-                    count += w[i];
-                } else {
-                    count += (w[i] / 10 + 1) * 10;
-                }
+                count += (w[i] + (10 - 1))/ 10 * 10;
             }
         }
 
