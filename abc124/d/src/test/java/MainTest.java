@@ -11,26 +11,30 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "000";
-    String expected = "1";
+    String input = "5 1\n"
+        + "00010";
+
+    String expected = "4";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test2() {
-    String input = "10010010";
+    String input = "14 2\n"
+        + "11101010110011";
 
-    String expected = "3";
+    String expected = "8";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test3() {
-    String input = "0";
+    String input = "1 1\n"
+        + "1";
 
-    String expected = "0";
+    String expected = "1";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
@@ -42,6 +46,4 @@ public class MainTest {
     );
     return os.toString().replace(System.lineSeparator(), "\n");
   }
-
-
 }
