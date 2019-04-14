@@ -25,7 +25,7 @@ public class Main {
 
     List<Block> blocks = partitioning(sbool);
 
-    List<Integer> list = new ArrayList();
+    List<Integer> list = new ArrayList<>();
     searchCandidate(blocks, k, list);
     list.sort(Integer::compareTo);
     os.println(list.get(list.size() - 1));
@@ -41,7 +41,7 @@ public class Main {
       if (sbool[i] != sbool[i + 1]) {
         Block pair = new Block();
         pair.start = start;
-        pair.end = i;
+        pair.end = i + 1;
         pair.handstanding = sbool[i];
         blocks.add(pair);
         start = i + 1;
@@ -51,7 +51,7 @@ public class Main {
     // index last (n-1)
     Block pair = new Block();
     pair.start = start;
-    pair.end = sbool.length - 1;
+    pair.end = sbool.length;
     pair.handstanding = sbool[sbool.length - 1];
     blocks.add(pair);
 
@@ -65,7 +65,7 @@ public class Main {
       int longest = 0;
       for (int i = 0; i < blocks.size(); i++) {
         if (blocks.get(i).handstanding) {
-          int length = blocks.get(i).end - blocks.get(i).start + 1;
+          int length = blocks.get(i).end - blocks.get(i).start;
           if (length > longest) {
             longest = length;
           }
@@ -131,6 +131,7 @@ public class Main {
 
     boolean handstanding;
 
+    // half-open interval
     int start;
     int end;
 
