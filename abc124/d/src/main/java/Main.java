@@ -22,108 +22,58 @@ public class Main {
     }
 
     /* logic */
-
     List<Block> blocks = partitioning(sbool);
-
-    List<Integer> list = new ArrayList<>();
-    searchCandidate(blocks, k, list);
-    list.sort(Integer::compareTo);
-    os.println(list.get(list.size() - 1));
+    int longest = searchCandidate(blocks, k);
+    os.println(longest);
   }
 
-  // TODO clean up
   private static List<Block> partitioning(boolean[] sbool) {
 
     List<Block> blocks = new ArrayList<>();
 
-    int start = 0;
-    for (int i = 0; i < sbool.length - 1; i++) {
-      if (sbool[i] != sbool[i + 1]) {
-        Block pair = new Block();
-        pair.start = start;
-        pair.end = i + 1;
-        pair.handstanding = sbool[i];
-        blocks.add(pair);
-        start = i + 1;
+    int right = 0;
+    for (int left = 0; left < sbool.length; left++) {
+
+      while (right < sbool.length && (sbool[left] == sbool[right])) {
+        right++;
+      }
+
+      // found the block. if the longest block, let's save
+      if (blocks.isEmpty() || ((blocks.get(blocks.size() - 1).end) != right)) {
+        Block block = new Block();
+        block.start = left;
+        block.end = right;
+        block.handstanding = sbool[left];
+        blocks.add(block);
+      }
+
+      // prepare next
+      if (left == right) {
+        right++;
       }
     }
-
-    // index last (n-1)
-    Block pair = new Block();
-    pair.start = start;
-    pair.end = sbool.length;
-    pair.handstanding = sbool[sbool.length - 1];
-    blocks.add(pair);
-
     return blocks;
   }
 
-  private static void searchCandidate(List<Block> blocks, int remaining,
-      List<Integer> answer) {
+  private static int searchCandidate(List<Block> blocks, int remaining) {
 
-    if (remaining == 0) {
-      int longest = 0;
-      for (int i = 0; i < blocks.size(); i++) {
-        if (blocks.get(i).handstanding) {
-          int length = blocks.get(i).end - blocks.get(i).start;
-          if (length > longest) {
-            longest = length;
-          }
-        }
-      }
-      answer.add(longest);
-      return;
-    }
-
-    // search longest block
-    // TODO same size duplicated
-    List<Integer> longestBlockIndexes = new ArrayList<>();
-    longestBlockIndexes.add(0);
-    int longestBlockLength = 0;
+    int longest = 0;
+    // search the every reversed result starting i-indexed block
     for (int i = 0; i < blocks.size(); i++) {
-      if (!blocks.get(i).handstanding) {
-        int length = 0;
-        if (i > 0) {
-          int llength = blocks.get(i - 1).end - blocks.get(i - 1).start;
-          length += llength;
-        }
-        int mlength = blocks.get(i).end - blocks.get(i).start;
-        length += mlength;
-        if (i < blocks.size() - 1) {
-          int rlength = blocks.get(i + 1).end - blocks.get(i + 1).start;
-          length += rlength;
-        }
-        if (length > longestBlockLength) {
-          longestBlockIndexes.clear();
-        }
-        if (length >= longestBlockLength) {
-          longestBlockIndexes.add(i);
-          longestBlockLength = length;
-        }
+      Block start = blocks.get(i);
+
+      int mergingBlocks = start.handstanding ? 2 * remaining : 2 * remaining - 1;
+      int endIndex = Math.min(Math.max(mergingBlocks, 0) + i, blocks.size() - 1);
+      Block end = blocks.get(endIndex);
+
+      int length = end.end - start.start;
+
+      if (length > longest) {
+        longest = length;
       }
     }
 
-    for (int i = 0 ; i < longestBlockIndexes.size(); i++) {
-
-      int longestBlockIndex = longestBlockIndexes.get(i);
-
-      // merge
-      Block m = blocks.get(longestBlockIndex);
-      if (longestBlockIndex > 0) {
-        Block l = blocks.get(longestBlockIndex - 1);
-        m.start = l.start;
-        blocks.remove(l);
-      }
-      if (longestBlockIndex < blocks.size() - 1) {
-        Block r = blocks.get(longestBlockIndex + 1);
-        m.end = r.end;
-        blocks.remove(r);
-      }
-      m.handstanding = true;
-
-      searchCandidate(blocks, remaining - 1, answer);
-
-    }
+    return longest;
   }
 
 
