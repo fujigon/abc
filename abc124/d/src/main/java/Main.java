@@ -23,7 +23,7 @@ public class Main {
 
     /* logic */
     List<Block> blocks = partitioning(sbool);
-    int longest = searchCandidate(blocks, k);
+    int longest = searchLongestMergedBlocks(blocks, k);
     os.println(longest);
   }
 
@@ -55,7 +55,7 @@ public class Main {
     return blocks;
   }
 
-  private static int searchCandidate(List<Block> blocks, int remaining) {
+  private static int searchLongestMergedBlocks(List<Block> blocks, int remaining) {
 
     int longest = 0;
     // search the every reversed result starting i-indexed block
