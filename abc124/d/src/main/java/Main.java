@@ -46,11 +46,6 @@ public class Main {
         block.handstanding = sbool[left];
         blocks.add(block);
       }
-
-      // prepare next
-      if (left == right) {
-        right++;
-      }
     }
     return blocks;
   }
