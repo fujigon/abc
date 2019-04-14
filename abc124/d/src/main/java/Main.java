@@ -1,7 +1,6 @@
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Main {
 
@@ -23,14 +22,24 @@ public class Main {
     }
 
     /* logic */
+
+    List<Block> blocks = partitioning(sbool);
+
+    List<Integer> list = new ArrayList();
+    searchCandidate(blocks, k, list);
+    list.sort(Integer::compareTo);
+    os.println(list.get(list.size() - 1));
+  }
+
+  // TODO clean up
+  private static List<Block> partitioning(boolean[] sbool) {
+
+    List<Block> blocks = new ArrayList<>();
+
     int start = 0;
-
-    List<StartEndPair> blocks = new ArrayList<>();
-
-    // TODO clean up the loop
-    for (int i = 0; i < n - 1; i++) {
+    for (int i = 0; i < sbool.length - 1; i++) {
       if (sbool[i] != sbool[i + 1]) {
-        StartEndPair pair = new StartEndPair();
+        Block pair = new Block();
         pair.start = start;
         pair.end = i;
         pair.handstanding = sbool[i];
@@ -40,19 +49,16 @@ public class Main {
     }
 
     // index last (n-1)
-    StartEndPair pair = new StartEndPair();
+    Block pair = new Block();
     pair.start = start;
-    pair.end = n - 1;
-    pair.handstanding = sbool[n - 1];
+    pair.end = sbool.length - 1;
+    pair.handstanding = sbool[sbool.length - 1];
     blocks.add(pair);
 
-    List<Integer> list = new ArrayList();
-    searchCandidate(blocks, k, list);
-    list.sort(Integer::compareTo);
-    os.println(list.get(list.size() - 1));
+    return blocks;
   }
 
-  private static void searchCandidate(List<StartEndPair> blocks, int remaining,
+  private static void searchCandidate(List<Block> blocks, int remaining,
       List<Integer> answer) {
 
     if (remaining == 0) {
@@ -102,14 +108,14 @@ public class Main {
       int longestBlockIndex = longestBlockIndexes.get(i);
 
       // merge
-      StartEndPair m = blocks.get(longestBlockIndex);
+      Block m = blocks.get(longestBlockIndex);
       if (longestBlockIndex > 0) {
-        StartEndPair l = blocks.get(longestBlockIndex - 1);
+        Block l = blocks.get(longestBlockIndex - 1);
         m.start = l.start;
         blocks.remove(l);
       }
       if (longestBlockIndex < blocks.size() - 1) {
-        StartEndPair r = blocks.get(longestBlockIndex + 1);
+        Block r = blocks.get(longestBlockIndex + 1);
         m.end = r.end;
         blocks.remove(r);
       }
@@ -121,7 +127,7 @@ public class Main {
   }
 
 
-  private static class StartEndPair {
+  private static class Block {
 
     boolean handstanding;
 
@@ -130,7 +136,7 @@ public class Main {
 
     @Override
     public String toString() {
-      return "StartEndPair{" +
+      return "Block{" +
           "handstanding=" + handstanding +
           ", start=" + start +
           ", end=" + end +
