@@ -1,12 +1,12 @@
 rootProject.name = 'abc'
 
 
+/*
 include 'tenka2019:a'
 include 'tenka2019:b'
 include 'tenka2019:c'
 include 'tenka2019:d'
 
-/*
 include 'abc124:a'
 include 'abc124:b'
 include 'abc124:c'
@@ -17,3 +17,8 @@ include 'abc123:b'
 include 'abc123:c'
 include 'abc123:d'
 */
+
+include 'abc122:a'
+include 'abc122:b'
+include 'abc122:c'
+include 'abc122:d'
