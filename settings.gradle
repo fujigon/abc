@@ -8,6 +8,7 @@ include 'tenka2019:d'
 
 include 'tenka2019'
 
+include 'abc125'
 include 'abc124'
 include 'abc123'
 include 'abc122' // TODO D
