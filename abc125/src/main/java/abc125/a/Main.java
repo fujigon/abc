@@ -18,22 +18,8 @@ public class Main {
     int a = sc.nextInt();
     int b = sc.nextInt();
 
-    int sum = 0;
-    if (a > b) {
-      sum += a;
-      a--;
-    } else {
-      sum += b;
-      b--;
-    }
+    int t = sc.nextInt();
 
-    if (a > b) {
-      sum += a;
-      a--;
-    } else {
-      sum += b;
-      b--;
-    }
-    os.println(sum);
+    os.println(t/ a * b);
   }
 }

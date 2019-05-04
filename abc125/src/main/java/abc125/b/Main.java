@@ -16,25 +16,23 @@ public class Main {
     /* read */
     int n = sc.nextInt();
 
-    int h[] = new int[n];
+    int v[] = new int[n];
+    int c[] = new int[n];
 
     for (int i = 0; i < n; i++) {
-      h[i] = sc.nextInt();
+      v[i] = sc.nextInt();
     }
 
-    /* logic */
-
-    int visible = 0;
-
-    int highest = 0;
-
     for (int i = 0; i < n; i++) {
-      if (h[i] >= highest) {
-        highest = h[i];
-        visible++;
+      c[i] = sc.nextInt();
+    }
+
+    int sum = 0;
+    for (int i = 0; i < n; i++) {
+      if (v[i] > c[i]) {
+        sum += v[i] - c[i];
       }
     }
-
-    os.println(visible);
+    os.println(sum);
   }
 }

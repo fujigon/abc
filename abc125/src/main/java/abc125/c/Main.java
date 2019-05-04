@@ -14,45 +14,55 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    String s = sc.next();
+    int n = sc.nextInt();
 
-    boolean[] sbool = new boolean[s.length()];
+    long[] a = new long[n];
 
-    for (int i = 0; i < s.length(); i++) {
-      sbool[i] = s.charAt(i) == '1';
+    for (int i = 0; i < n; i++) {
+      a[i] = sc.nextInt();
     }
 
-    /* logic */
-    boolean[] candidate0 = generateCandidate(false, s.length());
-    boolean[] candidate1 = generateCandidate(true, s.length());
+    long[] lgcds = new long[n];
+    long[] rgcds = new long[n];
 
-    int diffOfCandidate0 = calcDiff(sbool, candidate0);
-    int diffOfCandidate1 = calcDiff(sbool, candidate1);
-
-    os.println(Math.min(diffOfCandidate0, diffOfCandidate1));
-  }
-
-  private static boolean[] generateCandidate(boolean initialZero, int length) {
-    boolean[] candidate = new boolean[length];
-    boolean isZero = initialZero;
-    for (int i = 0; i < length; i++) {
-      candidate[i] = isZero;
-      isZero = !isZero;
+    long gcd;
+    gcd = 0;
+    for (int i = 0; i < n; i++) {
+      gcd = gcd(gcd, a[i]);
+      lgcds[i] = gcd;
     }
-    return candidate;
-  }
+    gcd = 0;
+    for (int i = n - 1; 0 <= i; i--) {
+      gcd = gcd(gcd, a[i]);
+      rgcds[i] = gcd;
+    }
 
-  private static int calcDiff(boolean[] s1, boolean[] s2) {
+    long maxGcd = Long.MIN_VALUE;
 
-    int diff = 0;
-    for (int i = 0; i < s1.length; i++) {
-      if (s1[i] != s2[i]) {
-        diff++;
+    for (int i = 0; i < n; i++) {
+      long lgcd = 0;
+      long rgcd = 0;
+      if (0 < i) {
+        lgcd = lgcds[i - 1];
       }
+      if (i < n - 1) {
+        rgcd = rgcds[i + 1];
+      }
+      maxGcd = Math.max(gcd(lgcd, rgcd), maxGcd);
     }
 
-    return diff;
+    os.println(maxGcd);
 
+  }
+
+  private static long gcd(long m, long n) {
+    if (m < n) {
+      return gcd(n, m);
+    }
+    if (n == 0) {
+      return m;
+    }
+    return gcd(n, m % n);
   }
 
 }
