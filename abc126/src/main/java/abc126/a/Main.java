@@ -1,4 +1,4 @@
-package abc125.a;
+package abc126.a;
 
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -20,6 +20,6 @@ public class Main {
 
     int t = sc.nextInt();
 
-    os.println(t/ a * b);
+    os.println(t / a * b);
   }
 }
