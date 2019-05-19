@@ -14,55 +14,22 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    int n = sc.nextInt();
+    double n = sc.nextDouble();
 
-    long[] a = new long[n];
+    double k = sc.nextDouble();
 
-    for (int i = 0; i < n; i++) {
-      a[i] = sc.nextInt();
-    }
+    double result = 0;
 
-    long[] lgcds = new long[n];
-    long[] rgcds = new long[n];
-
-    long gcd;
-    gcd = 0;
-    for (int i = 0; i < n; i++) {
-      gcd = gcd(gcd, a[i]);
-      lgcds[i] = gcd;
-    }
-    gcd = 0;
-    for (int i = n - 1; 0 <= i; i--) {
-      gcd = gcd(gcd, a[i]);
-      rgcds[i] = gcd;
-    }
-
-    long maxGcd = Long.MIN_VALUE;
-
-    for (int i = 0; i < n; i++) {
-      long lgcd = 0;
-      long rgcd = 0;
-      if (0 < i) {
-        lgcd = lgcds[i - 1];
+    for (int i = 1; i <= n ; i++) {
+      double r = 1.0d / n;
+      int tmp = i;
+      while (tmp < k) {
+        tmp *= 2;
+        r /= 2;
       }
-      if (i < n - 1) {
-        rgcd = rgcds[i + 1];
-      }
-      maxGcd = Math.max(gcd(lgcd, rgcd), maxGcd);
+      result += r;
     }
-
-    os.println(maxGcd);
-
-  }
-
-  private static long gcd(long m, long n) {
-    if (m < n) {
-      return gcd(n, m);
-    }
-    if (n == 0) {
-      return m;
-    }
-    return gcd(n, m % n);
+    os.println(result);
   }
 
 }

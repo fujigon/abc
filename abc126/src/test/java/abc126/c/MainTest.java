@@ -1,4 +1,4 @@
-package abc125.c;
+package abc126.c;
 
 import org.junit.Test;
 
@@ -13,9 +13,8 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "3\n"
-        + "7 6 8";
-    String expected = "2";
+    String input = "3 10";
+    String expected = "0.145833333333";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }

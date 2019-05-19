@@ -15,11 +15,13 @@ public class Main {
 
     /* read */
 
-    int a = sc.nextInt();
-    int b = sc.nextInt();
+    int n = sc.nextInt();
+    int k = sc.nextInt();
 
-    int t = sc.nextInt();
+    String s = sc.next();
 
-    os.println(t / a * b);
+    String result = s.substring(0, k - 1) + s.substring(k - 1, k).toLowerCase() + s.substring(k, n);
+
+    os.println(result);
   }
 }

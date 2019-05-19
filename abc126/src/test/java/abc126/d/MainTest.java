@@ -1,4 +1,4 @@
-package abc125.d;
+package abc126.d;
 
 import org.junit.Test;
 
@@ -14,9 +14,12 @@ public class MainTest {
   @Test
   public void test() {
     String input = "3\n"
-        + "-10 5 -4";
+        + "1 2 2\n"
+        + "2 3 1";
 
-    String expected = "19";
+    String expected = "0\n"
+        + "0\n"
+        + "1";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
@@ -24,9 +27,16 @@ public class MainTest {
   @Test
   public void test2() {
     String input = "5\n"
-        + "10 -4 -8 -11 3";
+        + "2 5 2\n"
+        + "2 3 10\n"
+        + "1 3 8\n"
+        + "3 4 2";
 
-    String expected = "30";
+    String expected = "1\n"
+        + "0\n"
+        + "1\n"
+        + "0\n"
+        + "1";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }

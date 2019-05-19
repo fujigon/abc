@@ -14,25 +14,29 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    int n = sc.nextInt();
+    String s = sc.next();
 
-    int v[] = new int[n];
-    int c[] = new int[n];
+    int l = Integer.valueOf(s.substring(0, 2));
+    int r = Integer.valueOf(s.substring(2, 4));
 
-    for (int i = 0; i < n; i++) {
-      v[i] = sc.nextInt();
+    boolean lMonth = false;
+    boolean rMonth = false;
+    if (0 < l && l <= 12) {
+      lMonth = true;
+    }
+    if (0 < r && r <= 12) {
+      rMonth = true;
     }
 
-    for (int i = 0; i < n; i++) {
-      c[i] = sc.nextInt();
+    if (lMonth && rMonth) {
+      os.println("AMBIGUOUS");
+    } else if (lMonth) {
+      os.println("MMYY");
+    } else if (rMonth) {
+      os.println("YYMM");
+    } else {
+      os.println("NA");
     }
 
-    int sum = 0;
-    for (int i = 0; i < n; i++) {
-      if (v[i] > c[i]) {
-        sum += v[i] - c[i];
-      }
-    }
-    os.println(sum);
   }
 }

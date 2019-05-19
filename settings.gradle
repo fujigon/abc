@@ -1,10 +1,10 @@
 rootProject.name = 'abc'
 
-include 'tenka2019'
-
+//include 'tenka2019'
+//
 include 'abc126'
-include 'abc125'
-include 'abc124'
-include 'abc123'
-include 'abc122' // TODO D
-include 'abc121' // TODO D
+//include 'abc125'
+//include 'abc124'
+//include 'abc123'
+//include 'abc122' // TODO D
+//include 'abc121' // TODO D
