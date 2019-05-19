@@ -26,29 +26,19 @@ public class MainTest {
 
   @Test
   public void test2() {
-    String input = "5\n"
-        + "2 5 2\n"
-        + "2 3 10\n"
-        + "1 3 8\n"
-        + "3 4 2";
-
-    String expected = "1\n"
-        + "0\n"
-        + "1\n"
-        + "0\n"
-        + "1";
-
-    assertThat(execute(input + "\n"), is(expected + "\n"));
-  }
-
-  @Test
-  public void test3() {
-    String input = "1 1\n"
-        + "1";
-
-    String expected = "1";
-
-    assertThat(execute(input + "\n"), is(expected + "\n"));
+//    String input = "5\n"
+//        + "2 5 2\n"
+//        + "2 3 10\n"
+//        + "1 3 8\n"
+//        + "3 4 2";
+//
+//    String expected = "1\n"
+//        + "0\n"
+//        + "1\n"
+//        + "0\n"
+//        + "1";
+//
+//    assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   private String execute(String input) {

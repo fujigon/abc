@@ -3,12 +3,23 @@ package tenka2019.a;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import org.junit.Test;
 import tenka2019.a.Main;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MainTest {
+
+  @Test
+  public void test() {
+//    String input = "5 1\n"
+//        + "00010";
+//
+//    String expected = "4";
+//
+//    assertThat(execute(input + "\n"), is(expected + "\n"));
+  }
 
   private String execute(String input) {
     ByteArrayOutputStream os = new ByteArrayOutputStream();

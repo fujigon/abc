@@ -13,30 +13,10 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "3 10";
-    String expected = "0.145833333333";
-
-    assertThat(execute(input + "\n"), is(expected + "\n"));
-  }
-
-  @Test
-  public void test2() {
-    String input = "3\n"
-        + "12 15 18";
-
-    String expected = "6";
-
-    assertThat(execute(input + "\n"), is(expected + "\n"));
-  }
-
-  @Test
-  public void test3() {
-    String input = "2\n"
-        + "1000000000 1000000000";
-
-    String expected = "1000000000";
-
-    assertThat(execute(input + "\n"), is(expected + "\n"));
+//    String input = "3 10";
+//    String expected = "0.145833333333";
+//
+//    assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   private String execute(String input) {
