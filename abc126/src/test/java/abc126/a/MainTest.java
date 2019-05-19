@@ -1,4 +1,4 @@
-package abc124.b;
+package abc126.a;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -12,12 +12,20 @@ public class MainTest {
 
   @Test
   public void test() {
-//    String input = "5 1\n"
-//        + "00010";
-//
-//    String expected = "4";
-//
-//    assertThat(execute(input + "\n"), is(expected + "\n"));
+    String input = "3 1\n"
+        + "ABC";
+    String expected = "aBC";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
+  }
+
+  @Test
+  public void test1() {
+    String input = "3 3\n"
+        + "ABC";
+    String expected = "ABc";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   private String execute(String input) {

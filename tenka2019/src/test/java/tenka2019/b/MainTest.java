@@ -11,7 +11,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MainTest {
 
-  @Test
+ @Test
   public void test() {
     String input = "5\n"
         + "error\n"

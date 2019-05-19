@@ -1,13 +1,8 @@
 rootProject.name = 'abc'
 
-
-include 'tenka2019:a'
-include 'tenka2019:b'
-include 'tenka2019:c'
-include 'tenka2019:d'
-
 include 'tenka2019'
 
+include 'abc126'
 include 'abc125'
 include 'abc124'
 include 'abc123'
