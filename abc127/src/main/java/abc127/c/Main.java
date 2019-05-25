@@ -14,22 +14,21 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    double n = sc.nextDouble();
+    int n = sc.nextInt();
+    int m = sc.nextInt();
 
-    double k = sc.nextDouble();
-
-    double result = 0;
-
-    for (int i = 1; i <= n ; i++) {
-      double r = 1.0d / n;
-      int tmp = i;
-      while (tmp < k) {
-        tmp *= 2;
-        r /= 2;
-      }
-      result += r;
+    int lMax = 1;
+    int rMin = n;
+    for (int i = 0; i < m; i++) {
+      int l = sc.nextInt();
+      int r = sc.nextInt();
+      lMax = Math.max(l, lMax);
+      rMin = Math.min(r, rMin);
     }
-    os.println(result);
+    if (rMin < lMax) {
+      os.println(0);
+    } else {
+      os.println(rMin - lMax + 1);
+    }
   }
-
 }

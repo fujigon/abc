@@ -13,9 +13,8 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "3 1\n"
-        + "ABC";
-    String expected = "aBC";
+    String input = "5 100";
+    String expected = "0";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }

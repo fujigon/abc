@@ -13,8 +13,17 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "1905";
-    String expected = "YYMM";
+    String input = "2 10 20";
+    String expected = "30\n"
+        + "50\n"
+        + "90\n"
+        + "170\n"
+        + "330\n"
+        + "650\n"
+        + "1290\n"
+        + "2570\n"
+        + "5130\n"
+        + "10250";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }

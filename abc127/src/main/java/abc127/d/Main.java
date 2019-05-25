@@ -10,10 +10,11 @@ public class Main {
     solve(System.in, System.out);
   }
 
-  private static class Pair {
-    int u;
-    int v;
-    long w;
+  private static class Change {
+
+    int times;
+    int toValue;
+
   }
 
   static void solve(InputStream is, PrintStream os) {
@@ -21,87 +22,45 @@ public class Main {
 
     /* read */
     int n = sc.nextInt();
+    int m = sc.nextInt();
 
-    // u1 is always in white
-    Set<Integer> white = new HashSet<>();
+    List<Integer> values = new ArrayList<>(n);
+    List<Change> changes = new ArrayList<>(m);
 
-    Set<Integer> black = new HashSet<>();
-
-    // u -> [(u, v, w), .. ]
-    Map<Integer, List<Pair>> rslvs = new HashMap<>();
-
-    for (int i = 0; i < n - 1; i++) {
-      int u = sc.nextInt();
-      int v = sc.nextInt();
-      long w = sc.nextLong();
-
-      List<Pair> list1 = rslvs.getOrDefault(u, new ArrayList<>());
-      Pair p1 = new Pair();
-      p1.u = u;
-      p1.v = v;
-      p1.w = w;
-      list1.add(p1);
-      rslvs.put(u, list1);
-
-      List<Pair> list2 = rslvs.getOrDefault(v, new ArrayList<>());
-      Pair p2 = new Pair();
-      p2.u = v;
-      p2.v = u;
-      p2.w = w;
-      list2.add(p2);
-      rslvs.put(v, list2);
+    for (int i = 0; i < n; i++) {
+      values.add(sc.nextInt());
     }
 
-    Set<Integer> unresolved = new HashSet<>();
-
-    for (int i = 1; i <= n; i++) {
-      unresolved.add(i);
+    for (int i = 0; i < m; i++) {
+      Change change = new Change();
+      change.times = sc.nextInt();
+      change.toValue = sc.nextInt();
+      changes.add(change);
     }
 
-    while (!unresolved.isEmpty()) {
-      Integer enter = unresolved.iterator().next();
-      unresolved.remove(enter);
-    }
+    // logic
 
-    // 1 is always white.
-    white.add(1);
+    values.sort(Integer::compareTo);
+    changes.sort(Comparator.comparingInt(c -> c.toValue));
+    Collections.reverse(changes);
 
-    Queue<Integer> resolved = new LinkedList<>();
-    resolved.add(1);
-    while(!resolved.isEmpty()) {
-      Integer r = resolved.remove();
-
-      List<Pair> list = rslvs.get(r);
-
-      for (Pair p : list) {
-        // already visited
-        if (white.contains(p.v) || black.contains(p.v)) {
-          continue;
+    int i = 0;
+    for (Change change : changes) {
+      for (int j = 0; j < change.times; j++) {
+        if (i == n) break;
+        if (values.get(i) < change.toValue) {
+          values.set(i, change.toValue);
+        } else {
+          break;
         }
-        // u is white
-        if (white.contains(p.u)) {
-          if (p.w % 2 == 0) {
-            white.add(p.v);
-          } else {
-            black.add(p.v);
-          }
-        } else { // u is black
-          if (p.w % 2 == 0) {
-            black.add(p.v);
-          } else {
-            white.add(p.v);
-          }
-        }
-        resolved.add(p.v);
+        i++;
       }
     }
 
-    for (int i = 1; i <= n; i++) {
-      if (white.contains(i)) {
-        os.println('0');
-      } else {
-        os.println('1');
-      }
+    long sum = 0;
+    for (int value : values) {
+      sum += value;
     }
+    os.println(sum);
   }
 }

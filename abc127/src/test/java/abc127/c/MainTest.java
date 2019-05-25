@@ -14,10 +14,11 @@ public class MainTest {
 
   @Test
   public void test() {
-//    String input = "3 10";
-//    String expected = "0.145833333333";
-//
-//    assertThat(execute(input + "\n"), is(expected + "\n"));
+    String input = "100000 1\n"
+        + "1 100000";
+    String expected = "100000";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   private String execute(String input) {

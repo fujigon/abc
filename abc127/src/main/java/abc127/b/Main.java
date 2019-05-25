@@ -14,29 +14,13 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    String s = sc.next();
+    int r = sc.nextInt();
+    int D = sc.nextInt();
+    int x = sc.nextInt();
 
-    int l = Integer.valueOf(s.substring(0, 2));
-    int r = Integer.valueOf(s.substring(2, 4));
-
-    boolean lMonth = false;
-    boolean rMonth = false;
-    if (0 < l && l <= 12) {
-      lMonth = true;
+    for (int i = 1; i <= 10; i++) {
+      x = r * x - D;
+      os.println(x);
     }
-    if (0 < r && r <= 12) {
-      rMonth = true;
-    }
-
-    if (lMonth && rMonth) {
-      os.println("AMBIGUOUS");
-    } else if (lMonth) {
-      os.println("MMYY");
-    } else if (rMonth) {
-      os.println("YYMM");
-    } else {
-      os.println("NA");
-    }
-
   }
 }
