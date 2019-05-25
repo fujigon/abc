@@ -2,6 +2,7 @@ rootProject.name = 'abc'
 
 include 'tenka2019'
 
+include 'abc127'
 include 'abc126'
 include 'abc125'
 include 'abc124'
