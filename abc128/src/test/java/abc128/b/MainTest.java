@@ -12,17 +12,46 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "2 10 20";
-    String expected = "30\n"
-        + "50\n"
-        + "90\n"
-        + "170\n"
-        + "330\n"
-        + "650\n"
-        + "1290\n"
-        + "2570\n"
-        + "5130\n"
-        + "10250";
+    String input = "6\n"
+        + "khabarovsk 20\n"
+        + "moscow 10\n"
+        + "kazan 50\n"
+        + "kazan 35\n"
+        + "moscow 60\n"
+        + "khabarovsk 40";
+    String expected = "3\n"
+        + "4\n"
+        + "6\n"
+        + "1\n"
+        + "5\n"
+        + "2";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
+  }
+
+  @Test
+  public void test2() {
+    String input = "10\n"
+        + "yakutsk 10\n"
+        + "yakutsk 20\n"
+        + "yakutsk 30\n"
+        + "yakutsk 40\n"
+        + "yakutsk 50\n"
+        + "yakutsk 60\n"
+        + "yakutsk 70\n"
+        + "yakutsk 80\n"
+        + "yakutsk 90\n"
+        + "yakutsk 100";
+    String expected = "10\n"
+        + "9\n"
+        + "8\n"
+        + "7\n"
+        + "6\n"
+        + "5\n"
+        + "4\n"
+        + "3\n"
+        + "2\n"
+        + "1";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }

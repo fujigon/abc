@@ -10,57 +10,57 @@ public class Main {
     solve(System.in, System.out);
   }
 
-  private static class Change {
-
-    int times;
-    int toValue;
-
-  }
-
   static void solve(InputStream is, PrintStream os) {
     Scanner sc = new Scanner(is);
 
     /* read */
     int n = sc.nextInt();
-    int m = sc.nextInt();
+    int k = sc.nextInt();
 
-    List<Integer> values = new ArrayList<>(n);
-    List<Change> changes = new ArrayList<>(m);
-
+    int[] values = new int[n];
     for (int i = 0; i < n; i++) {
-      values.add(sc.nextInt());
+      values[i] = sc.nextInt();
     }
 
-    for (int i = 0; i < m; i++) {
-      Change change = new Change();
-      change.times = sc.nextInt();
-      change.toValue = sc.nextInt();
-      changes.add(change);
-    }
+    int max = 0;
+    for (int leftOperation = 0; leftOperation <= k; leftOperation++) {
+      int rightOperation = k - leftOperation;
 
-    // logic
+      for (int leftTaking = 0; leftTaking <= Math.min(leftOperation, n); leftTaking++) {
+        for (int rightTaking = 0; rightTaking <= Math.min(Math.min(rightOperation, n - leftTaking), n); rightTaking++) {
+          int leftDrop = Math.min(leftTaking, leftOperation - leftTaking);
+          int rightDrop = Math.min(rightTaking, rightOperation - rightTaking);
 
-    values.sort(Integer::compareTo);
-    changes.sort(Comparator.comparingInt(c -> c.toValue));
-    Collections.reverse(changes);
-
-    int i = 0;
-    for (Change change : changes) {
-      for (int j = 0; j < change.times; j++) {
-        if (i == n) break;
-        if (values.get(i) < change.toValue) {
-          values.set(i, change.toValue);
-        } else {
-          break;
+          List<Integer> left = new ArrayList<>();
+          for (int i = 0; i < leftTaking; i++) {
+            left.add(values[i]);
+          }
+          List<Integer> right = new ArrayList<>();
+          for (int i = 0; i < rightTaking; i++) {
+            right.add(values[n - 1 - i]);
+          }
+          Collections.sort(left);
+          Collections.sort(right);
+          while (left.size() > 0 && leftDrop > 0 && left.get(0) < 0) {
+            left.remove(0);
+            leftDrop--;
+          }
+          while (right.size() > 0 && rightDrop > 0 && right.get(0) < 0) {
+            right.remove(0);
+            rightDrop--;
+          }
+          int sum = 0;
+          for (int l : left) {
+            sum += l;
+          }
+          for (int r : right) {
+            sum += r;
+          }
+          max = Math.max(max, sum);
         }
-        i++;
       }
     }
 
-    long sum = 0;
-    for (int value : values) {
-      sum += value;
-    }
-    os.println(sum);
+    os.println(max);
   }
 }

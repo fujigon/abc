@@ -16,14 +16,10 @@ public class Main {
     /* read */
 
     int a = sc.nextInt();
-    int b = sc.nextInt();
+    int p = sc.nextInt();
 
-    if (13 <= a) {
-      os.println(b);
-    } else if (6 <= a) {
-      os.println(b/2);
-    } else {
-      os.println(0);
-    }
+    p += 3 * a;
+
+    os.println(p/2);
   }
 }

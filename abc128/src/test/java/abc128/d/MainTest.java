@@ -13,10 +13,8 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "3 2\n"
-        + "5 1 4\n"
-        + "2 3\n"
-        + "1 5";
+    String input = "6 4\n"
+        + "-10 8 2 1 2 6";
 
     String expected = "14";
 
@@ -25,26 +23,20 @@ public class MainTest {
 
   @Test
   public void test2() {
-    String input = "10 3\n"
-        + "1 8 5 7 100 4 52 33 13 5\n"
-        + "3 10\n"
-        + "4 30\n"
-        + "1 4";
+    String input = "6 4\n"
+        + "-6 -100 50 -2 -5 -3";
 
-    String expected = "338";
+    String expected = "44";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test3() {
-    String input = "11 3\n"
-        + "1 1 1 1 1 1 1 1 1 1 1\n"
-        + "3 1000000000\n"
-        + "4 1000000000\n"
-        + "3 1000000000";
+    String input = "6 3\n"
+        + "-6 -100 50 -2 -5 -3";
 
-    String expected = "10000000001";
+    String expected = "0";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
