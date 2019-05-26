@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Main {
 
@@ -17,28 +18,20 @@ public class Main {
     /* read */
     int n = sc.nextInt();
 
-    Map<String, List<Integer>> map = new HashMap<>();
-
-    Map<String, Integer> restaurants = new HashMap<>();
+    List<String> cities = new ArrayList<>(n);
+    List<Integer> scores = new ArrayList<>(n);
 
     for (int i = 0; i < n; i++) {
-      String city = sc.next();
-      int score = sc.nextInt();
-      List<Integer> list = map.getOrDefault(city, new ArrayList<>());
-      list.add(score);
-      map.put(city, list);
-      restaurants.put(city + score, i);
+      cities.add(sc.next());
+      scores.add(sc.nextInt());
     }
 
-    List<String> cities = new ArrayList<>(map.keySet());
-    Collections.sort(cities);
-    for (String city : cities) {
-      List<Integer> scores = map.get(city);
-      Collections.sort(scores);
-      Collections.reverse(scores);
-      for (int score : scores) {
-        os.println(restaurants.get(city + score) + 1);
-      }
-    }
+    IntStream.range(0, n)
+        .boxed()
+        .sorted((i1, i2) ->
+            cities.get(i1).equals(cities.get(i2)) ? -scores.get(i1).compareTo(scores.get(i2)) :
+                cities.get(i1).compareTo(cities.get(i2))
+        ).map(i -> i + 1)
+        .forEach(os::println);
   }
 }
