@@ -15,52 +15,66 @@ public class Main {
 
     /* read */
     int n = sc.nextInt();
-    int k = sc.nextInt();
 
-    int[] values = new int[n];
-    for (int i = 0; i < n; i++) {
-      values[i] = sc.nextInt();
+    Map<Integer, Set<Integer>> tree = new HashMap<>(n);
+    List<Integer> values = new ArrayList<>(n);
+
+    for (int i = 0; i < n - 1; i++) {
+      int a = sc.nextInt();
+      int b = sc.nextInt();
+      Set<Integer> set;
+
+      set = tree.getOrDefault(a, new HashSet<>());
+      set.add(b);
+      tree.put(a, set);
+
+      set = tree.getOrDefault(b, new HashSet<>());
+      set.add(a);
+      tree.put(b, set);
     }
 
-    int max = 0;
-    for (int leftOperation = 0; leftOperation <= k; leftOperation++) {
-      int rightOperation = k - leftOperation;
+    for (int i = 0; i < n; i++) {
+      values.add(sc.nextInt());
+    }
 
-      for (int leftTaking = 0; leftTaking <= Math.min(leftOperation, n); leftTaking++) {
-        for (int rightTaking = 0; rightTaking <= Math.min(Math.min(rightOperation, n - leftTaking), n); rightTaking++) {
-          int leftDrop = Math.min(leftTaking, leftOperation - leftTaking);
-          int rightDrop = Math.min(rightTaking, rightOperation - rightTaking);
+    Collections.sort(values);
 
-          List<Integer> left = new ArrayList<>();
-          for (int i = 0; i < leftTaking; i++) {
-            left.add(values[i]);
-          }
-          List<Integer> right = new ArrayList<>();
-          for (int i = 0; i < rightTaking; i++) {
-            right.add(values[n - 1 - i]);
-          }
-          Collections.sort(left);
-          Collections.sort(right);
-          while (left.size() > 0 && leftDrop > 0 && left.get(0) < 0) {
-            left.remove(0);
-            leftDrop--;
-          }
-          while (right.size() > 0 && rightDrop > 0 && right.get(0) < 0) {
-            right.remove(0);
-            rightDrop--;
-          }
-          int sum = 0;
-          for (int l : left) {
-            sum += l;
-          }
-          for (int r : right) {
-            sum += r;
-          }
-          max = Math.max(max, sum);
+    LinkedList<Integer> assignable = new LinkedList<>();
+
+    // find leaves
+    for (int i = 1; i <= n; i++) {
+      if (tree.get(i).size() == 1) {
+        assignable.add(i);
+      }
+    }
+
+    int[] assigned = new int[n + 1];
+    int count = 0;
+    int sum = 0;
+    while (!assignable.isEmpty()) {
+
+      int assign = assignable.remove();
+
+      assigned[assign] = values.get(count++);
+
+      // towards root
+      Set<Integer> candidates = tree.get(assign);
+
+      sum += assigned[assign];
+
+      for (int candidate : candidates) {
+        tree.get(candidate).remove(assign);
+        if (tree.get(candidate).size() == 1) { // only towards root path
+          assignable.add(candidate);
         }
       }
     }
 
-    os.println(max);
+    os.println(sum - values.get(values.size() - 1));
+    List<String> result = new ArrayList<>(n);
+    for (int i = 1; i <= n; i++) {
+      result.add(String.valueOf(assigned[i]));
+    }
+    os.println(String.join(" ", result));
   }
 }

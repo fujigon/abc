@@ -13,10 +13,10 @@ public class MainTest {
 
   @Test
   public void test() {
-//    String input = "5 100";
-//    String expected = "0";
-//
-//    assertThat(execute(input + "\n"), is(expected + "\n"));
+    String input = "100";
+    String expected = "17640";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   private String execute(String input) {

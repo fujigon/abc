@@ -13,46 +13,16 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "6\n"
-        + "khabarovsk 20\n"
-        + "moscow 10\n"
-        + "kazan 50\n"
-        + "kazan 35\n"
-        + "moscow 60\n"
-        + "khabarovsk 40";
-    String expected = "3\n"
-        + "4\n"
-        + "6\n"
-        + "1\n"
-        + "5\n"
-        + "2";
+    String input = "oxoxoxoxoxoxox";
+    String expected = "YES";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test2() {
-    String input = "10\n"
-        + "yakutsk 10\n"
-        + "yakutsk 20\n"
-        + "yakutsk 30\n"
-        + "yakutsk 40\n"
-        + "yakutsk 50\n"
-        + "yakutsk 60\n"
-        + "yakutsk 70\n"
-        + "yakutsk 80\n"
-        + "yakutsk 90\n"
-        + "yakutsk 100";
-    String expected = "10\n"
-        + "9\n"
-        + "8\n"
-        + "7\n"
-        + "6\n"
-        + "5\n"
-        + "4\n"
-        + "3\n"
-        + "2\n"
-        + "1";
+    String input = "xxxxxxxx";
+    String expected = "NO";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
