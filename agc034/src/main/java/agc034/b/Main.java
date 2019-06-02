@@ -16,22 +16,43 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    int n = sc.nextInt();
+    String s = sc.next();
 
-    List<String> cities = new ArrayList<>(n);
-    List<Integer> scores = new ArrayList<>(n);
+    os.println(search(s));
 
-    for (int i = 0; i < n; i++) {
-      cities.add(sc.next());
-      scores.add(sc.nextInt());
+  }
+
+  private static long search(String s) {
+
+    s = s.replaceAll("BC", "D");
+
+    int n = s.length();
+
+    long sum = 0;
+    int j = 0;
+    while (j < n){
+
+      if (s.charAt(j) != 'A') {
+        j++;
+        continue;
+      }
+
+      // for each, find A
+      // found A
+
+      int aCount = 0;
+      int i = j;
+      while (i < n && (s.charAt(i) == 'A' || s.charAt(i) == 'D')) {
+        if (s.charAt(i) == 'A') {
+          aCount++;
+        }
+        if (s.charAt(i) == 'D') {
+          sum += aCount;
+        }
+        i++;
+      }
+      j = i;
     }
-
-    IntStream.range(0, n)
-        .boxed()
-        .sorted((i1, i2) ->
-            cities.get(i1).equals(cities.get(i2)) ? -scores.get(i1).compareTo(scores.get(i2)) :
-                cities.get(i1).compareTo(cities.get(i2))
-        ).map(i -> i + 1)
-        .forEach(os::println);
+    return sum;
   }
 }
