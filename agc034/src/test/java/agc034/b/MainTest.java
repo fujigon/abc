@@ -42,6 +42,14 @@ public class MainTest {
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
+  @Test
+  public void test5() {
+    String input = "BCA";
+    String expected = "0";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
+  }
+
   private String execute(String input) {
     ByteArrayOutputStream os = new ByteArrayOutputStream();
     Main.solve(

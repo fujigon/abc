@@ -21,35 +21,66 @@ public class Main {
     os.println(search(s));
 
   }
+//  private static long search(String s) {
+//
+//    int n = s.length();
+//
+//    long sum = 0;
+//    int j = 0;
+//    while (0 <= j &&j < n){
+//
+//      if (s.charAt(j) != 'A') {
+//        j = s.indexOf("A", j + 1);
+//        continue;
+//      }
+//
+//      // for each, find A
+//      // found A
+//
+//      int aCount = 0;
+//      int i = j;
+//      while (i < n && (s.charAt(i) == 'A' || i < n - 1 && (s.charAt(i) == 'B' && s.charAt(i + 1) == 'C'))) {
+//        if (s.charAt(i) == 'A') {
+//          aCount++;
+//          i++;
+//        } else {
+//          sum += aCount;
+//          i += 2;
+//        }
+//      }
+//      j = i;
+//    }
+//    return sum;
+//  }
 
   private static long search(String s) {
 
-    s = s.replaceAll("BC", "D");
-
     int n = s.length();
+    char[] c = s.toCharArray();
 
     long sum = 0;
     int j = 0;
-    while (j < n){
-
-      if (s.charAt(j) != 'A') {
-        j++;
-        continue;
-      }
+    while (0 <= j && j < n) {
 
       // for each, find A
       // found A
+      if (c[j] != 'A') {
+        j = s.indexOf("A", j + 1);
+        continue;
+      }
 
       int aCount = 0;
       int i = j;
-      while (i < n && (s.charAt(i) == 'A' || s.charAt(i) == 'D')) {
-        if (s.charAt(i) == 'A') {
+      while (i < n) {
+        if (c[i] == 'A') {
           aCount++;
-        }
-        if (s.charAt(i) == 'D') {
+          i++;
+        } else if (i + 1 < n && c[i] == 'B' && c[i + 1] == 'C') {
+          i += 2;
           sum += aCount;
+        } else {
+          break;
         }
-        i++;
       }
       j = i;
     }
