@@ -1,10 +1,9 @@
-package agc034.c;
-
-import org.junit.Test;
+package agc034.b;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -13,22 +12,40 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "2 2\n"
-        + "2 1 2\n"
-        + "1 2\n"
-        + "0 1";
-    String expected = "1";
+    String input = "ABCABC";
+    String expected = "3";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
-  public void test1() {
-    String input = "5 2\n"
-        + "3 1 2 5\n"
-        + "2 2 3\n"
-        + "1 0";
-    String expected = "8";
+  public void test2() {
+    String input = "C";
+    String expected = "0";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
+  }
+
+  @Test
+  public void test3() {
+    String input = "ABCACCBABCBCAABCB";
+    String expected = "6";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
+  }
+
+  @Test
+  public void test4() {
+    String input = "AABC";
+    String expected = "2";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
+  }
+
+  @Test
+  public void test5() {
+    String input = "BCA";
+    String expected = "0";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
@@ -40,6 +57,5 @@ public class MainTest {
     );
     return os.toString().replace(System.lineSeparator(), "\n");
   }
-
 
 }
