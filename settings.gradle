@@ -1,6 +1,6 @@
 rootProject.name = 'abc'
 
-include 'abc129'
+// include 'abc129'
 //include 'abc128'
 //include 'abc127'
 //include 'abc126'
@@ -11,5 +11,7 @@ include 'abc129'
 //include 'abc121' // TODO D
 
 //include 'agc034'
+
+include 'diverta2019'
 //include 'msolutions'
 //include 'tenka2019'
