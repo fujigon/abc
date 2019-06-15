@@ -13,20 +13,30 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "6 4\n"
-        + "-10 8 2 1 2 6";
+    String input = "4 6\n"
+        + "#..#..\n"
+        + ".....#\n"
+        + "....#.\n"
+        + "#.#...";
 
-    String expected = "14";
+    String expected = "8";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test2() {
-    String input = "6 4\n"
-        + "-6 -100 50 -2 -5 -3";
+    String input = "8 8\n"
+        + "..#...#.\n"
+        + "....#...\n"
+        + "##......\n"
+        + "..###..#\n"
+        + "...#..#.\n"
+        + "##....#.\n"
+        + "#...#...\n"
+        + "###.#..#";
 
-    String expected = "44";
+    String expected = "13";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }

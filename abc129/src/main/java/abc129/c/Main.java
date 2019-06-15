@@ -10,6 +10,9 @@ public class Main {
     solve(System.in, System.out);
   }
 
+  private static final long MOD = 1000000007L;
+
+
   static void solve(InputStream is, PrintStream os) {
     Scanner sc = new Scanner(is);
 
@@ -17,53 +20,29 @@ public class Main {
     int n = sc.nextInt();
     int m = sc.nextInt();
 
-    Map<Integer, Set<Integer>> checkingSwitches = new HashMap<>();
-    int[] checkingSwitchCondition = new int[m + 1];
+    Set<Integer> broken = new HashSet<>(m);
 
     for (int i = 0; i < m; i++) {
-      int switchNum = sc.nextInt();
-      Set<Integer> checkingSwitch = new HashSet<>();
-      for (int j = 0; j < switchNum; j++) {
-        checkingSwitch.add(sc.nextInt());
-      }
-      checkingSwitches.put(i + 1, checkingSwitch);
+      broken.add(sc.nextInt());
     }
 
-    for (int i = 0; i < m; i++) {
-      checkingSwitchCondition[i + 1] = sc.nextInt();
-    }
+    long[] route = new long[n + 1];
 
-    boolean[] on = new boolean[n + 1];
-    on[1] = true;
-    int result = 0;
-    result += check(1, n, on, checkingSwitches, checkingSwitchCondition);
-    on[1] = false;
-    result += check(1, n, on, checkingSwitches, checkingSwitchCondition);
+    route[0] = 1;
 
-    os.println(result);
-  }
-
-  private static int check(int switchIndex, int totalSwitchNum, boolean[] on,
-      Map<Integer, Set<Integer>> checkingSwitches, int[] checkingSwitchCondition) {
-    if (switchIndex == totalSwitchNum) {
-      for (int lampIndex : checkingSwitches.keySet()) {
-        int onCount = 0;
-        for (int checkingSwitchIndex : checkingSwitches.get(lampIndex)) {
-          if (on[checkingSwitchIndex]) {
-            onCount++;
-          }
-        }
-        if (onCount % 2 != checkingSwitchCondition[lampIndex]) {
-          return 0;
+    for (int i = 0; i < n; i++) {
+      if (i + 1 <= n) {
+        if (!broken.contains(i + 1)) {
+          route[i + 1] = (route[i + 1] + route[i]) % MOD;
         }
       }
-      return 1;
+      if (i + 2 <= n) {
+        if (!broken.contains(i + 2)) {
+          route[i + 2] = (route[i + 2] + route[i]) % MOD;
+        }
+      }
     }
-    int total = 0;
-    on[switchIndex + 1] = true;
-    total += check(switchIndex + 1, totalSwitchNum, on, checkingSwitches, checkingSwitchCondition);
-    on[switchIndex + 1] = false;
-    total += check(switchIndex + 1, totalSwitchNum, on, checkingSwitches, checkingSwitchCondition);
-    return total;
+
+    os.println(route[n]);
   }
 }

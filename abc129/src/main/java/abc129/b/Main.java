@@ -18,20 +18,24 @@ public class Main {
     /* read */
     int n = sc.nextInt();
 
-    List<String> cities = new ArrayList<>(n);
-    List<Integer> scores = new ArrayList<>(n);
+    int[] w = new int[n];
 
     for (int i = 0; i < n; i++) {
-      cities.add(sc.next());
-      scores.add(sc.nextInt());
+      w[i] = sc.nextInt();
     }
 
-    IntStream.range(0, n)
-        .boxed()
-        .sorted((i1, i2) ->
-            cities.get(i1).equals(cities.get(i2)) ? -scores.get(i1).compareTo(scores.get(i2)) :
-                cities.get(i1).compareTo(cities.get(i2))
-        ).map(i -> i + 1)
-        .forEach(os::println);
+    int min = Integer.MAX_VALUE;
+    for (int t = 0; t < n - 1; t++) {
+      int s1 = 0;
+      int s2 = 0;
+      for (int l = 0; l <= t; l++) {
+        s1 += w[l];
+      }
+      for (int r = t + 1; r < n; r++) {
+        s2 += w[r];
+      }
+      min = Math.min(min, Math.abs(s2 - s1));
+    }
+    os.println(min);
   }
 }

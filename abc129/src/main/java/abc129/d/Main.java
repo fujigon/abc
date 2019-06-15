@@ -10,57 +10,32 @@ public class Main {
     solve(System.in, System.out);
   }
 
+  private static final long MOD = 1000000007L;
+
   static void solve(InputStream is, PrintStream os) {
     Scanner sc = new Scanner(is);
 
     /* read */
-    int n = sc.nextInt();
-    int k = sc.nextInt();
-
-    int[] values = new int[n];
-    for (int i = 0; i < n; i++) {
-      values[i] = sc.nextInt();
+    String l = sc.next();
+    int[] bits = new int[l.length()];
+    for (int i = 0; i < l.length(); i++) {
+      bits[i] = Character.getNumericValue(l.charAt(i));
     }
 
-    int max = 0;
-    for (int leftOperation = 0; leftOperation <= k; leftOperation++) {
-      int rightOperation = k - leftOperation;
+    int[] route = new int[l.length()];
 
-      for (int leftTaking = 0; leftTaking <= Math.min(leftOperation, n); leftTaking++) {
-        for (int rightTaking = 0; rightTaking <= Math.min(Math.min(rightOperation, n - leftTaking), n); rightTaking++) {
-          int leftDrop = Math.min(leftTaking, leftOperation - leftTaking);
-          int rightDrop = Math.min(rightTaking, rightOperation - rightTaking);
+    // find first bit
+//    os.println(max);
+  }
 
-          List<Integer> left = new ArrayList<>();
-          for (int i = 0; i < leftTaking; i++) {
-            left.add(values[i]);
-          }
-          List<Integer> right = new ArrayList<>();
-          for (int i = 0; i < rightTaking; i++) {
-            right.add(values[n - 1 - i]);
-          }
-          Collections.sort(left);
-          Collections.sort(right);
-          while (left.size() > 0 && leftDrop > 0 && left.get(0) < 0) {
-            left.remove(0);
-            leftDrop--;
-          }
-          while (right.size() > 0 && rightDrop > 0 && right.get(0) < 0) {
-            right.remove(0);
-            rightDrop--;
-          }
-          int sum = 0;
-          for (int l : left) {
-            sum += l;
-          }
-          for (int r : right) {
-            sum += r;
-          }
-          max = Math.max(max, sum);
-        }
-      }
-    }
+  private static Map<Integer, Long> memo = new HashMap<>();
 
-    os.println(max);
+  // all bit on
+  static long routeSum(int bit) {
+    if (bit == 1) return 1 + 2;
+    if (memo.containsKey(bit)) return memo.get(bit);
+    long ret = (3 * routeSum(bit - 1)) % MOD;
+    memo.put(bit, ret);
+    return ret;
   }
 }
