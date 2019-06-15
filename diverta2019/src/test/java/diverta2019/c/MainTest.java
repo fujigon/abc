@@ -13,19 +13,22 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "6 1\n"
-        + "3";
-    String expected = "4";
+    String input = "3\n"
+        + "1 -1 2";
+    String expected = "4\n"
+        + "-1 1\n"
+        + "2 -2";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test1() {
-    String input = "10 2\n"
-        + "4\n"
-        + "5";
-    String expected = "0";
+    String input = "3\n"
+        + "1 1 1";
+    String expected = "1\n"
+        + "1 1\n"
+        + "1 0";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }

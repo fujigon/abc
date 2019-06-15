@@ -12,30 +12,102 @@ public class Main {
     solve(System.in, System.out);
   }
 
+  private static class Pair {
+
+    int x;
+    int y;
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+      Pair pair = (Pair) o;
+      return x == pair.x &&
+          y == pair.y;
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(x, y);
+    }
+  }
+
+  private static class Vert {
+    int x;
+    int y;
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+      Vert pair = (Vert) o;
+      return x == pair.x &&
+          y == pair.y;
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(x, y);
+    }
+  }
+
   static void solve(InputStream is, PrintStream os) {
     Scanner sc = new Scanner(is);
 
     /* read */
     int n = sc.nextInt();
 
-    int[] w = new int[n];
+    if (n == 1) {
+      os.println(1);
+      return;
+    }
+
+    List<Pair> pairs = new ArrayList<>(n);
+
+    int[] x = new int[n];
+    int[] y = new int[n];
 
     for (int i = 0; i < n; i++) {
-      w[i] = sc.nextInt();
+      x[i] = sc.nextInt();
+      y[i] = sc.nextInt();
+      Pair pair = new Pair();
+      pair.x = x[i];
+      pair.y = y[i];
+      pairs.add(pair);
     }
 
-    int min = Integer.MAX_VALUE;
-    for (int t = 0; t < n - 1; t++) {
-      int s1 = 0;
-      int s2 = 0;
-      for (int l = 0; l <= t; l++) {
-        s1 += w[l];
+    Map<Vert, Integer> occurs = new HashMap<>();
+    for (int i = 0 ; i < n; i++) {
+      for (int j = 0; j < n; j++){
+        if (i == j) continue;
+        Vert v = new Vert();
+        Pair p1 = pairs.get(i);
+        Pair p2 = pairs.get(j);
+        v.x = p1.x - p2.x;
+        v.y = p1.y - p2.y;
+        int occur = occurs.getOrDefault(v, 0);
+        occur++;
+        occurs.put(v, occur);
       }
-      for (int r = t + 1; r < n; r++) {
-        s2 += w[r];
-      }
-      min = Math.min(min, Math.abs(s2 - s1));
     }
-    os.println(min);
+
+    Vert maxOccurVert = null;
+    int maxOccur = Integer.MIN_VALUE;
+    for (Vert v : occurs.keySet()) {
+      if (occurs.get(v) > maxOccur) {
+        maxOccurVert = v;
+        maxOccur = occurs.get(v);
+      }
+    }
+
+    os.println(n - 1 - maxOccur + 1);
   }
 }

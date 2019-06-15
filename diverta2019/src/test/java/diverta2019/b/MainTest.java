@@ -11,18 +11,53 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class MainTest {
 
   @Test
-  public void test() {
-    String input = "3\n"
-        + "1 2 3";
-    String expected = "0";
+  public void test0() {
+    String input = "1\n"
+        + "1 1";
+    String expected = "1";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
+  public void test() {
+    String input = "2\n"
+        + "1 1\n"
+        + "2 2";
+    String expected = "1";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
+  }
+
+//  @Test
+//  public void test2() {
+//    String input = "3\n"
+//        + "1 4\n"
+//        + "4 6\n"
+//        + "7 8";
+//    String expected = "1";
+//
+//    assertThat(execute(input + "\n"), is(expected + "\n"));
+//  }
+
+  @Test
   public void test2() {
+    String input = "3\n"
+        + "7 8\n"
+        + "4 6\n"
+        + "1 4";
+    String expected = "1";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
+  }
+
+  @Test
+  public void test3() {
     String input = "4\n"
-        + "1 3 1 1";
+        + "1 1\n"
+        + "1 2\n"
+        + "2 1\n"
+        + "2 2";
     String expected = "2";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));

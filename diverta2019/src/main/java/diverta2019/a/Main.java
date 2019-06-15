@@ -15,10 +15,13 @@ public class Main {
 
     /* read */
 
-    int p = sc.nextInt();
-    int q = sc.nextInt();
-    int r = sc.nextInt();
+    int n = sc.nextInt();
+    int k = sc.nextInt();
 
-    os.println(p +  q + r - Math.max(Math.max(p, q), r));
+    if (k == 1) {
+      os.println(0);
+    } else {
+      os.println(n - k);
+    }
   }
 }
