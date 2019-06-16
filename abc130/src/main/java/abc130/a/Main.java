@@ -15,10 +15,14 @@ public class Main {
 
     /* read */
 
-    int p = sc.nextInt();
-    int q = sc.nextInt();
-    int r = sc.nextInt();
+    int x = sc.nextInt();
+    int a = sc.nextInt();
 
-    os.println(p +  q + r - Math.max(Math.max(p, q), r));
+    if (x < a) {
+      os.println("0");
+    } else {
+      os.println("10");
+    }
+
   }
 }

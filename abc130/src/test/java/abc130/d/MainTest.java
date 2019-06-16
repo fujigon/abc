@@ -13,42 +13,32 @@ public class MainTest {
 
   @Test
   public void test() {
-//    String input = "4 6\n"
-//        + "#..#..\n"
-//        + ".....#\n"
-//        + "....#.\n"
-//        + "#.#...";
-//
-//    String expected = "8";
-//
-//    assertThat(execute(input + "\n"), is(expected + "\n"));
+    String input = "4 10\n"
+        + "6 1 2 7";
+
+    String expected = "2";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test2() {
-//    String input = "8 8\n"
-//        + "..#...#.\n"
-//        + "....#...\n"
-//        + "##......\n"
-//        + "..###..#\n"
-//        + "...#..#.\n"
-//        + "##....#.\n"
-//        + "#...#...\n"
-//        + "###.#..#";
-//
-//    String expected = "13";
-//
-//    assertThat(execute(input + "\n"), is(expected + "\n"));
+    String input = "10 53462\n"
+        + "103 35322 232 342 21099 90000 18843 9010 35221 19352";
+
+    String expected = "36";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test3() {
-//    String input = "6 3\n"
-//        + "-6 -100 50 -2 -5 -3";
-//
-//    String expected = "0";
-//
-//    assertThat(execute(input + "\n"), is(expected + "\n"));
+    String input = "4 1\n"
+        + "100 100 100 100";
+
+    String expected = "10";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   private String execute(String input) {

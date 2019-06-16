@@ -10,32 +10,36 @@ public class Main {
     solve(System.in, System.out);
   }
 
-  private static final long MOD = 1000000007L;
-
   static void solve(InputStream is, PrintStream os) {
     Scanner sc = new Scanner(is);
 
     /* read */
-    String l = sc.next();
-    int[] bits = new int[l.length()];
-    for (int i = 0; i < l.length(); i++) {
-      bits[i] = Character.getNumericValue(l.charAt(i));
+    int n = sc.nextInt();
+    long k = sc.nextLong();
+    long[] a = new long[n];
+    for (int i = 0; i < n; i++) {
+      a[i] = sc.nextLong();
     }
 
-    int[] route = new int[l.length()];
+    int left = 0;
+    int right = 0;
 
-    // find first bit
-//    os.println(max);
-  }
-
-  private static Map<Integer, Long> memo = new HashMap<>();
-
-  // all bit on
-  static long routeSum(int bit) {
-    if (bit == 1) return 1 + 2;
-    if (memo.containsKey(bit)) return memo.get(bit);
-    long ret = (3 * routeSum(bit - 1)) % MOD;
-    memo.put(bit, ret);
-    return ret;
+    // half-open interval
+    long sum = 0;
+    long res = 0;
+    for (left = 0; left < n; left++) {
+      while (right < n && sum + a[right] < k) {
+        sum += a[right];
+        right++;
+      }
+      // left starting, left...right, left...right+1, left...right+2...left...n-1 are OK
+      res += (long) (n - 1 - (right - 1));
+      if (left == right) {
+        sum += a[right];
+        right++;
+      }
+      sum -= a[left];
+    }
+    os.println(res);
   }
 }

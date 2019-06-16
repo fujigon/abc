@@ -17,32 +17,18 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    int n = sc.nextInt();
-    int m = sc.nextInt();
+    int w = sc.nextInt();
+    int h = sc.nextInt();
 
-    Set<Integer> broken = new HashSet<>(m);
+    int x = sc.nextInt();
+    int y = sc.nextInt();
 
-    for (int i = 0; i < m; i++) {
-      broken.add(sc.nextInt());
-    }
+    double area = (double) w * (double) h;
+    area /= 2;
 
-    long[] route = new long[n + 1];
+    int divide = (x * 2 == w) && (y * 2 == h) ? 1 : 0;
 
-    route[0] = 1;
-
-    for (int i = 0; i < n; i++) {
-      if (i + 1 <= n) {
-        if (!broken.contains(i + 1)) {
-          route[i + 1] = (route[i + 1] + route[i]) % MOD;
-        }
-      }
-      if (i + 2 <= n) {
-        if (!broken.contains(i + 2)) {
-          route[i + 2] = (route[i + 2] + route[i]) % MOD;
-        }
-      }
-    }
-
-    os.println(route[n]);
+    os.print(String.format("%.6f", area) + " ");
+    os.println(divide);
   }
 }
