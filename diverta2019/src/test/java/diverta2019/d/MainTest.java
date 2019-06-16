@@ -13,15 +13,13 @@ public class MainTest {
 
   @Test
   public void test() {
-//    String input = "4 6\n"
-//        + "#..#..\n"
-//        + ".....#\n"
-//        + "....#.\n"
-//        + "#.#...";
-//
-//    String expected = "8";
-//
-//    assertThat(execute(input + "\n"), is(expected + "\n"));
+    String input = "23\n"
+        + "1 1 1\n"
+        + "2 1 1";
+
+    String expected = "46";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
