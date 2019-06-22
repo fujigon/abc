@@ -14,15 +14,14 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
+    String s = sc.next();
 
-    int x = sc.nextInt();
-    int a = sc.nextInt();
-
-    if (x < a) {
-      os.println("0");
-    } else {
-      os.println("10");
+    for (int i = 1; i < s.length(); i++) {
+      if (s.charAt(i) == s.charAt(i - 1)) {
+        os.println("Bad");
+        return;
+      }
     }
-
+    os.println("Good");
   }
 }

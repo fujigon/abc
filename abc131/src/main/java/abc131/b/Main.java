@@ -3,8 +3,6 @@ package abc131.b;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class Main {
 
@@ -18,21 +16,18 @@ public class Main {
     /* read */
     int n = sc.nextInt();
 
-    int x = sc.nextInt();
+    int l = sc.nextInt();
 
-    int d = 0;
+    int min = Integer.MAX_VALUE;
 
-    int count = 0;
-    if (d <= x) {
-      count++;
-    }
-    for (int i = 1; i <= n; i++) {
-      int l = sc.nextInt();
-      d = d + l;
-      if (d <= x) {
-        count++;
+    int sum = 0;
+    for (int i = 1; i <= n; i++){
+      int taste = l + i - 1;
+      if (Math.abs(taste) < Math.abs(min)) {
+        min = taste;
       }
+      sum += taste;
     }
-    os.println(count);
+    os.println(sum - min);
   }
 }

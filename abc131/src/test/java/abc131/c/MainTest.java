@@ -1,9 +1,10 @@
-package abc131.b;
+package abc131.c;
+
+import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -12,18 +13,24 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "3 6\n"
-        + "3 4 5";
+    String input = "4 9 2 3";
     String expected = "2";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
+  public void test1() {
+    String input = "10 40 6 8";
+    String expected = "23";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
+  }
+
+  @Test
   public void test2() {
-    String input = "4 9\n"
-        + "3 3 3 3";
-    String expected = "4";
+    String input = "314159265358979323 846264338327950288 419716939 937510582";
+    String expected = "532105071133627368";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
@@ -35,5 +42,6 @@ public class MainTest {
     );
     return os.toString().replace(System.lineSeparator(), "\n");
   }
+
 
 }
