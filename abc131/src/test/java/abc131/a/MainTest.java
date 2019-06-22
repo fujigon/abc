@@ -1,4 +1,4 @@
-package abc131.b;
+package abc131.a;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -12,18 +12,16 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "3 6\n"
-        + "3 4 5";
-    String expected = "2";
+    String input = "3776";
+    String expected = "Bad";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
-  public void test2() {
-    String input = "4 9\n"
-        + "3 3 3 3";
-    String expected = "4";
+  public void test02() {
+    String input = "8080";
+    String expected = "Good";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }

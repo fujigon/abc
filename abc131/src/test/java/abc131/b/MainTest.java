@@ -12,18 +12,24 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "3 6\n"
-        + "3 4 5";
-    String expected = "2";
+    String input = "5 2";
+    String expected = "18";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test2() {
-    String input = "4 9\n"
-        + "3 3 3 3";
-    String expected = "4";
+    String input = "3 -1";
+    String expected = "0";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
+  }
+
+  @Test
+  public void test3() {
+    String input = "30 -50";
+    String expected = "-1044";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
