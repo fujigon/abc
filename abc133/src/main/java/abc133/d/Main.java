@@ -10,34 +10,28 @@ public class Main {
     solve(System.in, System.out);
   }
 
-  private static class Task {
-    long weight;
-    long deadline;
-  }
-
   static void solve(InputStream is, PrintStream os) {
     Scanner sc = new Scanner(is);
 
     /* read */
-    long n = sc.nextLong();
-    List<Task> tasks = new ArrayList<>();
-    for (int i = 0; i < n; i++) {
-      Task task = new Task();
-      task.weight = sc.nextLong();
-      task.deadline = sc.nextLong();
-      tasks.add(task);
-    }
-    tasks.sort(Comparator.comparingLong(t -> t.deadline));
+    int n = sc.nextInt();
+    int[] a = new int[n];
 
-    long current = 0;
     for (int i = 0; i < n; i++) {
-      Task task = tasks.get(i);
-      current += task.weight;
-      if (task.deadline < current) {
-        os.println("No");
-        return;
-      }
+      a[i] = sc.nextInt();
     }
-    os.println("Yes");
+
+    int b = 0;
+    for (int i = 1; i < n; i++) {
+      b = 2 * (a[i - 1] - b / 2);
+    }
+
+    b = (a[n - 1] - b / 2);
+    for (int i = 1; i < n; i++) {
+      os.print(b + " ");
+      b = 2 * (a[i - 1] - b / 2);
+    }
+    os.println(b);
+
   }
 }

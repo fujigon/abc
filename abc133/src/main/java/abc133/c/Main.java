@@ -17,30 +17,21 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    long a = sc.nextLong();
-    long b = sc.nextLong();
+    long l = sc.nextLong();
+    long r = sc.nextLong();
 
-    long c = sc.nextLong();
-    long d = sc.nextLong();
-
-    a--;
-
-    long cumA = a - (a / c + a / d - a / lcm(c, d));
-    long cumB = b - (b / c + b / d - b / lcm(c, d));
-
-    os.println(cumB - cumA);
-  }
-
-  static long lcm(long a, long b) {
-    return a / gcd(a, b) * b;
-  }
-
-  static long gcd(long a, long b) {
-    long r;
-    while( (r = a % b) != 0 ) {
-      a = b;
-      b = r;
+    if (2019 <= r - l) {
+      os.println("0");
+      return;
     }
-    return b;
+
+    long min = Long.MAX_VALUE;
+    for (long i = l; i < r; i++) {
+      for (long j = i + 1; j <= r; j++) {
+        min = Math.min(min, i * j % 2019);
+      }
+    }
+
+    os.println(min);
   }
 }

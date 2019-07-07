@@ -15,19 +15,32 @@ public class Main {
 
     /* read */
     int n = sc.nextInt();
+    int d = sc.nextInt();
 
-    int l = sc.nextInt();
+    List<int[]> points = new ArrayList<>(n);
 
-    int min = Integer.MAX_VALUE;
-
-    int sum = 0;
-    for (int i = 1; i <= n; i++){
-      int taste = l + i - 1;
-      if (Math.abs(taste) < Math.abs(min)) {
-        min = taste;
+    for (int i = 0; i < n; i++) {
+      int[] point = new int[d];
+      for (int j = 0; j < d; j++) {
+        point[j] = sc.nextInt();
       }
-      sum += taste;
+      points.add(point);
     }
-    os.println(sum - min);
+
+    int count = 0;
+    for (int i = 0; i < n; i++) {
+      for (int j = i + 1; j < n; j++) {
+        int sqDist = 0;
+        int[] p1 = points.get(i);
+        int[] p2 = points.get(j);
+        for (int k = 0; k < d; k++) {
+          sqDist += (p1[k] - p2[k]) * (p1[k] - p2[k]);
+        }
+        int dist = (int) Math.sqrt(sqDist);
+        if (dist * dist == sqDist) count++;
+      }
+    }
+
+    os.println(count);
   }
 }

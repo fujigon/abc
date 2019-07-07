@@ -1,52 +1,61 @@
 package abc133.e;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MainTest {
 
   @Test
   public void test() {
-    String input = "3\n"
-        + "1 1\n"
-        + "5 1\n"
-        + "5 5";
+    String input = "4 3\n"
+        + "1 2\n"
+        + "2 3\n"
+        + "3 4";
 
-    String expected = "1";
+    String expected = "6";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test2() {
-    String input = "2\n"
-        + "10 10\n"
-        + "20 20";
+    String input = "5 4\n"
+        + "1 2\n"
+        + "1 3\n"
+        + "1 4\n"
+        + "4 5";
 
-    String expected = "0";
+    String expected = "48";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test3() {
-    String input = "9\n"
-        + "1 1\n"
-        + "2 1\n"
+    String input = "16 22\n"
+        + "12 1\n"
         + "3 1\n"
-        + "4 1\n"
-        + "5 1\n"
-        + "1 2\n"
-        + "1 3\n"
-        + "1 4\n"
-        + "1 5";
+        + "4 16\n"
+        + "7 12\n"
+        + "6 2\n"
+        + "2 15\n"
+        + "5 16\n"
+        + "14 16\n"
+        + "10 11\n"
+        + "3 10\n"
+        + "3 13\n"
+        + "8 6\n"
+        + "16 8\n"
+        + "9 12\n"
+        + "4 3";
 
-    String expected = "16";
+    String expected = "271414432";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }

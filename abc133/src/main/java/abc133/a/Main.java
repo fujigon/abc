@@ -14,14 +14,9 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    String s = sc.next();
-
-    for (int i = 1; i < s.length(); i++) {
-      if (s.charAt(i) == s.charAt(i - 1)) {
-        os.println("Bad");
-        return;
-      }
-    }
-    os.println("Good");
+    int n = sc.nextInt();
+    int a = sc.nextInt();
+    int b = sc.nextInt();
+    os.println(Math.min(a * n, b));
   }
 }

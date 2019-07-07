@@ -2,11 +2,7 @@ package abc133.e;
 
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class Main {
 
@@ -14,63 +10,50 @@ public class Main {
     solve(System.in, System.out);
   }
 
-  private static long MOD = 1000000007;
+  private static final long MOD = 1000000007L;
 
   static void solve(InputStream is, PrintStream os) {
     Scanner sc = new Scanner(is);
 
     /* read */
     int n = sc.nextInt();
-    Map<Integer, Set<Integer>> xoccurs = new HashMap<>();
-    Map<Integer, Set<Integer>> yoccurs = new HashMap<>();
+    int k = sc.nextInt();
 
-    for (int i = 0; i < n; i++) {
-      int x = sc.nextInt();
-      int y = sc.nextInt();
-      Set<Integer> ySetOfX = xoccurs.getOrDefault(x, new HashSet<>());
-      ySetOfX.add(y);
-      xoccurs.put(x, ySetOfX);
+    Map<Integer, Set<Integer>> connected = new HashMap<>();
 
-      Set<Integer> xSetOfY = yoccurs.getOrDefault(y, new HashSet<>());
-      xSetOfY.add(x);
-      yoccurs.put(y, xSetOfY);
+    for (int i = 0; i < n - 1; i++) {
+      int a = sc.nextInt();
+      int b = sc.nextInt();
+      Set<Integer> conn;
+
+      // a -> b
+      conn = connected.getOrDefault(a, new HashSet<>());
+      conn.add(b);
+      connected.put(a, conn);
+
+      // b -> a
+      conn = connected.getOrDefault(b, new HashSet<>());
+      conn.add(a);
+      connected.put(b, conn);
     }
+    Set<Integer> done = new HashSet<>();
 
-    Set<Integer> xMultiples = new HashSet<>();
-    Set<Integer> yMultiples = new HashSet<>();
-
-    for (int x : xoccurs.keySet()) {
-      if (xoccurs.get(x).size() == 1) continue;
-      Set<Integer> ys = xoccurs.get(x);
-      yMultiples.addAll(ys);
-      for (int y : ys) {
-        Set<Integer> xs = yoccurs.get(y);
-        if (xs != null) {
-          xMultiples.addAll(xs);
-        }
-      }
-    }
-
-    for (int y : yoccurs.keySet()) {
-      if (yoccurs.get(y).size() == 1) continue;
-      Set<Integer> xs = yoccurs.get(y);
-      xMultiples.addAll(xs);
-      for (int x : xs) {
-        Set<Integer> ys = xoccurs.get(x);
-        if (ys != null) {
-          yMultiples.addAll(ys);
-        }
-      }
-    }
-
-    int count = 0;
-    for (int x : xMultiples) {
-      for (int y : yMultiples) {
-        if (!xoccurs.containsKey(x) || !xoccurs.get(x).contains(y)) count++;
-      }
-    }
-
-    os.println(count);
+    long value = dfs(1, 1, connected, done, k, k, 0);
+    os.println(value);
   }
 
+  private static long dfs(int node, long value, Map<Integer, Set<Integer>> connected, Set<Integer> done, long k, long color, int grandParent) {
+    done.add(node);
+    value = value * color % MOD;
+    long colored = 0;
+
+    if (!connected.containsKey(node)) return value;
+
+    for (Integer next : connected.get(node)) {
+      if (done.contains(next)) continue;
+      colored++;
+      value = dfs(next, value, connected, done,k, (k - colored - grandParent) , 1);
+    }
+    return value;
+  }
 }
