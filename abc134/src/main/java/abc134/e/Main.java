@@ -6,6 +6,25 @@ import java.util.*;
 
 public class Main {
 
+  public static class LowerBoundComparator<T extends Comparable<? super T>>
+      implements Comparator<T>
+  {
+    public int compare(T x, T y)
+    {
+      return (x.compareTo(y) >= 0) ? 1 : -1;
+    }
+  }
+
+
+  public static class UpperBoundComparator<T extends Comparable<? super T>>
+      implements Comparator<T>
+  {
+    public int compare(T x, T y)
+    {
+      return (x.compareTo(y) > 0) ? 1 : -1;
+    }
+  }
+
   public static void main(String[] args) {
     solve(System.in, System.out);
   }
@@ -17,43 +36,32 @@ public class Main {
 
     /* read */
     int n = sc.nextInt();
-    int k = sc.nextInt();
+    int[] a = new int[n];
 
-    Map<Integer, Set<Integer>> connected = new HashMap<>();
+    List<Integer> groups = new ArrayList<>();
 
-    for (int i = 0; i < n - 1; i++) {
-      int a = sc.nextInt();
-      int b = sc.nextInt();
-      Set<Integer> conn;
-
-      // a -> b
-      conn = connected.getOrDefault(a, new HashSet<>());
-      conn.add(b);
-      connected.put(a, conn);
-
-      // b -> a
-      conn = connected.getOrDefault(b, new HashSet<>());
-      conn.add(a);
-      connected.put(b, conn);
+    for (int i = 0; i < n; i++) {
+      a[i] = sc.nextInt();
     }
-    Set<Integer> done = new HashSet<>();
 
-    long value = dfs(1, 1, connected, done, k, k, 0);
-    os.println(value);
-  }
-
-  private static long dfs(int node, long value, Map<Integer, Set<Integer>> connected, Set<Integer> done, long k, long color, int grandParent) {
-    done.add(node);
-    value = value * color % MOD;
-    long colored = 0;
-
-    if (!connected.containsKey(node)) return value;
-
-    for (Integer next : connected.get(node)) {
-      if (done.contains(next)) continue;
-      colored++;
-      value = dfs(next, value, connected, done,k, (k - colored - grandParent) , 1);
+    for (int i = 0; i < n; i++) {
+//      int j = groups.size() - 1;
+//      while (0 <= j && groups.get(j) <= a[j]) {
+//        j--;
+//      }
+      int j = Collections.binarySearch(groups, a[i], new LowerBoundComparator<>());
+//      if (0 <= j) {
+//        groups.set(j, a[i]);
+//      } else {
+//        groups.add(0, a[i]);
+//      }
+      if (j == -1) {
+        groups.add(0, a[i]);
+      } else {
+        groups.set(~j - 1, a[i]);
+      }
     }
-    return value;
+
+    os.println(groups.size());
   }
 }

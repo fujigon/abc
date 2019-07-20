@@ -14,9 +14,7 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    int n = sc.nextInt();
-    int a = sc.nextInt();
-    int b = sc.nextInt();
-    os.println(Math.min(a * n, b));
+    int r = sc.nextInt();
+    os.println(3 * r * r);
   }
 }

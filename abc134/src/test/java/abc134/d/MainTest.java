@@ -15,9 +15,9 @@ public class MainTest {
   @Test
   public void test() {
     String input = "3\n"
-        + "2 2 4";
-
-    String expected = "4 0 4";
+        + "1 0 0";
+    String expected = "1\n"
+        + "1";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
@@ -25,19 +25,9 @@ public class MainTest {
   @Test
   public void test2() {
     String input = "5\n"
-        + "3 8 7 5 5";
+        + "0 0 0 0 0";
 
-    String expected = "2 4 12 2 8";
-
-    assertThat(execute(input + "\n"), is(expected + "\n"));
-  }
-
-  @Test
-  public void test3() {
-    String input = "3\n"
-        + "1000000000 1000000000 0";
-
-    String expected = "0 2000000000 0";
+    String expected = "0";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }

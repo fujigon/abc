@@ -13,21 +13,15 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "3 2\n"
-        + "1 2\n"
-        + "5 5\n"
-        + "-2 8";
-    String expected = "1";
+    String input = "6 2";
+    String expected = "2";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test2() {
-    String input = "3 4\n"
-        + "-3 7 8 2\n"
-        + "-12 1 10 2\n"
-        + "-2 8 9 3";
+    String input = "14 3";
     String expected = "2";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
@@ -35,13 +29,8 @@ public class MainTest {
 
   @Test
   public void test3() {
-    String input = "5 1\n"
-        + "1\n"
-        + "2\n"
-        + "3\n"
-        + "4\n"
-        + "5";
-    String expected = "10";
+    String input = "20 4";
+    String expected = "3";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }

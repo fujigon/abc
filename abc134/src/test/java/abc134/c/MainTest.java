@@ -14,20 +14,42 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "2020 2040";
-    String expected = "2";
+    String input = "3\n"
+        + "1\n"
+        + "4\n"
+        + "3";
+    String expected = "4\n"
+        + "3\n"
+        + "4";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test1() {
-    String input = "4 5";
-    String expected = "20";
+    String input = "2\n"
+        + "5\n"
+        + "5";
+    String expected = "5\n"
+        + "5";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
+  @Test
+  public void test2() {
+    String input = "4\n"
+        + "5\n"
+        + "5\n"
+        + "4\n"
+        + "5";
+    String expected = "5\n"
+        + "5\n"
+        + "5\n"
+        + "5";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
+  }
   private String execute(String input) {
     ByteArrayOutputStream os = new ByteArrayOutputStream();
     Main.solve(

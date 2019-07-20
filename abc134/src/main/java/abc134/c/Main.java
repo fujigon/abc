@@ -10,28 +10,35 @@ public class Main {
     solve(System.in, System.out);
   }
 
-  private static final long MOD = 1000000007L;
-
-
   static void solve(InputStream is, PrintStream os) {
     Scanner sc = new Scanner(is);
 
     /* read */
-    long l = sc.nextLong();
-    long r = sc.nextLong();
 
-    if (2019 <= r - l) {
-      os.println("0");
-      return;
-    }
+    int n = sc.nextInt();
+    int fstMax = Integer.MIN_VALUE;
+    int scdMax = Integer.MIN_VALUE;
 
-    long min = Long.MAX_VALUE;
-    for (long i = l; i < r; i++) {
-      for (long j = i + 1; j <= r; j++) {
-        min = Math.min(min, i * j % 2019);
+    int a[] = new int[n];
+
+    for (int i = 0; i < n; i++) {
+      int val = sc.nextInt();
+      a[i] = val;
+
+      if (val >= fstMax) {
+        scdMax = fstMax;
+        fstMax = val;
+      } else if (val >= scdMax) {
+        scdMax = val;
       }
     }
 
-    os.println(min);
+    for (int i = 0; i < n; i++) {
+      if (a[i] != fstMax) {
+        os.println(fstMax);
+      } else {
+        os.println(scdMax);
+      }
+    }
   }
 }

@@ -17,30 +17,15 @@ public class Main {
     int n = sc.nextInt();
     int d = sc.nextInt();
 
-    List<int[]> points = new ArrayList<>(n);
+    int div = 2 * d + 1;
 
-    for (int i = 0; i < n; i++) {
-      int[] point = new int[d];
-      for (int j = 0; j < d; j++) {
-        point[j] = sc.nextInt();
-      }
-      points.add(point);
+    int ans = 0;
+    if (n % div == 0) {
+      ans = n / div;
+    } else {
+      ans = n / div + 1;
     }
 
-    int count = 0;
-    for (int i = 0; i < n; i++) {
-      for (int j = i + 1; j < n; j++) {
-        int sqDist = 0;
-        int[] p1 = points.get(i);
-        int[] p2 = points.get(j);
-        for (int k = 0; k < d; k++) {
-          sqDist += (p1[k] - p2[k]) * (p1[k] - p2[k]);
-        }
-        int dist = (int) Math.sqrt(sqDist);
-        if (dist * dist == sqDist) count++;
-      }
-    }
-
-    os.println(count);
+    os.println(ans);
   }
 }
