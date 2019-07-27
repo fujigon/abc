@@ -5,8 +5,10 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Main {
 
@@ -20,42 +22,39 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    long n = sc.nextInt();
-    long k = sc.nextInt();
+    String s = sc.next();
+    String t = sc.next();
+    Set<Character> sChars = new HashSet<>();
+    Set<Character> tChars = new HashSet<>();
 
-    long[] dp = new long[(int) (n * n)];
-
-    if (k % 2 == 1) {
-      os.println(0);
-      return;
+    for (int i = 0; i < s.length(); i++) {
+      sChars.add(s.charAt(i));
+    }
+    for (int i = 0; i < t.length(); i++) {
+      tChars.add(t.charAt(i));
     }
 
-    os.println(powerCombination(n, k/2));
-  }
-
-  private static long powerCombination(long n, long k) {
-    if (k == 0) return 1;
-    if (k == 1) return combination(n, k);
-
-    int ans = 0;
-    ans += combination(n - k, 1);
-    for (int i = 1; i < k; i++) {
-      ans += combination(n - k, 1);
+    // t contains char that is not in s.
+    for (char c : tChars) {
+      if (!sChars.contains(c)) {
+        os.println(0);
+        return;
+      }
     }
-    return ans;
-  }
 
-
-
-  private static long combination(long n, long k) {
-    if (k == 0) return 1;
-    if (k == n) return 1;
-    if (k < 0 || n < k) return 0;
-    long ans = 1;
-    for (int i = 1; i <= k; i++) {
-      ans *= n - i + 1;
-      ans /= i;
+    if (sChars.size() == tChars.size()) {
+      String sCon = s;
+      String tCon = t;
+      while (sCon.length() != tCon.length()) {
+        if (sCon.length() < tCon.length())
+          sCon += sCon;
+        else
+          tCon += tCon;
+      }
+      if (sCon.equals(tCon)) {
+        os.println(-1);
+        return;
+      }
     }
-    return ans % MOD;
   }
 }

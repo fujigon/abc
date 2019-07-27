@@ -15,17 +15,16 @@ public class Main {
 
     /* read */
     int n = sc.nextInt();
-    int d = sc.nextInt();
 
-    int div = 2 * d + 1;
-
-    int ans = 0;
-    if (n % div == 0) {
-      ans = n / div;
-    } else {
-      ans = n / div + 1;
+    int diff = 0;
+    for (int i = 1; i <= n; i++) {
+      int p = sc.nextInt();
+      if (p != i) diff++;
     }
-
-    os.println(ans);
+    if (diff == 2 || diff == 0) {
+      os.println("YES");
+    } else {
+      os.println("NO");
+    }
   }
 }

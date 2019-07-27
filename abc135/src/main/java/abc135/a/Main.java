@@ -14,7 +14,12 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    int r = sc.nextInt();
-    os.println(3 * r * r);
+    int a = sc.nextInt();
+    int b = sc.nextInt();
+    if (Math.abs(a - b) % 2 == 0) {
+      os.println(Math.min(a, b) + Math.abs(a - b) / 2);
+    } else {
+      os.println("IMPOSSIBLE");
+    }
   }
 }

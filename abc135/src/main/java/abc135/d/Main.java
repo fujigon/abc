@@ -11,35 +11,41 @@ public class Main {
     solve(System.in, System.out);
   }
 
+  private static final Long MOD = 1000000007L;
+
   static void solve(InputStream is, PrintStream os) {
     Scanner sc = new Scanner(is);
 
     /* read */
-    int n = sc.nextInt();
-    int[] a = new int[n + 1];
+    String s = sc.next();
+    int n = s.length();
+    long[][] dp = new long[n][13];
 
-    for (int i = 1; i <= n; i++) {
-      a[i] = sc.nextInt();
-    }
-
-    int m = 0;
-    List<Integer> turnOn = new ArrayList<>();
-    int[] b = new int[n + 1];
-    for (int i = n; 1 <= i; i--) {
-      int val = a[i];
-      for (int j = 2 * i; j <= n; j += i) {
-        val += b[j];
+    if (s.charAt(0) == '?') {
+      for (int d = 0; d <= 9; d++) {
+        dp[0][d] = 1;
       }
-      b[i] = val % 2;
-      if (b[i] == 1) {
-        m++;
-        turnOn.add(i);
-      }
+    } else {
+      int d = s.charAt(0) - '0';
+      dp[0][d] = 1;
     }
 
-    os.println(m);
-    if (m > 0) {
-      os.println(turnOn.stream().map(String::valueOf).collect(Collectors.joining(" ")));
+    for (int i = 1; i < n; i++) {
+      if (s.charAt(i) == '?') {
+        for (int d = 0; d <= 9; d++) {
+          for (int j = 0; j < 13; j++) {
+            int mod = (j * 10 + d) % 13;
+            dp[i][mod] = (dp[i][mod] + dp[i - 1][j]) % MOD;
+          }
+        }
+      } else {
+        int d = s.charAt(i) - '0';
+        for (int j = 0; j < 13; j++) {
+          int mod = (j * 10 + d) % 13;
+          dp[i][mod] = (dp[i][mod] + dp[i - 1][j]) % MOD;
+        }
+      }
     }
+    os.println(dp[n - 1][5]);
   }
 }
