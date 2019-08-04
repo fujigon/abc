@@ -16,10 +16,7 @@ public class Main {
     /* read */
     int a = sc.nextInt();
     int b = sc.nextInt();
-    if (Math.abs(a - b) % 2 == 0) {
-      os.println(Math.min(a, b) + Math.abs(a - b) / 2);
-    } else {
-      os.println("IMPOSSIBLE");
-    }
+    int c = sc.nextInt();
+    os.println(Math.max(0, c - (a - b)));
   }
 }

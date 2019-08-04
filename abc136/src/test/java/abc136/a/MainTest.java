@@ -12,24 +12,24 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "2 16";
-    String expected = "9";
+    String input = "6 4 3";
+    String expected = "1";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test02() {
-    String input = "0 3";
-    String expected = "IMPOSSIBLE";
+    String input = "8 3 9";
+    String expected = "4";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test03() {
-    String input = "998244353 99824435";
-    String expected = "549034394";
+    String input = "12 3 7";
+    String expected = "0";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }

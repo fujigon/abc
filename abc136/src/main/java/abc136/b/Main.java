@@ -16,15 +16,15 @@ public class Main {
     /* read */
     int n = sc.nextInt();
 
-    int diff = 0;
+    int res = 0;
     for (int i = 1; i <= n; i++) {
-      int p = sc.nextInt();
-      if (p != i) diff++;
+      int d = 0;
+      int v = i;
+      while (v > 0) {
+        v /= 10; d++;
+      }
+      if (d % 2 == 1) res++;
     }
-    if (diff == 2 || diff == 0) {
-      os.println("YES");
-    } else {
-      os.println("NO");
-    }
+    os.println(res);
   }
 }

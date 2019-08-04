@@ -10,41 +10,48 @@ public class Main {
     solve(System.in, System.out);
   }
 
-  private static final Long MOD = 1000000007L;
-
   static void solve(InputStream is, PrintStream os) {
     Scanner sc = new Scanner(is);
 
     /* read */
     String s = sc.next();
     int n = s.length();
-    long[][] dp = new long[n][13];
+    boolean[] dir = new boolean[n]; // left false, right true
 
-    if (s.charAt(0) == '?') {
-      for (int d = 0; d <= 9; d++) {
-        dp[0][d] = 1;
-      }
-    } else {
-      int d = s.charAt(0) - '0';
-      dp[0][d] = 1;
+    for (int i = 0; i < n; i++) {
+      if (s.charAt(i) == 'R')
+        dir[i] = true;
     }
 
-    for (int i = 1; i < n; i++) {
-      if (s.charAt(i) == '?') {
-        for (int d = 0; d <= 9; d++) {
-          for (int j = 0; j < 13; j++) {
-            int mod = (j * 10 + d) % 13;
-            dp[i][mod] = (dp[i][mod] + dp[i - 1][j]) % MOD;
-          }
-        }
-      } else {
-        int d = s.charAt(i) - '0';
-        for (int j = 0; j < 13; j++) {
-          int mod = (j * 10 + d) % 13;
-          dp[i][mod] = (dp[i][mod] + dp[i - 1][j]) % MOD;
-        }
+    int[] children = new int[n];
+
+    int l = 0;
+    int r = 1;
+
+    do {
+      // R -> L
+      while(r < n && dir[l] == dir[r]) r++;
+      for (int i = l; i < r; i++) {
+        if ((r - i) % 2 == 1) children[r - 1]++;
+        else children[r]++;
       }
+      if (r == n) break;
+      // reset
+      l = r;
+      r = r + 1;
+      // L -> R
+      while(r < n && dir[l] == dir[r]) r++;
+      for (int i = r - 1; l <= i ; i--) {
+        if ((i - l) % 2 == 1) children[l - 1]++;
+        else children[l]++;
+      }
+      l = r;
+      r = r + 1;
+    } while (r < n);
+
+    for (int i = 0; i < n - 1; i++) {
+      os.print(children[i] + " ");
     }
-    os.println(dp[n - 1][5]);
+    os.println(children[n - 1]);
   }
 }

@@ -13,29 +13,42 @@ public class MainTest {
 
   @Test
   public void test() {
-//    String input = "5\n"
-//        + "2\n"
-//        + "1\n"
-//        + "4\n"
-//        + "5\n"
-//        + "3";
-//
-//    String expected = "2";
-//
-//    assertThat(execute(input + "\n"), is(expected + "\n"));
+    String input = "2 3\n"
+        + "8 20";
+
+    String expected = "7";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test2() {
-//    String input = "4\n"
-//        + "0\n"
-//        + "0\n"
-//        + "0\n"
-//        + "0";
-//
-//    String expected = "4";
-//
-//    assertThat(execute(input + "\n"), is(expected + "\n"));
+    String input = "2 10\n"
+        + "3 5";
+
+    String expected = "8";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
+  }
+
+  @Test
+  public void test3() {
+    String input = "4 5\n"
+        + "10 1 2 22";
+
+    String expected = "7";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
+  }
+
+  @Test
+  public void test4() {
+    String input = "8 7\n"
+        + "1 7 5 6 8 2 6 5";
+
+    String expected = "5";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   private String execute(String input) {

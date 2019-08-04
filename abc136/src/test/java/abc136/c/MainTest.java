@@ -13,33 +13,40 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "2\n"
-        + "3 5 2\n"
-        + "4 5";
-    String expected = "9";
+    String input = "5\n"
+        + "1 2 1 1 3";
+    String expected = "Yes";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test1() {
-    String input = "3\n"
-        + "5 6 3 8\n"
-        + "5 100 8";
-    String expected = "22";
+    String input = "5\n"
+        + "1 2 3 4 5";
+    String expected = "Yes";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test2() {
-    String input = "2\n"
-        + "100 1 1\n"
-        + "1 100";
-    String expected = "3";
+    String input = "4\n"
+        + "1 3 2 1";
+    String expected = "No";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
+
+  @Test
+  public void test3() {
+    String input = "1\n"
+        + "1000000000";
+    String expected = "Yes";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
+  }
+
   private String execute(String input) {
     ByteArrayOutputStream os = new ByteArrayOutputStream();
     Main.solve(
