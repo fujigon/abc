@@ -14,44 +14,24 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    String s = sc.next();
-    int n = s.length();
-    boolean[] dir = new boolean[n]; // left false, right true
+    int n = sc.nextInt();
+    int m = sc.nextInt();
 
+    int[] a = new int[n];
+    int[] b = new int[n];
     for (int i = 0; i < n; i++) {
-      if (s.charAt(i) == 'R')
-        dir[i] = true;
+      a[i] = sc.nextInt();
+      b[i] = sc.nextInt();
     }
 
-    int[] children = new int[n];
-
-    int l = 0;
-    int r = 1;
-
-    do {
-      // R -> L
-      while(r < n && dir[l] == dir[r]) r++;
-      for (int i = l; i < r; i++) {
-        if ((r - i) % 2 == 1) children[r - 1]++;
-        else children[r]++;
+    Queue<Integer> queue = new PriorityQueue<>(Comparator.comparingInt(i -> -b[i]));
+    long ans = 0;
+    for (int d = 1; d <= m; d++) {
+      for (int i = 0; i < n; i++) {
+        if (a[i] == d) queue.add(i);
       }
-      if (r == n) break;
-      // reset
-      l = r;
-      r = r + 1;
-      // L -> R
-      while(r < n && dir[l] == dir[r]) r++;
-      for (int i = r - 1; l <= i ; i--) {
-        if ((i - l) % 2 == 1) children[l - 1]++;
-        else children[l]++;
-      }
-      l = r;
-      r = r + 1;
-    } while (r < n);
-
-    for (int i = 0; i < n - 1; i++) {
-      os.print(children[i] + " ");
+      if (!queue.isEmpty()) ans += b[queue.remove()];
     }
-    os.println(children[n - 1]);
+    os.println(ans);
   }
 }

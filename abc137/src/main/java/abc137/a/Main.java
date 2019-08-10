@@ -16,7 +16,7 @@ public class Main {
     /* read */
     int a = sc.nextInt();
     int b = sc.nextInt();
-    int c = sc.nextInt();
-    os.println(Math.max(0, c - (a - b)));
+    int ans = Math.max(Math.max(a + b, a - b), a * b);
+    os.println(ans);
   }
 }

@@ -14,19 +14,36 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-
     int n = sc.nextInt();
-    int[] h = new int[n];
+    Map<String, Integer> map = new HashMap<>();
+
     for (int i = 0; i < n; i++) {
-      h[i] = sc.nextInt();
+      String s = sc.next();
+      List<String> list = new ArrayList<>(s.length());
+      for (int j = 0; j < s.length(); j++) {
+        list.add("" + s.charAt(j));
+      }
+      Collections.sort(list);
+      String sorted = String.join("", list);
+      map.put(sorted, map.getOrDefault(sorted, 0) + 1);
     }
-    for (int i = 1; i < n; i++) {
-      if (h[i - 1] < h[i]) h[i]--;
-      if (h[i] < h[i - 1]) {
-        os.println("No");
-        return;
+
+    long ans = 0;
+    for (String s : map.keySet()) {
+      int occur = map.get(s);
+      if (occur > 1) {
+        ans += combination(occur, 2);
       }
     }
-    os.println("Yes");
+    os.println(ans);
+  }
+
+  private static long combination(long n , long k) {
+    long ans = 1;
+    for (long i = 1; i <= k; i++) {
+      ans *= (n - i + 1);
+      ans /= i;
+    }
+    return ans;
   }
 }

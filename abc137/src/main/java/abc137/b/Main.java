@@ -14,17 +14,13 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    int n = sc.nextInt();
+    int k = sc.nextInt();
+    int x = sc.nextInt();
 
-    int res = 0;
-    for (int i = 1; i <= n; i++) {
-      int d = 0;
-      int v = i;
-      while (v > 0) {
-        v /= 10; d++;
-      }
-      if (d % 2 == 1) res++;
+    List<String> ans = new ArrayList<>();
+    for (int i = Math.max(-1000000, x - k + 1); i <= Math.min(1000000, x + k - 1); i++) {
+      ans.add(String.valueOf(i));
     }
-    os.println(res);
+    os.println(String.join(" ", ans));
   }
 }
