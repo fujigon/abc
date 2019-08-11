@@ -24,13 +24,16 @@ public class Main {
       b[i] = sc.nextInt();
     }
 
-    Queue<Integer> queue = new PriorityQueue<>(Comparator.comparingInt(i -> -b[i]));
+    List<Integer> index = new ArrayList<>(n);
+    for (int i = 0; i < n; i++) index.add(i);
+    index.sort(Comparator.comparingInt(i -> a[i]));
+
+    Queue<Integer> queue = new PriorityQueue<>(Comparator.comparingInt(i -> -b[index.get(i)]));
     long ans = 0;
+    int i = 0;
     for (int d = 1; d <= m; d++) {
-      for (int i = 0; i < n; i++) {
-        if (a[i] == d) queue.add(i);
-      }
-      if (!queue.isEmpty()) ans += b[queue.remove()];
+      while (i < n && a[index.get(i)] == d) queue.add(i++);
+      if (!queue.isEmpty()) ans += b[index.get(queue.remove())];
     }
     os.println(ans);
   }
