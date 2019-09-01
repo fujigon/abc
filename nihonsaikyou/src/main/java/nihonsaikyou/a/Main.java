@@ -14,9 +14,17 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    int a = sc.nextInt();
-    int b = sc.nextInt();
-    int ans = Math.max(Math.max(a + b, a - b), a * b);
-    os.println(ans);
+    int M = sc.nextInt();
+    int D = sc.nextInt();
+
+    int count = 0;
+    for (int m = 1; m <= M; m++) {
+      for (int d = 1; d <= D; d++) {
+        int d10 = d / 10;
+        int d1 = d % 10;
+        if (d10 >= 2 && d1 >= 2 && m == d10 * d1) count++;
+      }
+    }
+    os.println(count);
   }
 }
