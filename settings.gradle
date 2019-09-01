@@ -1,7 +1,7 @@
 rootProject.name = 'abc'
 
-include 'non-contest'
-//include 'abc137'
+//include 'non-contest'
+//include 'nihonsaikyou'
 //include 'abc136'
 //include 'abc135'
 //include 'abc134'
@@ -20,6 +20,7 @@ include 'non-contest'
 
 //include 'agc034'
 
-// include 'diverta2019'
+include 'nihonsaikyou'
+//include 'diverta2019'
 //include 'msolutions'
 //include 'tenka2019'
