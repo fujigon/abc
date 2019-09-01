@@ -14,24 +14,9 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    int n = sc.nextInt();
-    int m = sc.nextInt();
+    long n = sc.nextLong();
+    long res = (n - 1) * n / 2;
 
-    int[] a = new int[n];
-    int[] b = new int[n];
-    for (int i = 0; i < n; i++) {
-      a[i] = sc.nextInt();
-      b[i] = sc.nextInt();
-    }
-
-    Queue<Integer> queue = new PriorityQueue<>(Comparator.comparingInt(i -> -b[i]));
-    long ans = 0;
-    for (int d = 1; d <= m; d++) {
-      for (int i = 0; i < n; i++) {
-        if (a[i] == d) queue.add(i);
-      }
-      if (!queue.isEmpty()) ans += b[queue.remove()];
-    }
-    os.println(ans);
+    os.println(res);
   }
 }

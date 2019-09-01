@@ -12,10 +12,11 @@ public class MainTest {
 
   @Test
   public void test() {
-//    String input = "6 4 3";
-//    String expected = "1";
-//
-//    assertThat(execute(input + "\n"), is(expected + "\n"));
+    String input = "CSS\n"
+        + "CSR";
+    String expected = "2";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test

@@ -15,35 +15,25 @@ public class Main {
 
     /* read */
     int n = sc.nextInt();
-    Map<String, Integer> map = new HashMap<>();
+    int[] h = new int[n];
 
     for (int i = 0; i < n; i++) {
-      String s = sc.next();
-      List<String> list = new ArrayList<>(s.length());
-      for (int j = 0; j < s.length(); j++) {
-        list.add("" + s.charAt(j));
-      }
-      Collections.sort(list);
-      String sorted = String.join("", list);
-      map.put(sorted, map.getOrDefault(sorted, 0) + 1);
+      h[i] = sc.nextInt();
     }
 
-    long ans = 0;
-    for (String s : map.keySet()) {
-      int occur = map.get(s);
-      if (occur > 1) {
-        ans += combination(occur, 2);
+    int i = 0;
+    int count = 0;
+    int max = 0;
+    while (i < n) {
+      while (i + 1 < n && h[i] >= h[i + 1]) {
+        count++;
+        i++;
       }
+      max = Math.max(max, count);
+      count = 0;
+      i++;
     }
-    os.println(ans);
+    os.println(max);
   }
 
-  private static long combination(long n , long k) {
-    long ans = 1;
-    for (long i = 1; i <= k; i++) {
-      ans *= (n - i + 1);
-      ans /= i;
-    }
-    return ans;
-  }
 }

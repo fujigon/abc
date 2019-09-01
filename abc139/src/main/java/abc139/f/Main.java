@@ -3,6 +3,7 @@ package abc139.f;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -12,44 +13,52 @@ public class Main {
     solve(System.in, System.out);
   }
 
-  private static final long MOD = 1000000007L;
+  private static class Point {
+    int x;
+    int y;
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+      Point point = (Point) o;
+      return x == point.x &&
+          y == point.y;
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(x, y);
+    }
+  }
 
   static void solve(InputStream is, PrintStream os) {
     Scanner sc = new Scanner(is);
 
     /* read */
-    String s = sc.next();
-    String t = sc.next();
-    Set<Character> sChars = new HashSet<>();
-    Set<Character> tChars = new HashSet<>();
+    int n = sc.nextInt();
+    int[] x = new int[n];
+    int[] y = new int[n];
 
-    for (int i = 0; i < s.length(); i++) {
-      sChars.add(s.charAt(i));
-    }
-    for (int i = 0; i < t.length(); i++) {
-      tChars.add(t.charAt(i));
+    for (int i = 0; i < n; i++) {
+      x[i] = sc.nextInt();
+      y[i] = sc.nextInt();
     }
 
-    // t contains char that is not in s.
-    for (char c : tChars) {
-      if (!sChars.contains(c)) {
-        os.println(0);
-        return;
-      }
-    }
+    Set<Point> reachables = new HashSet<>();
+    Point o = new Point();
+    reachables.add(o);
 
-    if (sChars.size() == tChars.size()) {
-      String sCon = s;
-      String tCon = t;
-      while (sCon.length() != tCon.length()) {
-        if (sCon.length() < tCon.length())
-          sCon += sCon;
-        else
-          tCon += tCon;
-      }
-      if (sCon.equals(tCon)) {
-        os.println(-1);
-        return;
+    double max = 0.0d;
+    for (int i = 0; i < n; i++) {
+      Set<Point> nexts = new HashSet<>();
+      nexts.addAll(reachables);
+      for (Point p : reachables) {
+        
       }
     }
   }
