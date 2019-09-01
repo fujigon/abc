@@ -1,4 +1,4 @@
-package nihonsaikyou.c;
+package abc139.e;
 
 import org.junit.Test;
 
@@ -13,34 +13,40 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "3\n"
-        + "acornistnt\n"
-        + "peanutbomb\n"
-        + "constraint";
-    String expected = "1";
+    String input = "2 3\n"
+        + "8 20";
 
-    assertThat(execute(input + "\n"), is(expected + "\n"));
-  }
-
-  @Test
-  public void test1() {
-    String input = "2\n"
-        + "oneplustwo\n"
-        + "ninemodsix";
-    String expected = "0";
+    String expected = "7";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test2() {
-    String input = "5\n"
-        + "abaaaaaaaa\n"
-        + "oneplustwo\n"
-        + "aaaaaaaaba\n"
-        + "twoplusone\n"
-        + "aaaabaaaaa";
-    String expected = "4";
+    String input = "2 10\n"
+        + "3 5";
+
+    String expected = "8";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
+  }
+
+  @Test
+  public void test3() {
+    String input = "4 5\n"
+        + "10 1 2 22";
+
+    String expected = "7";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
+  }
+
+  @Test
+  public void test4() {
+    String input = "8 7\n"
+        + "1 7 5 6 8 2 6 5";
+
+    String expected = "5";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
@@ -52,6 +58,4 @@ public class MainTest {
     );
     return os.toString().replace(System.lineSeparator(), "\n");
   }
-
-
 }

@@ -1,4 +1,4 @@
-package nihonsaikyou.a;
+package abc139.a;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

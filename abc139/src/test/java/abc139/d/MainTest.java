@@ -1,4 +1,4 @@
-package nihonsaikyou.d;
+package abc139.d;
 
 import org.junit.Test;
 
