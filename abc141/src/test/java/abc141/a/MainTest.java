@@ -12,20 +12,19 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "CSS\n"
-        + "CSR";
-    String expected = "2";
+    String input = "Sunny";
+    String expected = "Cloudy";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
-  @Test
-  public void test02() {
+//  @Test
+//  public void test02() {
 //    String input = "8 3 9";
 //    String expected = "4";
 //
 //    assertThat(execute(input + "\n"), is(expected + "\n"));
-  }
+//  }
 
   @Test
   public void test03() {

@@ -15,25 +15,24 @@ public class Main {
 
     /* read */
     int n = sc.nextInt();
-    int[] h = new int[n];
+    int k = sc.nextInt();
+    int q = sc.nextInt();
+
+    int[] scores = new int[n];
+
+    for (int i = 0; i < q; i++) {
+      int a = sc.nextInt() - 1;
+      scores[a]++;
+    }
 
     for (int i = 0; i < n; i++) {
-      h[i] = sc.nextInt();
-    }
-
-    int i = 0;
-    int count = 0;
-    int max = 0;
-    while (i < n) {
-      while (i + 1 < n && h[i] >= h[i + 1]) {
-        count++;
-        i++;
+      int p = k - (q - scores[i]);
+      if (p > 0) {
+        os.println("Yes");
+      } else {
+        os.println("No");
       }
-      max = Math.max(max, count);
-      count = 0;
-      i++;
     }
-    os.println(max);
   }
 
 }

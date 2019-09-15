@@ -4,6 +4,8 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -13,53 +15,51 @@ public class Main {
     solve(System.in, System.out);
   }
 
-  private static class Point {
-    int x;
-    int y;
-
-    @Override
-    public boolean equals(Object o) {
-      if (this == o) {
-        return true;
-      }
-      if (o == null || getClass() != o.getClass()) {
-        return false;
-      }
-      Point point = (Point) o;
-      return x == point.x &&
-          y == point.y;
-    }
-
-    @Override
-    public int hashCode() {
-      return Objects.hash(x, y);
-    }
-  }
-
   static void solve(InputStream is, PrintStream os) {
     Scanner sc = new Scanner(is);
 
     /* read */
     int n = sc.nextInt();
-    int[] x = new int[n];
-    int[] y = new int[n];
+
+    long red = 0;
+    long blu = 0;
+
+    Queue<Long> queue = new PriorityQueue<>((l1, l2) -> -l1.compareTo(l2));
 
     for (int i = 0; i < n; i++) {
-      x[i] = sc.nextInt();
-      y[i] = sc.nextInt();
+      queue.add(sc.nextLong());
     }
 
-    Set<Point> reachables = new HashSet<>();
-    Point o = new Point();
-    reachables.add(o);
-
-    double max = 0.0d;
-    for (int i = 0; i < n; i++) {
-      Set<Point> nexts = new HashSet<>();
-      nexts.addAll(reachables);
-      for (Point p : reachables) {
-        
+    while (!queue.isEmpty()) {
+      long val = queue.remove();
+      long redXor = red ^ val;
+      long bluXor = blu ^ val;
+      if(redXor + blu > red + bluXor) {
+        red ^= val;
+      } else {
+        blu ^= val;
       }
     }
+
+
+//    int[] bits = new int[60];
+//
+//    for (int i = 0; i < n; i++) {
+//      long a = sc.nextLong();
+//
+//      for (int b = 0; b < 60; b++) {
+//        bits[b] += (a >> b) & 1;
+//      }
+//    }
+//    long red = 0;
+//    long blue = 0;
+//    for (int b = 0; b < 60; b++) {
+//      if (bits[b] == 0) continue;
+//      if (bits[b] % 2 == 0) {
+//        blue += 1 << b;
+//      }
+//      red += 1 << b;
+//    }
+    os.println(red + blu);
   }
 }

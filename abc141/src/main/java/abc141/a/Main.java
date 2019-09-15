@@ -15,11 +15,12 @@ public class Main {
 
     /* read */
     String s = sc.next();
-    String t = sc.next();
-    int res = 0;
-    for (int i = 0; i < 3; i++) {
-      if (s.charAt(i) == t.charAt(i)) res++;
+    if (s.equals("Sunny")) {
+      os.println("Cloudy");
+    } else if (s.equals("Cloudy")) {
+      os.println("Rainy");
+    } else {
+      os.println("Sunny");
     }
-    os.println(res);
   }
 }

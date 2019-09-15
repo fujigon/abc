@@ -14,8 +14,24 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    long n = sc.nextLong();
-    long res = (n - 1) * n / 2;
+    int n = sc.nextInt();
+    int m = sc.nextInt();
+
+    Queue<Integer> queue = new PriorityQueue<>((i1, i2) -> -i1.compareTo(i2));
+
+    for (int i = 0; i < n; i++) {
+      queue.add(sc.nextInt());
+    }
+
+    for (int i = 0; i < m; i++) {
+      int max = queue.remove();
+      queue.add(max/2);
+    }
+
+    long res = 0;
+    while(!queue.isEmpty()) {
+      res += queue.remove();
+    }
 
     os.println(res);
   }

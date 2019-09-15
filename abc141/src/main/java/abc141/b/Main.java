@@ -14,15 +14,21 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    int a = sc.nextInt();
-    int b = sc.nextInt();
+    String s = sc.next();
 
-    int res = 0;
-    int count = 1;
-    while (count < b) {
-      res++;
-      count += a - 1;
+    boolean good = true;
+    for (int i = 0; i < s.length(); i+= 2) {
+      char c = s.charAt(i);
+      if (c == 'L') good = false;
     }
-    os.println(res);
+    for (int i = 1; i < s.length(); i+= 2) {
+      char c = s.charAt(i);
+      if (c == 'R') good = false;
+    }
+    if (good) {
+      os.println("Yes");
+    } else {
+      os.println("No");
+    }
   }
 }
