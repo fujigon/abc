@@ -12,26 +12,26 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "Sunny";
-    String expected = "Cloudy";
+    String input = "4";
+    String expected = "0.5000000000";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
-//  @Test
-//  public void test02() {
-//    String input = "8 3 9";
-//    String expected = "4";
-//
-//    assertThat(execute(input + "\n"), is(expected + "\n"));
-//  }
+  @Test
+  public void test02() {
+    String input = "5";
+    String expected = "0.6000000000";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
+  }
 
   @Test
   public void test03() {
-//    String input = "12 3 7";
-//    String expected = "0";
-//
-//    assertThat(execute(input + "\n"), is(expected + "\n"));
+    String input = "1";
+    String expected = "1.0000000000";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   private String execute(String input) {

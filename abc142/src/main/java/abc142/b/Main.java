@@ -14,21 +14,13 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    String s = sc.next();
-
-    boolean good = true;
-    for (int i = 0; i < s.length(); i+= 2) {
-      char c = s.charAt(i);
-      if (c == 'L') good = false;
+    int n = sc.nextInt();
+    int k = sc.nextInt();
+    int ans = 0;
+    for (int i = 0; i < n; i++) {
+      int h = sc.nextInt();
+      if (k <= h) ans++;
     }
-    for (int i = 1; i < s.length(); i+= 2) {
-      char c = s.charAt(i);
-      if (c == 'R') good = false;
-    }
-    if (good) {
-      os.println("Yes");
-    } else {
-      os.println("No");
-    }
+    os.println(ans);
   }
 }

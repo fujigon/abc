@@ -14,25 +14,35 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    int n = sc.nextInt();
-    int m = sc.nextInt();
+    long a = sc.nextLong();
+    long b = sc.nextLong();
 
-    Queue<Integer> queue = new PriorityQueue<>((i1, i2) -> -i1.compareTo(i2));
+    long target = gcd(a, b);
 
-    for (int i = 0; i < n; i++) {
-      queue.add(sc.nextInt());
+    Set<Long> factors = factorize(target);
+    factors.add(1L);
+
+    os.println(factors.size());
+  }
+
+  private static Set<Long> factorize(long n) {
+    Set<Long> factors = new HashSet<>();
+    long root = (long) Math.sqrt(n) + 1;
+    for (long i = 2; i <= root; i++) {
+      if (n % i != 0) continue;
+      do {
+        n /= i;
+
+      } while (n % i == 0);
+      factors.add(i);
     }
+    factors.add(n);
+    return factors;
+  }
 
-    for (int i = 0; i < m; i++) {
-      int max = queue.remove();
-      queue.add(max/2);
-    }
-
-    long res = 0;
-    while(!queue.isEmpty()) {
-      res += queue.remove();
-    }
-
-    os.println(res);
+  private static long gcd(long m, long n) {
+    if(m < n) return gcd(n, m);
+    if(n == 0) return m;
+    return gcd(n, m % n);
   }
 }

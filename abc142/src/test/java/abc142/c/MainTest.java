@@ -13,66 +13,27 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "6 3 4\n"
-        + "3\n"
-        + "1\n"
-        + "3\n"
-        + "2";
-    String expected = "No\n"
-        + "No\n"
-        + "Yes\n"
-        + "No\n"
-        + "No\n"
-        + "No";
+    String input = "3\n"
+        + "2 3 1";
+    String expected = "3 1 2";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test1() {
-    String input = "6 5 4\n"
-        + "3\n"
-        + "1\n"
-        + "3\n"
-        + "2";
-    String expected = "Yes\n"
-        + "Yes\n"
-        + "Yes\n"
-        + "Yes\n"
-        + "Yes\n"
-        + "Yes";
+    String input = "5\n"
+        + "1 2 3 4 5";
+    String expected = "1 2 3 4 5";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test2() {
-    String input = "10 13 15\n"
-        + "3\n"
-        + "1\n"
-        + "4\n"
-        + "1\n"
-        + "5\n"
-        + "9\n"
-        + "2\n"
-        + "6\n"
-        + "5\n"
-        + "3\n"
-        + "5\n"
-        + "8\n"
-        + "9\n"
-        + "7\n"
-        + "9";
-    String expected = "No\n"
-        + "No\n"
-        + "No\n"
-        + "No\n"
-        + "Yes\n"
-        + "No\n"
-        + "No\n"
-        + "No\n"
-        + "Yes\n"
-        + "No";
+    String input = "8\n"
+        + "8 2 7 3 4 5 6 1";
+    String expected = "8 2 4 5 6 7 3 1";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }

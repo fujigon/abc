@@ -14,13 +14,14 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    String s = sc.next();
-    if (s.equals("Sunny")) {
-      os.println("Cloudy");
-    } else if (s.equals("Cloudy")) {
-      os.println("Rainy");
+    int n = sc.nextInt();
+    double ans;
+    if (n % 2 == 0) {
+      ans = 0.5;
     } else {
-      os.println("Sunny");
+      int odd = n / 2 + 1;
+      ans = (double) odd / (double) n;
     }
+    os.println(String.format("%.10f", ans));
   }
 }
