@@ -1,8 +1,6 @@
 rootProject.name = 'abc'
 
 //include 'non-contest'
-include 'abc144'
-//include 'abc143'
 //include 'abc142'
 //include 'abc142'
 //include 'abc140'
@@ -25,7 +23,8 @@ include 'abc144'
 //include 'abc121' // TODO D
 
 //include 'agc034'
-//include 'agc038'
+//include 'agc039'
+include 'agc039'
 
 //include 'nihonsaikyou'
 //include 'diverta2019'
