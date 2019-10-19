@@ -1,8 +1,9 @@
-package abc143.a;
+package abc143.b;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -12,24 +13,18 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "4";
-    String expected = "0.5000000000";
+    String input = "3\n" +
+            "3 1 2";
+    String expected = "11";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
-  public void test02() {
-    String input = "5";
-    String expected = "0.6000000000";
-
-    assertThat(execute(input + "\n"), is(expected + "\n"));
-  }
-
-  @Test
-  public void test03() {
-    String input = "1";
-    String expected = "1.0000000000";
+  public void test2() {
+    String input = "7\n" +
+            "5 0 7 8 3 3 2";
+    String expected = "312";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }

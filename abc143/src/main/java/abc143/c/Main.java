@@ -1,8 +1,9 @@
-package abc143.a;
+package abc143.c;
 
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -15,13 +16,18 @@ public class Main {
 
     /* read */
     int n = sc.nextInt();
-    double ans;
-    if (n % 2 == 0) {
-      ans = 0.5;
-    } else {
-      int odd = n / 2 + 1;
-      ans = (double) odd / (double) n;
+    String s = sc.next();
+
+    int l = 0;
+    int r = 1;
+    int ans = 0;
+    while (l < s.length()) {
+      while (r < s.length() && s.charAt(l) == s.charAt(r)) r++;
+      ans++;
+      l = r;
+      r = l + 1;
     }
-    os.println(String.format("%.10f", ans));
+    os.println(ans);
   }
+
 }

@@ -1,9 +1,10 @@
-package abc143.a;
+package abc143.c;
+
+import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -12,24 +13,27 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "4";
-    String expected = "0.5000000000";
+    String input = "10\n" +
+            "aabbbbaaca";
+    String expected = "5";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
-  public void test02() {
-    String input = "5";
-    String expected = "0.6000000000";
+  public void test1() {
+    String input = "5\n" +
+            "aaaaa";
+    String expected = "1";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
-  public void test03() {
-    String input = "1";
-    String expected = "1.0000000000";
+  public void test2() {
+    String input = "20\n" +
+            "xxzaffeeeeddfkkkkllq";
+    String expected = "10";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
@@ -41,5 +45,6 @@ public class MainTest {
     );
     return os.toString().replace(System.lineSeparator(), "\n");
   }
+
 
 }

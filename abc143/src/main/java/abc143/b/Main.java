@@ -1,4 +1,4 @@
-package abc143.a;
+package abc143.b;
 
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -15,13 +15,17 @@ public class Main {
 
     /* read */
     int n = sc.nextInt();
-    double ans;
-    if (n % 2 == 0) {
-      ans = 0.5;
-    } else {
-      int odd = n / 2 + 1;
-      ans = (double) odd / (double) n;
+    int[] d = new int[n];
+
+    for (int i = 0; i < n; i++) {
+      d[i] = sc.nextInt();
     }
-    os.println(String.format("%.10f", ans));
+    int ans = 0;
+    for (int i = 0; i < n; i++) {
+      for (int j = i + 1; j < n; j++) {
+        ans += d[i] * d[j];
+      }
+    }
+    os.println(ans);
   }
 }
