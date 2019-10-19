@@ -1,8 +1,8 @@
 package abc143.e;
 
-import java.io.InputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -25,59 +25,47 @@ public class Main {
     int l = sc.nextInt();
 
     // key : from city, value : edge
-    Map<Integer, Set<Edge>> map = new HashMap<>();
+    List<List<Edge>> lists = new ArrayList<>(n);
+    for (int i = 0; i < n; i++){
+      lists.add(new LinkedList<>());
+    }
 
     // exclude the expensive edge (than L) in advance
     for (int i = 0; i < m; i++) {
-      int a = sc.nextInt();
-      int b = sc.nextInt();
+      int a = sc.nextInt() - 1;
+      int b = sc.nextInt() - 1;
       int c = sc.nextInt();
       if (c <= l) {
         Edge edge1 = new Edge();
         edge1.fr = a;
         edge1.to = b;
         edge1.cost = c;
-        Set<Edge> edges1 = map.getOrDefault(edge1.fr, new HashSet<>());
-        edges1.add(edge1);
-        map.put(edge1.fr, edges1);
+        lists.get(edge1.fr).add(edge1);
 
         Edge edge2 = new Edge();
         edge2.fr = b;
         edge2.to = a;
         edge2.cost = c;
-        Set<Edge> edges2 = map.getOrDefault(edge2.fr, new HashSet<>());
-        edges2.add(edge2);
-        map.put(edge2.fr, edges2);
+        lists.get(edge2.fr).add(edge2);
       }
+    }
+    Move[][] dijkstras = new Move[n][];
+    for (int i = 0; i < n; i++) {
+      dijkstras[i] = dijkstra(i, lists, n, l);
     }
 
     int q = sc.nextInt();
-    List<Pair> pairs = new ArrayList<>(q);
-    Move[][] dijkstras = new Move[n + 1][];
+    List<Integer> ans = new ArrayList<>(q);
     for (int i = 0; i < q; i++) {
-      int s = sc.nextInt();
-      int t = sc.nextInt();
-      Pair p = new Pair();
-      p.s = s;
-      p.t = t;
-      pairs.add(p);
-      if (dijkstras[s] == null) {
-        dijkstras[s] = dijkstra(s, map, n, l);
-      }
-    }
-
-    for (Pair p : pairs) {
-      if (dijkstras[p.s][p.t] == null) {
-        os.println(-1);
+      int s = sc.nextInt() - 1;
+      int t = sc.nextInt() - 1;
+      if (dijkstras[s][t] == null) {
+        ans.add(-1);
       } else {
-        os.println(dijkstras[p.s][p.t].refill);
+        ans.add(dijkstras[s][t].refill);
       }
     }
-  }
-
-  private static class Pair {
-    int s;
-    int t;
+    os.println(ans.stream().map(String::valueOf).collect(Collectors.joining("\n")));
   }
 
   private static class Move implements Comparable<Move> {
@@ -109,7 +97,7 @@ public class Main {
     }
   }
 
-  private static Move[] dijkstra(int s, Map<Integer, Set<Edge>> map, int n, int l) {
+  private static Move[] dijkstra(int s, List<List<Edge>> edges, int n, int l) {
     Move[] d = new Move[n + 1];
     d[s] = new Move(l);
     d[s].usedFuel = 0;
@@ -123,7 +111,7 @@ public class Main {
 
     while(!queue.isEmpty()) {
       int fr = queue.remove();
-      for (Edge edge : map.getOrDefault(fr, new HashSet<>())) {
+      for (Edge edge : edges.get(fr)) {
         int to = edge.to;
         Move alt = d[fr].run(edge.cost);
         if (d[to] == null || alt.compareTo(d[to]) < 0) {
@@ -134,4 +122,77 @@ public class Main {
     }
     return d;
   }
+
+  private static class Scanner {
+
+    private final InputStream is;
+    private final byte[] buffer = new byte[1024];
+    private int ptr = 0;
+    private int buflen = 0;
+
+    Scanner(InputStream is) {
+      this.is = is;
+    }
+
+    private boolean hasNextByte() {
+      if (ptr < buflen) {
+        return true;
+      }else{
+        ptr = 0;
+        try {
+          buflen = is.read(buffer);
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        if (buflen <= 0) {
+          return false;
+        }
+      }
+      return true;
+    }
+    private int readByte() { if (hasNextByte()) return buffer[ptr++]; else return -1;}
+    private static boolean isPrintableChar(int c) { return 33 <= c && c <= 126;}
+    public boolean hasNext() { while(hasNextByte() && !isPrintableChar(buffer[ptr])) ptr++; return hasNextByte();}
+    public String next() {
+      if (!hasNext()) throw new NoSuchElementException();
+      StringBuilder sb = new StringBuilder();
+      int b = readByte();
+      while(isPrintableChar(b)) {
+        sb.appendCodePoint(b);
+        b = readByte();
+      }
+      return sb.toString();
+    }
+    public long nextLong() {
+      if (!hasNext()) throw new NoSuchElementException();
+      long n = 0;
+      boolean minus = false;
+      int b = readByte();
+      if (b == '-') {
+        minus = true;
+        b = readByte();
+      }
+      if (b < '0' || '9' < b) {
+        throw new NumberFormatException();
+      }
+      while(true){
+        if ('0' <= b && b <= '9') {
+          n *= 10;
+          n += b - '0';
+        }else if(b == -1 || !isPrintableChar(b)){
+          return minus ? -n : n;
+        }else{
+          throw new NumberFormatException();
+        }
+        b = readByte();
+      }
+    }
+    public int nextInt() {
+      long nl = nextLong();
+      if (nl < Integer.MIN_VALUE || nl > Integer.MAX_VALUE) throw new NumberFormatException();
+      return (int) nl;
+    }
+    public double nextDouble() { return Double.parseDouble(next());}
+  }
+
 }
