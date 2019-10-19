@@ -53,7 +53,7 @@ public class Main {
 
     int q = sc.nextInt();
     List<Pair> pairs = new ArrayList<>(q);
-    Path[][] dijkstras = new Path[n + 1][];
+    Move[][] dijkstras = new Move[n + 1][];
     for (int i = 0; i < q; i++) {
       int s = sc.nextInt();
       int t = sc.nextInt();
@@ -62,15 +62,15 @@ public class Main {
       p.t = t;
       pairs.add(p);
       if (dijkstras[s] == null) {
-        dijkstras[s] = dijkstra(s, map, n);
+        dijkstras[s] = dijkstra(s, map, n, l);
       }
     }
 
     for (Pair p : pairs) {
-      if (dijkstras[p.s][p.t].path.isEmpty()) {
+      if (dijkstras[p.s][p.t] == null) {
         os.println(-1);
       } else {
-        os.println(count(dijkstras[p.s][p.t].path, l));
+        os.println(dijkstras[p.s][p.t].refill);
       }
     }
   }
@@ -80,55 +80,55 @@ public class Main {
     int t;
   }
 
-  private static class Path {
+  private static class Move implements Comparable<Move> {
+    private final int max;
 
-    int cost;
-    List<Edge> path = new ArrayList<>();
+    int usedFuel = 0;
+    int refill = 0;
 
-  }
+    private Move(int max) {
+      this.max = max;
+    }
 
-  private static int count(List<Edge> edges, int l) {
-    int remain = l;
-    int ans = 0;
-    for (Edge edge : edges) {
-      if (remain < edge.cost) {
-        remain = l;
-        ans++;
+    @Override
+    public int compareTo(Move other) {
+      return this.refill != other.refill ? Integer.compare(this.refill, other.refill) :
+              Integer.compare(this.usedFuel, other.usedFuel);
+    }
+
+    Move run(int cost) {
+      Move move = new Move(max);
+      move.usedFuel = usedFuel;
+      move.refill = refill;
+      if (max < move.usedFuel + cost) {
+        move.refill++;
+        move.usedFuel = 0;
       }
-      remain -= edge.cost;
+      move.usedFuel += cost;
+      return move;
     }
-    return ans;
   }
 
-  private static Path[] dijkstra(int s, Map<Integer, Set<Edge>> map, int n) {
-    Path[] d = new Path[n + 1];
-    for (int i = 1; i <= n; i++) {
-      Path p = new Path();
-      p.cost = Integer.MAX_VALUE;
-      d[i] = p;
-    }
-    Path p = d[s];
-    p.cost = 0;
+  private static Move[] dijkstra(int s, Map<Integer, Set<Edge>> map, int n, int l) {
+    Move[] d = new Move[n + 1];
+    d[s] = new Move(l);
+    d[s].usedFuel = 0;
+    d[s].refill = 0;
 
-    SortedSet<Integer> queue = new TreeSet<>(Comparator.comparingInt(i -> d[i].cost));
-
-    for(int i = 1; i <= n; i++) {
-      queue.add(i);
-    }
+    Queue<Integer> queue = new PriorityQueue<>((i1, i2) ->
+            d[i1] == null ? i2 :
+                    d[i2] == null ? i1 :
+                            d[i1].compareTo(d[i2]));
+    queue.add(s);
 
     while(!queue.isEmpty()) {
-      Integer fr = queue.first();
-      queue.remove(fr);
+      int fr = queue.remove();
       for (Edge edge : map.getOrDefault(fr, new HashSet<>())) {
-        int alt = d[fr].cost + edge.cost;
-        if (alt < d[edge.to].cost) {
-          p = d[edge.to];
-          p.cost = alt;
-          p.path = new ArrayList<>(d[fr].path);
-          p.path.add(edge);
-          d[edge.to] = p;
-          queue.remove(edge.to);
-          queue.add(edge.to);
+        int to = edge.to;
+        Move alt = d[fr].run(edge.cost);
+        if (d[to] == null || alt.compareTo(d[to]) < 0) {
+          d[to] = alt;
+          queue.add(to);
         }
       }
     }
