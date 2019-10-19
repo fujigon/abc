@@ -11,33 +11,23 @@ public class Main {
     solve(System.in, System.out);
   }
 
-  private static class Student {
-
-    int id;
-    int order;
-  }
-
   static void solve(InputStream is, PrintStream os) {
     Scanner sc = new Scanner(is);
 
     /* read */
     int n = sc.nextInt();
+    String s = sc.next();
 
-    List<Student> students = new ArrayList<>(n);
-
-    for (int i = 1; i <= n; i++) {
-      Student s = new Student();
-      s.id = i;
-      s.order = sc.nextInt();
-      students.add(s);
+    int l = 0;
+    int r = 1;
+    int ans = 0;
+    while (l < s.length()) {
+      while (r < s.length() && s.charAt(l) == s.charAt(r)) r++;
+      ans++;
+      l = r;
+      r = l + 1;
     }
-
-    students.sort(Comparator.comparingInt(s -> s.order));
-
-    List<String> ids = students.stream().map(student -> String.valueOf(student.id))
-        .collect(Collectors.toList());
-
-    os.println(String.join(" ", ids));
+    os.println(ans);
   }
 
 }

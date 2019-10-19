@@ -15,11 +15,16 @@ public class Main {
 
     /* read */
     int n = sc.nextInt();
-    int k = sc.nextInt();
+    int[] d = new int[n];
+
+    for (int i = 0; i < n; i++) {
+      d[i] = sc.nextInt();
+    }
     int ans = 0;
     for (int i = 0; i < n; i++) {
-      int h = sc.nextInt();
-      if (k <= h) ans++;
+      for (int j = i + 1; j < n; j++) {
+        ans += d[i] * d[j];
+      }
     }
     os.println(ans);
   }

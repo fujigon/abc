@@ -1,4 +1,4 @@
-package abc142.d;
+package abc143.d;
 
 import java.io.InputStream;
 import java.io.PrintStream;

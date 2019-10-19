@@ -10,39 +10,38 @@ public class Main {
     solve(System.in, System.out);
   }
 
+  static class LowerBoundComparator<T extends Comparable<? super T>>
+          implements Comparator<T>
+  {
+    public int compare(T x, T y)
+    {
+      return (x.compareTo(y) >= 0) ? 1 : -1;
+    }
+  }
+
   static void solve(InputStream is, PrintStream os) {
     Scanner sc = new Scanner(is);
 
     /* read */
-    long a = sc.nextLong();
-    long b = sc.nextLong();
-
-    long target = gcd(a, b);
-
-    Set<Long> factors = factorize(target);
-    factors.add(1L);
-
-    os.println(factors.size());
-  }
-
-  private static Set<Long> factorize(long n) {
-    Set<Long> factors = new HashSet<>();
-    long root = (long) Math.sqrt(n) + 1;
-    for (long i = 2; i <= root; i++) {
-      if (n % i != 0) continue;
-      do {
-        n /= i;
-
-      } while (n % i == 0);
-      factors.add(i);
+    int n = sc.nextInt();
+    List<Integer> l = new ArrayList<>(n);
+    for (int i = 0; i < n; i++) {
+      l.add(sc.nextInt());
     }
-    factors.add(n);
-    return factors;
-  }
 
-  private static long gcd(long m, long n) {
-    if(m < n) return gcd(n, m);
-    if(n == 0) return m;
-    return gcd(n, m % n);
+    Collections.sort(l);
+    int ans = 0;
+
+    for (int ai = 0; ai < n - 2; ai++) {
+      for (int bi = ai + 1; bi < n - 1; bi++) {
+        int a = l.get(ai);
+        int b = l.get(bi);
+
+        int ci = - Collections.binarySearch(l, a + b, new LowerBoundComparator<>()) - 1;
+
+        ans += (ci - 1) - bi;
+      }
+    }
+    os.println(ans);
   }
 }

@@ -13,27 +13,27 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "3\n"
-        + "2 3 1";
-    String expected = "3 1 2";
+    String input = "10\n" +
+            "aabbbbaaca";
+    String expected = "5";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test1() {
-    String input = "5\n"
-        + "1 2 3 4 5";
-    String expected = "1 2 3 4 5";
+    String input = "5\n" +
+            "aaaaa";
+    String expected = "1";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test2() {
-    String input = "8\n"
-        + "8 2 7 3 4 5 6 1";
-    String expected = "8 2 4 5 6 7 3 1";
+    String input = "20\n" +
+            "xxzaffeeeeddfkkkkllq";
+    String expected = "10";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }

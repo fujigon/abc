@@ -13,24 +13,24 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "2 3\n"
-        + "10 1\n"
-        + "1\n"
-        + "15 1\n"
-        + "2\n"
-        + "30 2\n"
-        + "1 2";
+    String input = "3 2 5\n" +
+            "1 2 3\n" +
+            "2 3 3\n" +
+            "2\n" +
+            "3 2\n" +
+            "1 3";
 
-    String expected = "25";
+    String expected = "0\n" +
+            "1";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test2() {
-    String input = "12 1\n"
-        + "100000 1\n"
-        + "2";
+    String input = "4 0 1\n" +
+            "1\n" +
+            "2 1";
 
     String expected = "-1";
 
@@ -39,21 +39,53 @@ public class MainTest {
 
   @Test
   public void test3() {
-    String input = "4 6\n"
-        + "67786 3\n"
-        + "1 3 4\n"
-        + "3497 1\n"
-        + "2\n"
-        + "44908 3\n"
-        + "2 3 4\n"
-        + "2156 3\n"
-        + "2 3 4\n"
-        + "26230 1\n"
-        + "2\n"
-        + "86918 1\n"
-        + "3";
+    String input = "5 4 4\n" +
+            "1 2 2\n" +
+            "2 3 2\n" +
+            "3 4 3\n" +
+            "4 5 2\n" +
+            "20\n" +
+            "2 1\n" +
+            "3 1\n" +
+            "4 1\n" +
+            "5 1\n" +
+            "1 2\n" +
+            "3 2\n" +
+            "4 2\n" +
+            "5 2\n" +
+            "1 3\n" +
+            "2 3\n" +
+            "4 3\n" +
+            "5 3\n" +
+            "1 4\n" +
+            "2 4\n" +
+            "3 4\n" +
+            "5 4\n" +
+            "1 5\n" +
+            "2 5\n" +
+            "3 5\n" +
+            "4 5";
 
-    String expected = "69942";
+    String expected = "0\n" +
+            "0\n" +
+            "1\n" +
+            "2\n" +
+            "0\n" +
+            "0\n" +
+            "1\n" +
+            "2\n" +
+            "0\n" +
+            "0\n" +
+            "0\n" +
+            "1\n" +
+            "1\n" +
+            "1\n" +
+            "0\n" +
+            "0\n" +
+            "2\n" +
+            "2\n" +
+            "1\n" +
+            "0";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
