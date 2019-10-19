@@ -6,26 +6,18 @@ import java.util.*;
 
 public class Main {
 
-  public static void main(String[] args) {
-    solve(System.in, System.out);
-  }
-
-  static void solve(InputStream is, PrintStream os) {
-    Scanner sc = new Scanner(is);
-
-    /* read */
-    int n = sc.nextInt();
-    int[] d = new int[n];
-
-    for (int i = 0; i < n; i++) {
-        d[i] = sc.nextInt();
+    public static void main(String[] args) {
+        solve(System.in, System.out);
     }
-    int ans = 0;
-    for (int i = 0; i < n; i++) {
-        for (int j = i + 1; j < n; j++) {
-            ans += d[i] * d[j];
-        }
+
+    static void solve(InputStream is, PrintStream os) {
+        Scanner sc = new Scanner(is);
+
+        /* read */
+        int a = sc.nextInt();
+        int b = sc.nextInt();
+
+        int ans = Math.max(0, a - 2 * b);
+        os.println(ans);
     }
-    os.println(ans);
-  }
 }
