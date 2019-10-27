@@ -27,9 +27,9 @@ public class Main {
     Arrays.sort(a, Comparator.naturalOrder());
     Arrays.sort(f, Comparator.reverseOrder());
 
-    long ng = -1;
     long ok = 1;
     while (!canFinish(ok, n, k, a, f)) ok *= 2;
+    long ng = ok / 2 - 1;
     while (ok - ng > 1) {
       long mid = (ok + ng) / 2;
       if (canFinish(mid, n, k, a, f)) ok = mid;
