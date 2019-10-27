@@ -17,7 +17,10 @@ public class Main {
         int a = sc.nextInt();
         int b = sc.nextInt();
 
-        int ans = Math.max(0, a - 2 * b);
-        os.println(ans);
+        if (0 < a && a <= 9 && 0 < b && b <= 9) {
+            os.println(a * b);
+        } else {
+            os.println(-1);
+        }
     }
 }

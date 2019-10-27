@@ -15,19 +15,19 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    int n = sc.nextInt();
-    String s = sc.next();
+    long n = sc.nextLong();
 
-    int l = 0;
-    int r = 1;
-    int ans = 0;
-    while (l < s.length()) {
-      while (r < s.length() && s.charAt(l) == s.charAt(r)) r++;
-      ans++;
-      l = r;
-      r = l + 1;
+    int r = (int) Math.sqrt(n);
+
+    long min = Long.MAX_VALUE;
+    for (int i = 1; i <= r; i++) {
+      if (n % i == 0) {
+        long j = n / i;
+        long val = i - 1 + j - 1;
+        min = Math.min(min, val);
+      }
     }
-    os.println(ans);
+    os.println(min);
   }
 
 }

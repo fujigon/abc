@@ -3,6 +3,7 @@ package abc144.d;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -10,38 +11,27 @@ public class Main {
     solve(System.in, System.out);
   }
 
-  static class LowerBoundComparator<T extends Comparable<? super T>>
-          implements Comparator<T>
-  {
-    public int compare(T x, T y)
-    {
-      return (x.compareTo(y) >= 0) ? 1 : -1;
-    }
-  }
-
   static void solve(InputStream is, PrintStream os) {
     Scanner sc = new Scanner(is);
 
     /* read */
-    int n = sc.nextInt();
-    List<Integer> l = new ArrayList<>(n);
-    for (int i = 0; i < n; i++) {
-      l.add(sc.nextInt());
+    double a = sc.nextDouble();
+    double b = sc.nextDouble();
+    double x = sc.nextDouble();
+
+    double v = a * a * b;
+
+    double d = 0;
+    if (x <= v / 2) {
+      double o = x; // occupied area
+      double r = Math.PI / 2 - Math.atan2(2 * o, b * b * a);
+      d = Math.toDegrees(r);
+    } else {
+      double e = v - x; // empty area
+      double r = Math.atan2(2 * e, a * a * a);
+      d = Math.toDegrees(r);
     }
-
-    Collections.sort(l);
-    int ans = 0;
-
-    for (int ai = 0; ai < n - 2; ai++) {
-      for (int bi = ai + 1; bi < n - 1; bi++) {
-        int a = l.get(ai);
-        int b = l.get(bi);
-
-        int ci = - Collections.binarySearch(l, a + b, new LowerBoundComparator<>()) - 1;
-
-        ans += (ci - 1) - bi;
-      }
-    }
-    os.println(ans);
+    os.println(d);
   }
+
 }

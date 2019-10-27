@@ -15,17 +15,16 @@ public class Main {
 
     /* read */
     int n = sc.nextInt();
-    int[] d = new int[n];
 
-    for (int i = 0; i < n; i++) {
-      d[i] = sc.nextInt();
-    }
-    int ans = 0;
-    for (int i = 0; i < n; i++) {
-      for (int j = i + 1; j < n; j++) {
-        ans += d[i] * d[j];
+    for (int i = 1; i <= 9; i++) {
+      if (n % i == 0) {
+        int j = n / i;
+        if (0 < j && j <= 9) {
+          os.println("Yes");
+          return;
+        }
       }
     }
-    os.println(ans);
+    os.println("No");
   }
 }

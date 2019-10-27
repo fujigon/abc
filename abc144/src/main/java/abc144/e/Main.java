@@ -2,7 +2,6 @@ package abc144.e;
 
 import java.io.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Main {
 
@@ -10,117 +9,43 @@ public class Main {
     solve(System.in, System.out);
   }
 
-  private static class Edge {
-    int fr;
-    int to;
-    int cost;
-  }
-
   static void solve(InputStream is, PrintStream os) {
     Scanner sc = new Scanner(is);
 
     /* read */
     int n = sc.nextInt();
-    int m = sc.nextInt();
-    int l = sc.nextInt();
+    long k = sc.nextLong();
+    Long[] a = new Long[n];
+    Long[] f = new Long[n];
 
-    // key : from city, value : edge
-    List<List<Edge>> lists = new ArrayList<>(n);
-    for (int i = 0; i < n; i++){
-      lists.add(new LinkedList<>());
-    }
-
-    // exclude the expensive edge (than L) in advance
-    for (int i = 0; i < m; i++) {
-      int a = sc.nextInt() - 1;
-      int b = sc.nextInt() - 1;
-      int c = sc.nextInt();
-      if (c <= l) {
-        Edge edge1 = new Edge();
-        edge1.fr = a;
-        edge1.to = b;
-        edge1.cost = c;
-        lists.get(edge1.fr).add(edge1);
-
-        Edge edge2 = new Edge();
-        edge2.fr = b;
-        edge2.to = a;
-        edge2.cost = c;
-        lists.get(edge2.fr).add(edge2);
-      }
-    }
-    Move[][] dijkstras = new Move[n][];
     for (int i = 0; i < n; i++) {
-      dijkstras[i] = dijkstra(i, lists, n, l);
+      a[i] = sc.nextLong();
+    }
+    for (int i = 0; i < n; i++) {
+      f[i] = sc.nextLong();
+    }
+    Arrays.sort(a, Comparator.naturalOrder());
+    Arrays.sort(f, Comparator.reverseOrder());
+
+    long ng = -1;
+    long ok = 1;
+    while (!canFinish(ok, n, k, a, f)) ok *= 2;
+    while (ok - ng > 1) {
+      long mid = (ok + ng) / 2;
+      if (canFinish(mid, n, k, a, f)) ok = mid;
+      else ng = mid;
     }
 
-    int q = sc.nextInt();
-    List<Integer> ans = new ArrayList<>(q);
-    for (int i = 0; i < q; i++) {
-      int s = sc.nextInt() - 1;
-      int t = sc.nextInt() - 1;
-      if (dijkstras[s][t] == null) {
-        ans.add(-1);
-      } else {
-        ans.add(dijkstras[s][t].refill);
-      }
-    }
-    os.println(ans.stream().map(String::valueOf).collect(Collectors.joining("\n")));
+    os.println(ok);
   }
 
-  private static class Move implements Comparable<Move> {
-    private final int max;
+  private static boolean canFinish(long time, int n, long k, Long[] a, Long[] f) {
 
-    int usedFuel = 0;
-    int refill = 0;
-
-    private Move(int max) {
-      this.max = max;
+    for (int i = 0; i < n; i++) {
+      long c = time / f[i];
+      k -= Math.max(a[i] - c, 0);
     }
-
-    @Override
-    public int compareTo(Move other) {
-      return this.refill != other.refill ? Integer.compare(this.refill, other.refill) :
-              Integer.compare(this.usedFuel, other.usedFuel);
-    }
-
-    Move run(int cost) {
-      Move move = new Move(max);
-      move.usedFuel = usedFuel;
-      move.refill = refill;
-      if (max < move.usedFuel + cost) {
-        move.refill++;
-        move.usedFuel = 0;
-      }
-      move.usedFuel += cost;
-      return move;
-    }
-  }
-
-  private static Move[] dijkstra(int s, List<List<Edge>> edges, int n, int l) {
-    Move[] d = new Move[n + 1];
-    d[s] = new Move(l);
-    d[s].usedFuel = 0;
-    d[s].refill = 0;
-
-    Queue<Integer> queue = new PriorityQueue<>((i1, i2) ->
-            d[i1] == null ? i2 :
-                    d[i2] == null ? i1 :
-                            d[i1].compareTo(d[i2]));
-    queue.add(s);
-
-    while(!queue.isEmpty()) {
-      int fr = queue.remove();
-      for (Edge edge : edges.get(fr)) {
-        int to = edge.to;
-        Move alt = d[fr].run(edge.cost);
-        if (d[to] == null || alt.compareTo(d[to]) < 0) {
-          d[to] = alt;
-          queue.add(to);
-        }
-      }
-    }
-    return d;
+    return k >= 0;
   }
 
   private static class Scanner {
@@ -137,7 +62,7 @@ public class Main {
     private boolean hasNextByte() {
       if (ptr < buflen) {
         return true;
-      }else{
+      } else {
         ptr = 0;
         try {
           buflen = is.read(buffer);
@@ -150,19 +75,32 @@ public class Main {
       }
       return true;
     }
-    private int readByte() { if (hasNextByte()) return buffer[ptr++]; else return -1;}
-    private static boolean isPrintableChar(int c) { return 33 <= c && c <= 126;}
-    public boolean hasNext() { while(hasNextByte() && !isPrintableChar(buffer[ptr])) ptr++; return hasNextByte();}
+
+    private int readByte() {
+      if (hasNextByte()) return buffer[ptr++];
+      else return -1;
+    }
+
+    private static boolean isPrintableChar(int c) {
+      return 33 <= c && c <= 126;
+    }
+
+    public boolean hasNext() {
+      while (hasNextByte() && !isPrintableChar(buffer[ptr])) ptr++;
+      return hasNextByte();
+    }
+
     public String next() {
       if (!hasNext()) throw new NoSuchElementException();
       StringBuilder sb = new StringBuilder();
       int b = readByte();
-      while(isPrintableChar(b)) {
+      while (isPrintableChar(b)) {
         sb.appendCodePoint(b);
         b = readByte();
       }
       return sb.toString();
     }
+
     public long nextLong() {
       if (!hasNext()) throw new NoSuchElementException();
       long n = 0;
@@ -175,24 +113,27 @@ public class Main {
       if (b < '0' || '9' < b) {
         throw new NumberFormatException();
       }
-      while(true){
+      while (true) {
         if ('0' <= b && b <= '9') {
           n *= 10;
           n += b - '0';
-        }else if(b == -1 || !isPrintableChar(b)){
+        } else if (b == -1 || !isPrintableChar(b)) {
           return minus ? -n : n;
-        }else{
+        } else {
           throw new NumberFormatException();
         }
         b = readByte();
       }
     }
+
     public int nextInt() {
       long nl = nextLong();
       if (nl < Integer.MIN_VALUE || nl > Integer.MAX_VALUE) throw new NumberFormatException();
       return (int) nl;
     }
-    public double nextDouble() { return Double.parseDouble(next());}
-  }
 
+    public double nextDouble() {
+      return Double.parseDouble(next());
+    }
+  }
 }

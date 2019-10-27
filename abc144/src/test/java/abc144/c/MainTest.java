@@ -13,8 +13,7 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "10\n" +
-            "aabbbbaaca";
+    String input = "10";
     String expected = "5";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
@@ -22,18 +21,16 @@ public class MainTest {
 
   @Test
   public void test1() {
-    String input = "5\n" +
-            "aaaaa";
-    String expected = "1";
+    String input = "50";
+    String expected = "13";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test2() {
-    String input = "20\n" +
-            "xxzaffeeeeddfkkkkllq";
-    String expected = "10";
+    String input = "10000000019";
+    String expected = "10000000018";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
