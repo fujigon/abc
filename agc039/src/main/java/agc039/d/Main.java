@@ -15,24 +15,25 @@ public class Main {
 
     /* read */
     int n = sc.nextInt();
-    int m = sc.nextInt();
-
-    Queue<Integer> queue = new PriorityQueue<>((i1, i2) -> -i1.compareTo(i2));
-
+    int[] a = new int[n];
     for (int i = 0; i < n; i++) {
-      queue.add(sc.nextInt());
+      a[i] = sc.nextInt();
     }
-
-    for (int i = 0; i < m; i++) {
-      int max = queue.remove();
-      queue.add(max/2);
+    
+    int breaking = 0;
+    int target = 1;
+    
+    for (int i = 0; i < n; i++) {
+      if (a[i] == target) {
+        target++;
+      } else {
+        breaking++;
+      }
     }
-
-    long res = 0;
-    while(!queue.isEmpty()) {
-      res += queue.remove();
+    if (breaking == n) {
+      os.println(-1);
+    } else {
+      os.println(breaking);
     }
-
-    os.println(res);
   }
 }

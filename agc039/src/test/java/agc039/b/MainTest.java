@@ -13,40 +13,38 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "5 3\n"
-        + "0 2 1 4 3";
-    String expected = "2";
+    String input = "2\n"
+        + "ip cc";
+    String expected = "icpc";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
-  @Test
-  public void test1() {
-    String input = "4 4\n"
-        + "0 1 2 3";
-    String expected = "1";
-
-    assertThat(execute(input + "\n"), is(expected + "\n"));
-  }
-
-  @Test
-  public void test2() {
-    String input = "10 4\n"
-        + "2 0 1 3 7 5 4 6 8 9";
-    String expected = "6";
-
-    assertThat(execute(input + "\n"), is(expected + "\n"));
-  }
-
-  @Test
-  public void test3() {
-    String input = "10 3\n"
-        + "0 1 2 3 4 5 6 7 8 9";
-    String expected = "1";
-
-    assertThat(execute(input + "\n"), is(expected + "\n"));
-  }
-
+//  @Test
+//  public void test1() {
+//    String input = "3\n"
+//        + "011\n"
+//        + "101\n"
+//        + "110";
+//    String expected = "-1";
+//
+//    assertThat(execute(input + "\n"), is(expected + "\n"));
+//  }
+//
+//  @Test
+//  public void test2() {
+//    String input = "6\n"
+//        + "010110\n"
+//        + "101001\n"
+//        + "010100\n"
+//        + "101000\n"
+//        + "100000\n"
+//        + "010000";
+//    String expected = "4";
+//
+//    assertThat(execute(input + "\n"), is(expected + "\n"));
+//  }
+  
   private String execute(String input) {
     ByteArrayOutputStream os = new ByteArrayOutputStream();
     Main.solve(
