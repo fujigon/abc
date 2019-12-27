@@ -3,7 +3,6 @@ rootProject.name = 'abc'
 //include 'non-contest'
 include 'abc148'
 //include 'abc142'
-//include 'abc142'
 //include 'abc140'
 //include 'abc142'
 //include 'abc137'
@@ -24,8 +23,7 @@ include 'abc148'
 //include 'abc121' // TODO D
 
 //include 'agc034'
-//include 'abc148'
-//include 'abc148'
+//include 'agc039'
 
 //include 'nihonsaikyou'
 //include 'diverta2019'

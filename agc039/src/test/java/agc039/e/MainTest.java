@@ -13,45 +13,30 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "12";
+    String input = "5\n"
+        + "ababa";
 
-    String expected = "1";
+    String expected = "2";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test2() {
-    String input = "1000000000000000000";
+    String input = "2\n"
+        + "xy";
 
-    String expected = "124999999999999995";
+    String expected = "0";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test3() {
-    String input = "0";
+    String input = "13\n"
+        + "strangeorange";
 
-    String expected = "0";
-    
-    assertThat(execute(input + "\n"), is(expected + "\n"));
-  }
-
-  @Test
-  public void test4() {
-    String input = "2";
-
-    String expected = "0";
-
-    assertThat(execute(input + "\n"), is(expected + "\n"));
-  }
-
-  @Test
-  public void test5() {
-    String input = "5";
-
-    String expected = "0";
+    String expected = "5";
 
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }

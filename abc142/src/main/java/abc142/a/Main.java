@@ -1,4 +1,4 @@
-package abc142.a;
+package abc143.a;
 
 import java.io.InputStream;
 import java.io.PrintStream;
