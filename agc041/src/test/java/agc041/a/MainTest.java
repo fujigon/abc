@@ -12,29 +12,27 @@ public class MainTest {
 
   @Test
   public void test() {
-//    String input = "3 3 1 1";
-//    String expected = "100\n"
-//        + "010\n"
-//        + "001";
-//
-//    assertThat(execute(input + "\n"), is(expected + "\n"));
+    String input = "5 2 4";
+    String expected = "1";
+    
+    assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test2() {
-//    String input = "1 5 2 0";
-//    String expected = "11100";
-//
-//    assertThat(execute(input + "\n"), is(expected + "\n"));
+    String input = "5 2 3";
+    String expected = "2";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
 
   @Test
   public void test03() {
-//    String input = "12 3 7";
-//    String expected = "0";
-//
-//    assertThat(execute(input + "\n"), is(expected + "\n"));
+    String input = "5 2 5";
+    String expected = "2";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   private String execute(String input) {
