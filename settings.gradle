@@ -1,7 +1,6 @@
 rootProject.name = 'abc'
 
 //include 'non-contest'
-include 'pakencamp2019day3'
 //include 'abc142'
 //include 'abc140'
 //include 'abc142'
@@ -23,10 +22,12 @@ include 'pakencamp2019day3'
 //include 'abc121' // TODO D
 
 //include 'agc034'
-//include 'agc039'
+//include 'agc041'
+include 'agc041'
 
+//include 'pakencamp2019day3'
 //include 'nihonsaikyou'
 //include 'diverta2019'
 //include 'msolutions'
 //include 'tenka2019'
-include 'pakencamp-2019-day3'
+//include 'pakencamp-2019-day3'
