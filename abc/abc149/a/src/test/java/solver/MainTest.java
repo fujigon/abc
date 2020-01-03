@@ -3,6 +3,7 @@ package solver;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
