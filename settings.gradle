@@ -5,7 +5,9 @@ def projects = []
 
 contestTypes.forEach { contestType ->
     new File(contestType).eachDir { contestName ->
+        if (contestName.name.equals("build")) return
         new File(contestType + "/" + contestName.name).eachDir { taskName ->
+            if (taskName.name.equals("build")) return
             projects << contestType + ":" + contestName.name + ":" + taskName.name        }
     }
 }
