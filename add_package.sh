@@ -1,4 +1,6 @@
 files=`find ./ -name *.java`
 for file in $files; do
-  sed '1ipackage solver;' $file
+  echo "package solver;\n" > ${file}_tmp
+  cat $file >> ${file}_tmp
+  mv ${file}_tmp $file
 done
