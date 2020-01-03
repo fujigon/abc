@@ -134,3 +134,8 @@ gradle-app.setting
 *.iml
 
 bazel-*
+**/.project
+**/.classpath
+**/.settings
+**/bin
+.vscode
