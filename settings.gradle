@@ -4,11 +4,12 @@ def contestTypes = ["abc", "agc", "others"]
 def projects = []
 
 contestTypes.forEach { contestType ->
-    println contestType
     new File(contestType).eachDir { contestName ->
-        projects << contestType + ":" + contestName.name
+        new File(contestType + "/" + contestName.name).eachDir { taskName ->
+            projects << contestType + ":" + contestName.name + ":" + taskName.name        }
     }
 }
+
 projects.forEach {
     include it
 }
