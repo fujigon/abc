@@ -1,20 +1,20 @@
 load("@rules_java//java:defs.bzl", "java_binary", "java_library", "java_test")
+load("//tools/bzl:junit.bzl", "junit_tests")
 
 package(default_visibility = ["//visibility:public"])
 
 java_library(
     name = "main",
     srcs = glob(
-        ["src/main/java/solver/*.java"]
+        ["src/main/java/**/*.java"]
     ),
 )
 
-java_test(
+junit_tests(
     name = "test",
     srcs = glob(
-        ["src/test/java/solver/*.java"]
+        ["src/test/java/**/*.java"]
     ),
-    test_class = "solver.MainTest",
     deps = [
         ":main",
         "@maven//:junit_junit",
