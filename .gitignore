@@ -132,3 +132,11 @@ gradle-app.setting
 
 .idea
 *.iml
+
+bazel-*
+**/.project
+**/.classpath
+**/.settings
+**/bin
+.vscode
+.ijwb
