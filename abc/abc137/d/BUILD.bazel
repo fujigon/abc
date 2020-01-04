@@ -10,16 +10,20 @@ java_library(
     ),
 )
 
-#java_binary(
-#    name = "main-bin",
-#    main_class = "abc.abc121.a.Main",
-#    deps = [
-#        ":main"
-#    ]
-#)
+java_library(
+    name = "test",
+    srcs = glob(
+        ["src/test/java/**/*.java"]
+    ),
+    deps = [
+        ":main",
+        "@maven//:junit_junit",
+        "@maven//:org_hamcrest_hamcrest_core"
+    ]
+)
 
 junit_tests(
-    name = "test",
+    name = "testSuite",
     srcs = glob(
         ["src/test/java/**/*.java"]
     ),
