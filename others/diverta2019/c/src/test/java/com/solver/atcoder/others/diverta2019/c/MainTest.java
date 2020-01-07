@@ -1,10 +1,10 @@
 package com.solver.atcoder.others.diverta2019.c;
 
-import org.junit.Test;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -13,38 +13,47 @@ public class MainTest {
 
   @Test
   public void test() {
-//    String input = "3\n"
-//        + "1 -1 2";
-//    String expected = "4\n"
-//        + "-1 1\n"
-//        + "2 -2";
-//
-//    assertThat(execute(input + "\n"), is(expected + "\n"));
+    String input = "3\n" +
+            "ABCA\n" +
+            "XBAZ\n" +
+            "BAD";
+    String expected = "2";
+    
+    assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test1() {
-//    String input = "3\n"
-//        + "1 1 1";
-//    String expected = "1\n"
-//        + "1 1\n"
-//        + "1 0";
-//
-//    assertThat(execute(input + "\n"), is(expected + "\n"));
+    String input = "9\n" +
+            "BEWPVCRWH\n" +
+            "ZZNQYIJX\n" +
+            "BAVREA\n" +
+            "PA\n" +
+            "HJMYITEOX\n" +
+            "BCJHMRMNK\n" +
+            "BP\n" +
+            "QVFABZ\n" +
+            "PRGKSPUNA";
+    String expected = "4";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
   public void test2() {
-//    String input = "100 5\n"
-//        + "1\n"
-//        + "23\n"
-//        + "45\n"
-//        + "67\n"
-//        + "89";
-//    String expected = "608200469";
-//
-//    assertThat(execute(input + "\n"), is(expected + "\n"));
+    String input = "7\n" +
+            "RABYBBE\n" +
+            "JOZ\n" +
+            "BMHQUVA\n" +
+            "BPA\n" +
+            "ISU\n" +
+            "MCMABAOBHZ\n" +
+            "SZMEHMA";
+    String expected = "4";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
   }
+
   private String execute(String input) {
     ByteArrayOutputStream os = new ByteArrayOutputStream();
     Main.solve(
@@ -52,6 +61,5 @@ public class MainTest {
     );
     return os.toString().replace(System.lineSeparator(), "\n");
   }
-
 
 }
