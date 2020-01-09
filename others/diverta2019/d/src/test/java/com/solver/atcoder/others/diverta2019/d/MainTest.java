@@ -1,10 +1,10 @@
 package com.solver.atcoder.others.diverta2019.d;
 
-import org.junit.Test;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -13,40 +13,18 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "23\n"
-        + "1 1 1\n"
-        + "2 1 1";
-
-    String expected = "46";
-
+    String input = "8";
+    String expected = "10";
+    
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   @Test
-  public void test2() {
-//    String input = "8 8\n"
-//        + "..#...#.\n"
-//        + "....#...\n"
-//        + "##......\n"
-//        + "..###..#\n"
-//        + "...#..#.\n"
-//        + "##....#.\n"
-//        + "#...#...\n"
-//        + "###.#..#";
-//
-//    String expected = "13";
-//
-//    assertThat(execute(input + "\n"), is(expected + "\n"));
-  }
+  public void test1() {
+    String input = "1000000000000";
+    String expected = "2499686339916";
 
-  @Test
-  public void test3() {
-//    String input = "6 3\n"
-//        + "-6 -100 50 -2 -5 -3";
-//
-//    String expected = "0";
-//
-//    assertThat(execute(input + "\n"), is(expected + "\n"));
+    assertThat(execute(input + "\n"), is(expected + "\n"));
   }
 
   private String execute(String input) {
@@ -56,4 +34,5 @@ public class MainTest {
     );
     return os.toString().replace(System.lineSeparator(), "\n");
   }
+
 }
