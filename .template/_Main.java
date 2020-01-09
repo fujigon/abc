@@ -3,6 +3,10 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Main {
 
@@ -18,6 +22,79 @@ public class Main {
     String t = sc.next();
 
     os.println(t + s);
+  }
+
+  private static <P> List<P> bfs(P start, P end, Function<P, Set<P>> travel,
+      Predicate<P> predicate) {
+    Set<P> visited = new HashSet<>();
+    Queue<List<P>> queue = new LinkedList<>();
+    visited.add(start);
+    queue.add(Collections.singletonList(start));
+
+    while (!queue.isEmpty()) {
+      List<P> path = queue.remove();
+      P head = path.get(path.size() - 1);
+      Set<P> candidates = travel.apply(head);
+      for (P c : candidates) {
+        if (!visited.contains(c) && predicate.test(c)) {
+          List<P> p = Stream.concat(path.stream(), Stream.of(c)).collect(Collectors.toList());
+          queue.add(p);
+          visited.add(c);
+          if (c.equals(end)) {
+            return p;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  private static class FermatCombination {
+
+    private long fact[];
+    private long mod;
+
+    public FermatCombination(int size, long mod) {
+      this.fact = new long[size + 1];
+      this.mod = mod;
+
+      this.fact[0] = 1;
+
+      for (int i = 1; i <= size; i++) {
+        fact[i] = (fact[i - 1] * i) % mod;
+      }
+    }
+
+    private long factorial(int n) {
+      return fact[n];
+    }
+
+    private long inverse(long n) {
+      return pow(n, mod - 2) % mod;
+    }
+
+    private long pow(long x, long n) {
+      long ans = 1;
+      while (n > 0) {
+        if ((n & 1) == 1) {
+          ans = ans * x % mod;
+        }
+        x = x * x % mod;
+        n >>= 1;
+      }
+      return ans;
+    }
+
+    long combination(int n, int k) {
+      long ans = 1;
+      ans *= factorial(n);
+      ans %= mod;
+      ans *= inverse(factorial(n - k));
+      ans %= mod;
+      ans *= inverse(factorial(k));
+      ans %= mod;
+      return ans;
+    }
   }
 
   private static class Scanner {
