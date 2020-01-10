@@ -13,8 +13,8 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "5\n" +
-            "6 9 4 2 11";
+    String input = "5\n"
+        + "6 9 4 2 11";
     String expected = "11 6";
     
     assertThat(execute(input + "\n"), is(expected + "\n"));
