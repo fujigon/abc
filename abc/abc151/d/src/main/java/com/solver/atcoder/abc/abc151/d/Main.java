@@ -1,12 +1,11 @@
+package com.solver.atcoder.abc.abc151.d;
 
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Main {
 
@@ -18,10 +17,33 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    String s = sc.next();
-    String t = sc.next();
+    int h = sc.nextInt();
+    int w = sc.nextInt();
 
-    os.println(t + s);
+    boolean[][] grid = new boolean[h][w];
+
+    for (int r = 0; r < h; r++) {
+      String line = sc.next();
+      for (int c = 0; c < w; c++) {
+        grid[r][c] = line.charAt(c) == '.';
+      }
+    }
+
+    Graph<GridPoint> graph = new VerticalHorizontalNeighborGridPointGraph(h, w, grid);
+
+    Graph.Query<GridPoint> query = graph.query();
+
+    long ans = 0;
+
+    for (GridPoint sP : graph.getVertexes()) {
+      for (GridPoint tP : graph.getVertexes()) {
+        Graph.VertexPath<GridPoint> path = query.shortestPath(sP, tP);
+        if (path != null) {
+          ans = Math.max(path.getWeight(), ans);
+        }
+      }
+    }
+    os.println(ans);
   }
 
   private static class GridPointEncoder implements Encoder<GridPoint> {
