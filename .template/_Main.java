@@ -120,6 +120,59 @@ public class Main {
     }
   }
 
+  private static class AdjacencyMatrixGridPointGraph extends IntVertexGraph {
+
+    private final Set<Integer> vertexes = new HashSet<>();
+
+    private final int n;
+    private final int[][] matrix;
+
+    public AdjacencyMatrixGridPointGraph(int n, int[][] matrix) {
+      this.n = n;
+      this.matrix = matrix;
+      IntStream.range(0, n).forEach(vertexes::add);
+    }
+
+    @Override
+    public Set<Integer> getVertexes() {
+      return vertexes;
+    }
+
+    @Override
+    public Set<Edge<Integer>> getEdges(Integer from) {
+      return IntStream.range(0, n).mapToObj(to -> new Edge<>(from, to, matrix[from][to]))
+          .collect(Collectors.toSet());
+    }
+  }
+
+  private static class AdjacencyListGridPointGraph extends IntVertexGraph {
+
+    private final Set<Integer> vertexes = new HashSet<>();
+
+    private final int n;
+    private final List<Set<Edge<Integer>>> lists;
+
+    public AdjacencyListGridPointGraph(int n, Set<Integer>[] lists) {
+      this.n = n;
+      this.lists = IntStream.range(0, n)
+          .mapToObj(from -> lists[from].stream()
+              .map(to -> new Edge<>(from, to, 1L)).collect(Collectors.toSet()))
+          .collect(Collectors.toList());
+      IntStream.range(0, n).forEach(vertexes::add);
+    }
+
+    @Override
+    public Set<Integer> getVertexes() {
+      return vertexes;
+    }
+
+    @Override
+    public Set<Edge<Integer>> getEdges(Integer from) {
+      return lists.get(from);
+    }
+  }
+
+
   private static abstract class GridPointGraph extends EncodedGraph<GridPoint> {
 
     public GridPointGraph(int h, int w) {
@@ -183,112 +236,175 @@ public class Main {
     private final Encoder<V> encoder;
     private final IntVertexGraph delegate;
 
-    @Override
-    public Query<V> query() {
-      return new Query<V>() {
-
-        private final Query<Integer> delegate = EncodedGraph.this.delegate.query();
-
-        @Override
-        public VertexPath<V> shortestPath(V begin, V end) {
-          VertexPath<Integer> path = delegate
-              .shortestPath(encoder.encode(begin), encoder.encode(end));
-          if (path == null) {
-            return null;
-          }
-          return new EfficientVertexPath<>(encoder.decode(path.getBegin()),
-              encoder.decode(path.getEnd()), path.getWeight());
-        }
-      };
+    public PathQuery<V> pathQuery(Function<Graph<Integer>, PathQuery<Integer>> delegate) {
+      return new EncodedPathQuery<>(delegate, this);
     }
-  }
 
-  private static abstract class IntVertexGraph implements Graph<Integer> {
+    private static class EncodedPathQuery<V extends Encoded<V>> implements PathQuery<V> {
 
-    private static class BfsQuery implements Query<Integer> {
+      EncodedGraph<V> graph;
+      PathQuery<Integer> delegate;
 
-      final Graph<Integer> graph;
-
-      private BfsQuery(Graph<Integer> graph) {
+      private EncodedPathQuery(Function<Graph<Integer>, PathQuery<Integer>> delegate,
+          EncodedGraph<V> graph) {
         this.graph = graph;
+        this.delegate = delegate.apply(graph.delegate);
       }
 
       @Override
-      public VertexPath<Integer> shortestPath(Integer begin, Integer end) {
-        Set<Integer> visited = new HashSet<>();
-        Queue<VertexPath<Integer>> queue = new ArrayDeque<>();
-        queue.add(new EfficientVertexPath<>(begin));
-        visited.add(begin);
-
-        while (!queue.isEmpty()) {
-          VertexPath<Integer> path = queue.remove();
-          Integer head = path.getEnd();
-
-          Set<Edge<Integer>> candidates = graph.getEdges(head);
-          if (head.equals(end)) {
-            return path;
-          }
-          for (Edge<Integer> c : candidates) {
-            if (!visited.contains(c.getTo())) {
-              VertexPath<Integer> p = new EfficientVertexPath<>(path, c);
-              queue.add(p);
-              visited.add(c.getTo());
-            }
-          }
+      public VertexPath<V> path(V begin, V end) {
+        VertexPath<Integer> path = delegate
+            .path(graph.encoder.encode(begin), graph.encoder.encode(end));
+        if (path == null) {
+          return null;
         }
-        return null;
+        return new EfficientVertexPath<>(graph.encoder.decode(path.getBegin()),
+            graph.encoder.decode(path.getEnd()), path.getWeight());
       }
     }
+  }
 
-    private static class WarshallFloydQuery implements Query<Integer> {
+  private static interface PathQuery<V> {
 
-      private final Graph<Integer> graph;
+    Graph.VertexPath<V> path(V begin, V end);
+  }
 
-      private VertexPath<Integer>[][] shortest;
+  private static abstract class QueuedPathQuery implements PathQuery<Integer> {
 
-      private WarshallFloydQuery(Graph<Integer> graph) {
-        this.graph = graph;
+    protected final Graph<Integer> graph;
+    private final Queue<Graph.VertexPath<Integer>> queue;
 
-        Set<Integer> nodes = graph.getVertexes();
+    public QueuedPathQuery(Graph<Integer> graph, Queue<Graph.VertexPath<Integer>> queue) {
+      this.graph = graph;
+      this.queue = queue;
+    }
 
-        shortest = new VertexPath[nodes.size()][nodes.size()];
+    public Graph.VertexPath<Integer> path(Integer begin, Integer end) {
 
-        for (int from : nodes) {
-          Set<Edge<Integer>> edges = graph.getEdges(from);
-          for (Edge<Integer> e : edges) {
-            shortest[e.getFrom()][e.getTo()] = new EfficientVertexPath<>(e);
-          }
-          shortest[from][from] = new EfficientVertexPath<>(from);
+      prepare(begin, end);
+
+      queue.add(new Graph.EfficientVertexPath<>(begin));
+
+      while (!queue.isEmpty()) {
+        Graph.VertexPath<Integer> path = queue.remove();
+        Integer head = path.getEnd();
+
+        if (head.equals(end)) {
+          return path;
         }
+        for (Graph.Edge<Integer> e : graph.getEdges(head)) {
+          if (predicate(e)) {
+            Graph.VertexPath<Integer> p = new Graph.EfficientVertexPath<>(path, e);
+            queue.add(p);
+            mark(p);
+          }
+        }
+      }
+      return null;
+    }
 
-        for (int relay : nodes) {
-          for (int from : nodes) {
-            for (int dest : nodes) {
-              VertexPath<Integer> pathA = shortest[from][relay];
-              VertexPath<Integer> pathB = shortest[relay][dest];
-              if (pathA != null && pathB != null) {
-                VertexPath<Integer> path = pathA.append(pathB);
-                if (shortest[from][dest] == null || path.getWeight() < shortest[from][dest]
-                    .getWeight()) {
-                  shortest[from][dest] = path;
-                }
+    abstract void prepare(Integer begin, Integer end);
+
+    abstract boolean predicate(Graph.Edge<Integer> edge);
+
+    abstract void mark(Graph.VertexPath<Integer> path);
+  }
+
+  private static class DijkstraPathQuery extends QueuedPathQuery {
+
+    private final long[] distance;
+
+    public DijkstraPathQuery(Graph<Integer> graph) {
+      super(graph, new PriorityQueue<>(
+          Comparator.comparingLong(Graph.VertexPath::getWeight)));
+      distance = new long[graph.getVertexes().size()];
+    }
+
+
+    @Override
+    void prepare(Integer begin, Integer end) {
+      IntStream.range(0, graph.getVertexes().size())
+          .forEach(i -> distance[i] = Integer.MAX_VALUE);
+      distance[begin] = 0;
+    }
+
+    @Override
+    boolean predicate(Graph.Edge<Integer> edge) {
+      return distance[edge.getFrom()] + edge.getWeight() < distance[edge.getTo()];
+    }
+
+    @Override
+    void mark(Graph.VertexPath<Integer> path) {
+      distance[path.getEnd()] = path.getWeight();
+    }
+  }
+
+  private static class BfsPathQuery extends QueuedPathQuery {
+
+    private final Set<Integer> visited = new HashSet<>();
+
+    public BfsPathQuery(Graph<Integer> graph) {
+      super(graph, new ArrayDeque<>());
+    }
+
+    @Override
+    void prepare(Integer begin, Integer end) {
+      visited.add(begin);
+    }
+
+    @Override
+    boolean predicate(Graph.Edge<Integer> edge) {
+      return !visited.contains(edge.getTo());
+    }
+
+    @Override
+    void mark(Graph.VertexPath<Integer> path) {
+      visited.add(path.getEnd());
+    }
+  }
+
+  private static class WarshallFloydQuery implements PathQuery<Integer> {
+
+    private Graph.VertexPath<Integer>[][] shortest;
+
+    private WarshallFloydQuery(Graph<Integer> graph) {
+      Set<Integer> nodes = graph.getVertexes();
+
+      shortest = new Graph.VertexPath[nodes.size()][nodes.size()];
+
+      for (int from : nodes) {
+        Set<Graph.Edge<Integer>> edges = graph.getEdges(from);
+        for (Graph.Edge<Integer> e : edges) {
+          shortest[e.getFrom()][e.getTo()] = new Graph.EfficientVertexPath<>(e);
+        }
+        shortest[from][from] = new Graph.EfficientVertexPath<>(from);
+      }
+
+      for (int relay : nodes) {
+        for (int from : nodes) {
+          for (int dest : nodes) {
+            Graph.VertexPath<Integer> pathA = shortest[from][relay];
+            Graph.VertexPath<Integer> pathB = shortest[relay][dest];
+            if (pathA != null && pathB != null) {
+              Graph.VertexPath<Integer> path = pathA.append(pathB);
+              if (shortest[from][dest] == null || path.getWeight() < shortest[from][dest]
+                  .getWeight()) {
+                shortest[from][dest] = path;
               }
             }
           }
         }
       }
-
-      @Override
-      public VertexPath<Integer> shortestPath(Integer begin, Integer end) {
-        return shortest[begin][end];
-      }
     }
 
     @Override
-    public Query<Integer> query() {
-      return new WarshallFloydQuery(this);
-      // return new BfsQuery(this);
+    public Graph.VertexPath<Integer> path(Integer begin, Integer end) {
+      return shortest[begin][end];
     }
+  }
+
+  private static abstract class IntVertexGraph implements Graph<Integer> {
+
   }
 
   private static interface Graph<V> {
@@ -340,13 +456,6 @@ public class Main {
       long getWeight();
 
       VertexPath<V> append(VertexPath<V> other);
-    }
-
-    Query<V> query();
-
-    static interface Query<V> {
-
-      VertexPath<V> shortestPath(V begin, V end);
     }
 
     static class EfficientVertexPath<V> implements VertexPath<V> {

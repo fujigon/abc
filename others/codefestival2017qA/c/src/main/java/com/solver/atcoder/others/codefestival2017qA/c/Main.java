@@ -30,6 +30,34 @@ public class Main {
         occur.put(line.charAt(c), occur.getOrDefault(line.charAt(c), 0) + 1);
       }
     }
+
+    int[] mod4 = new int[4];
+    int mul4 = 0;
+
+    for (char c : occur.keySet()) {
+      int mod = occur.get(c) % 4;
+      mod4[mod]++;
+      mul4 += occur.get(c) / 4;
+    }
+
+    if (mul4 < (w / 2) * (h / 2)) {
+      os.println("No");
+      return;
+    }
+
+    if (w % 2 == 1 && h % 2 == 1) {
+      if (mod4[1] + mod4[3] != 1) {
+        os.println("No");
+        return;
+      }
+    } else if (w % 2 == 1 || h % 2 == 1) {
+      if (mod4[1] + mod4[3] > 0) {
+        os.println("No");
+        return;
+      }
+    }
+
+    os.println("Yes");
   }
 
   private static <P> List<P> bfs(P start, P end, Function<P, Set<P>> travel,
