@@ -6,6 +6,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Main {
@@ -150,14 +151,11 @@ public class Main {
     private final Set<Integer> vertexes = new HashSet<>();
 
     private final int n;
-    private final List<Set<Edge<Integer>>> lists;
+    private final List<Set<Edge<Integer>>> edges;
 
-    public AdjacencyListGridPointGraph(int n, Set<Integer>[] lists) {
+    public AdjacencyListGridPointGraph(int n, List<Set<Edge<Integer>>> edges) {
       this.n = n;
-      this.lists = IntStream.range(0, n)
-          .mapToObj(from -> lists[from].stream()
-              .map(to -> new Edge<>(from, to, 1L)).collect(Collectors.toSet()))
-          .collect(Collectors.toList());
+      this.edges = edges;
       IntStream.range(0, n).forEach(vertexes::add);
     }
 
@@ -168,7 +166,7 @@ public class Main {
 
     @Override
     public Set<Edge<Integer>> getEdges(Integer from) {
-      return lists.get(from);
+      return edges.get(from);
     }
   }
 
@@ -294,9 +292,9 @@ public class Main {
         }
         for (Graph.Edge<Integer> e : graph.getEdges(head)) {
           if (predicate(e)) {
-            Graph.VertexPath<Integer> p = new Graph.EfficientVertexPath<>(path, e);
+            Graph.VertexPath<Integer> p = path.append(e);
             queue.add(p);
-            mark(p);
+            mark(path, e, p);
           }
         }
       }
@@ -307,7 +305,8 @@ public class Main {
 
     abstract boolean predicate(Graph.Edge<Integer> edge);
 
-    abstract void mark(Graph.VertexPath<Integer> path);
+    abstract void mark(Graph.VertexPath<Integer> existing, Graph.Edge<Integer> edge,
+        Graph.VertexPath<Integer> path);
   }
 
   private static class DijkstraPathQuery extends QueuedPathQuery {
@@ -334,7 +333,8 @@ public class Main {
     }
 
     @Override
-    void mark(Graph.VertexPath<Integer> path) {
+    void mark(Graph.VertexPath<Integer> existing, Graph.Edge<Integer> edge,
+        Graph.VertexPath<Integer> path) {
       distance[path.getEnd()] = path.getWeight();
     }
   }
@@ -358,8 +358,60 @@ public class Main {
     }
 
     @Override
-    void mark(Graph.VertexPath<Integer> path) {
+    void mark(Graph.VertexPath<Integer> existing, Graph.Edge<Integer> edge,
+        Graph.VertexPath<Integer> path) {
       visited.add(path.getEnd());
+    }
+  }
+
+  private static abstract class MemoDfsPathQuery extends DfsPathQuery {
+
+    public MemoDfsPathQuery(Graph<Integer> graph) {
+      super(graph);
+    }
+
+    abstract Graph.VertexPath<Integer> memo(Graph.VertexPath<Integer> path, Integer parent,
+        Integer end);
+
+    @Override
+    public Graph.VertexPath<Integer> path(Graph.VertexPath<Integer> path, Integer parent,
+        Integer end) {
+      Graph.VertexPath<Integer> memo = memo(path, parent, end);
+      if (memo != null) {
+        return memo;
+      }
+      return super.path(path, parent, end);
+    }
+  }
+
+  private static class DfsPathQuery implements PathQuery<Integer> {
+
+    protected final Graph<Integer> graph;
+
+    public DfsPathQuery(Graph<Integer> graph) {
+      this.graph = graph;
+    }
+
+    @Override
+    public Graph.VertexPath<Integer> path(Integer begin, Integer end) {
+      return path(new Graph.EfficientVertexPath<>(begin), null, end);
+    }
+
+    protected Graph.VertexPath<Integer> path(Graph.VertexPath<Integer> path, Integer parent,
+        Integer end) {
+      Integer head = path.getEnd();
+      if (path.getEnd().equals(end)) {
+        return path;
+      }
+      for (Graph.Edge<Integer> e : graph.getEdges(head)) {
+        if (!e.getTo().equals(parent)) {
+          Graph.VertexPath<Integer> next = path(path.append(e), head, end);
+          if (next != null) {
+            return next;
+          }
+        }
+      }
+      return null;
     }
   }
 
@@ -386,10 +438,10 @@ public class Main {
             Graph.VertexPath<Integer> pathA = shortest[from][relay];
             Graph.VertexPath<Integer> pathB = shortest[relay][dest];
             if (pathA != null && pathB != null) {
-              Graph.VertexPath<Integer> path = pathA.append(pathB);
-              if (shortest[from][dest] == null || path.getWeight() < shortest[from][dest]
+              if (shortest[from][dest] == null
+                  || pathA.getWeight() + pathB.getWeight() < shortest[from][dest]
                   .getWeight()) {
-                shortest[from][dest] = path;
+                shortest[from][dest] = pathA.append(pathB);
               }
             }
           }
@@ -434,6 +486,25 @@ public class Main {
       long getWeight() {
         return weight;
       }
+
+      @Override
+      public boolean equals(Object o) {
+        if (this == o) {
+          return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+          return false;
+        }
+        Edge<?> edge = (Edge<?>) o;
+        return weight == edge.weight &&
+            Objects.equals(from, edge.from) &&
+            Objects.equals(to, edge.to);
+      }
+
+      @Override
+      public int hashCode() {
+        return Objects.hash(from, to, weight);
+      }
     }
 
     static class ConstantWeightEdge<V> extends Edge<V> {
@@ -456,6 +527,8 @@ public class Main {
       long getWeight();
 
       VertexPath<V> append(VertexPath<V> other);
+
+      VertexPath<V> append(Edge<V> edge);
     }
 
     static class EfficientVertexPath<V> implements VertexPath<V> {
@@ -482,7 +555,7 @@ public class Main {
         this.weight = edge.getWeight();
       }
 
-      public EfficientVertexPath(VertexPath<V> path, Edge<V> append) {
+      private EfficientVertexPath(VertexPath<V> path, Edge<V> append) {
         this.begin = path.getBegin();
         if (!path.getEnd().equals(append.getFrom())) {
           throw new IllegalStateException("not correct edge.");
@@ -491,7 +564,7 @@ public class Main {
         this.weight = path.getWeight() + append.getWeight();
       }
 
-      public EfficientVertexPath(VertexPath<V> pathA, VertexPath<V> pathB) {
+      private EfficientVertexPath(VertexPath<V> pathA, VertexPath<V> pathB) {
         this.begin = pathA.getBegin();
         if (!pathA.getEnd().equals(pathB.getBegin())) {
           throw new IllegalStateException("not correct edge.");
@@ -518,6 +591,11 @@ public class Main {
       @Override
       public VertexPath<V> append(VertexPath<V> other) {
         return new EfficientVertexPath<>(this, other);
+      }
+
+      @Override
+      public VertexPath<V> append(Edge<V> edge) {
+        return new EfficientVertexPath<>(this, edge);
       }
 
       @Override
