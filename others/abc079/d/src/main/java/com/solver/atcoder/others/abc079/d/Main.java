@@ -4,6 +4,9 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Main {
 
@@ -19,69 +22,537 @@ public class Main {
     int w = sc.nextInt();
 
     int[][] c = new int[10][10];
-
     for (int j = 0; j < 10; j++) {
       for (int i = 0; i < 10; i++) {
         c[j][i] = sc.nextInt();
       }
     }
 
-    // int[] t = dijkstraFrom1(c);
-    int[] t = warshallFloyd(c);
+    Graph<Integer> graph = new AdjacencyMatrixGridPointGraph(10, c);
+    PathQuery<Integer> query = new DijkstraPathQuery(graph);
 
     long ans = 0;
     for (int j = 0; j < h; j++) {
       for (int i = 0; i < w; i++) {
         int a = sc.nextInt();
-        if (a < 0) continue;
-        ans += t[a];
+        if (a < 0) {
+          continue;
+        }
+        ans += query.path(a, 1).getWeight();
       }
     }
     os.println(ans);
   }
 
-  private static int[] warshallFloyd(int[][] graph) {
-    for (int i = 0; i < 10; i++) { // relay point
-      for (int s = 0; s < 10; s++) {
-        for (int t = 0; t < 10; t++) {
-          graph[s][t] = Math.min(graph[s][t], graph[s][i] + graph[i][t]);
+  private static class GridPointEncoder implements Encoder<GridPoint> {
+
+    public GridPointEncoder(int h, int w) {
+      this.h = h;
+      this.w = w;
+    }
+
+    private final int h;
+    private final int w;
+
+    @Override
+    public int num() {
+      return w * h;
+    }
+
+    @Override
+    public int encode(GridPoint from) {
+      return w * from.r + from.c;
+    }
+
+    @Override
+    public GridPoint decode(int from) {
+      return new GridPoint(from / w, from % w);
+    }
+  }
+
+  private static class GridPoint implements Encoded<GridPoint> {
+
+    private final int r;
+    private final int c;
+
+    public GridPoint(int r, int c) {
+      this.r = r;
+      this.c = c;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+      GridPoint gridPoint = (GridPoint) o;
+      return r == gridPoint.r &&
+          c == gridPoint.c;
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(r, c);
+    }
+  }
+
+  private static class VerticalHorizontalNeighborGridPointGraph extends GridPointGraph {
+
+    private final boolean[][] grid;
+
+    private final Predicate<GridPoint> predicate = this::predicate;
+    private int[][] moves = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+    public VerticalHorizontalNeighborGridPointGraph(int h, int w, boolean[][] grid) {
+      super(h, w);
+      this.grid = grid;
+    }
+
+    private boolean predicate(GridPoint p) {
+      if (p.r < 0 || h <= p.r) {
+        return false;
+      }
+      if (p.c < 0 || w <= p.c) {
+        return false;
+      }
+      return grid[p.r][p.c];
+    }
+
+    private Set<Edge<GridPoint>> neighbors(GridPoint from) {
+
+      return Arrays.stream(moves)
+          .map(move -> new GridPoint(from.r + move[0], from.c + move[1]))
+          .filter(predicate)
+          .map(to -> new ConstantWeightEdge<>(from, to))
+          .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<Edge<GridPoint>> getEdges(GridPoint from) {
+      if (predicate.test(from)) {
+        return neighbors(from);
+      } else {
+        return Collections.emptySet();
+      }
+    }
+  }
+
+  private static class AdjacencyMatrixGridPointGraph extends IntVertexGraph {
+
+    private final Set<Integer> vertexes = new HashSet<>();
+
+    private final int n;
+    private final int[][] matrix;
+
+    public AdjacencyMatrixGridPointGraph(int n, int[][] matrix) {
+      this.n = n;
+      this.matrix = matrix;
+      IntStream.range(0, n).forEach(vertexes::add);
+    }
+
+    @Override
+    public Set<Integer> getVertexes() {
+      return vertexes;
+    }
+
+    @Override
+    public Set<Edge<Integer>> getEdges(Integer from) {
+      return IntStream.range(0, n).mapToObj(to -> new Edge<>(from, to, matrix[from][to]))
+          .collect(Collectors.toSet());
+    }
+  }
+
+  private static class AdjacencyListGridPointGraph extends IntVertexGraph {
+
+    private final Set<Integer> vertexes = new HashSet<>();
+
+    private final int n;
+    private final List<Set<Edge<Integer>>> lists;
+
+    public AdjacencyListGridPointGraph(int n, Set<Integer>[] lists) {
+      this.n = n;
+      this.lists = IntStream.range(0, n)
+          .mapToObj(from -> lists[from].stream()
+              .map(to -> new Edge<>(from, to, 1L)).collect(Collectors.toSet()))
+          .collect(Collectors.toList());
+      IntStream.range(0, n).forEach(vertexes::add);
+    }
+
+    @Override
+    public Set<Integer> getVertexes() {
+      return vertexes;
+    }
+
+    @Override
+    public Set<Edge<Integer>> getEdges(Integer from) {
+      return lists.get(from);
+    }
+  }
+
+
+  private static abstract class GridPointGraph extends EncodedGraph<GridPoint> {
+
+    public GridPointGraph(int h, int w) {
+      super(new GridPointEncoder(h, w));
+      this.h = h;
+      this.w = w;
+
+      for (int r = 0; r < h; r++) {
+        for (int c = 0; c < w; c++) {
+          nodes.add(new GridPoint(r, c));
         }
       }
     }
-    int[] d = new int[10];
-    for (int s = 0; s < 10; s++) {
-      d[s] = graph[s][1];
+
+    protected final int h;
+    protected final int w;
+
+    protected final Set<GridPoint> nodes = new HashSet<>();
+
+    @Override
+    public Set<GridPoint> getVertexes() {
+      return nodes;
     }
-    return d;
   }
 
-  private static int[] dijkstraFrom1(int[][] graph) {
-    int[] t = new int[10];
-    for (int s = 0; s < 10; s++) {
-      t[s] = dijkstra(s, 1, graph);
-    }
-    return t;
+  private static interface Encoded<E extends Encoded> {
+
   }
 
-  private static int dijkstra(int start, int target, int[][] graph) {
-    int[] d = new int[10];
-    for (int i = 0; i < 10; i++) {
-      d[i] = Integer.MAX_VALUE;
+  private static interface Encoder<E extends Encoded> {
+
+    int num();
+
+    int encode(E from);
+
+    E decode(int from);
+  }
+
+  private static abstract class EncodedGraph<V extends Encoded<V>> implements Graph<V> {
+
+    public EncodedGraph(Encoder<V> encoder) {
+      this.encoder = encoder;
+      this.delegate = new IntVertexGraph() {
+        @Override
+        public Set<Integer> getVertexes() {
+          return EncodedGraph.this.getVertexes().stream()
+              .map(encoder::encode)
+              .collect(Collectors.toSet());
+        }
+
+        @Override
+        public Set<Edge<Integer>> getEdges(Integer from) {
+          return EncodedGraph.this.getEdges(encoder.decode(from)).stream()
+              .map(e -> new Edge<>(encoder.encode(e.getFrom()), encoder.encode(e.getTo()),
+                  e.getWeight()))
+              .collect(Collectors.toSet());
+        }
+      };
     }
-    d[start] = 0;
-    Queue<Integer> queue = new PriorityQueue<>(Comparator.comparingInt(i -> d[i]));
-    queue.add(start);
-    while (!queue.isEmpty()) {
-      int u = queue.remove();
-      for (int v = 0; v < 10; v++) {
-        int distance = d[u] + graph[u][v];
-        if (distance < d[v]) {
-          d[v] = distance;
-          queue.add(v);
+
+    private final Encoder<V> encoder;
+    private final IntVertexGraph delegate;
+
+    private static class EncodedPathQuery<V extends Encoded<V>> implements PathQuery<V> {
+
+      EncodedGraph<V> graph;
+      PathQuery<Integer> delegate;
+
+      private EncodedPathQuery(PathQuery<Integer> delegate, EncodedGraph<V> graph) {
+        this.graph = graph;
+        this.delegate = delegate;
+      }
+
+      @Override
+      public VertexPath<V> path(V begin, V end) {
+        VertexPath<Integer> path = delegate
+            .path(graph.encoder.encode(begin), graph.encoder.encode(end));
+        if (path == null) {
+          return null;
+        }
+        return new EfficientVertexPath<>(graph.encoder.decode(path.getBegin()),
+            graph.encoder.decode(path.getEnd()), path.getWeight());
+      }
+    }
+  }
+
+  private static interface PathQuery<V> {
+
+    Graph.VertexPath<V> path(V begin, V end);
+  }
+
+  private static abstract class QueuedPathQuery implements PathQuery<Integer> {
+
+    protected final Graph<Integer> graph;
+    private final Queue<Graph.VertexPath<Integer>> queue;
+
+    public QueuedPathQuery(Graph<Integer> graph, Queue<Graph.VertexPath<Integer>> queue) {
+      this.graph = graph;
+      this.queue = queue;
+    }
+
+    public Graph.VertexPath<Integer> path(Integer begin, Integer end) {
+
+      prepare(begin, end);
+
+      queue.add(new Graph.EfficientVertexPath<>(begin));
+
+      while (!queue.isEmpty()) {
+        Graph.VertexPath<Integer> path = queue.remove();
+        Integer head = path.getEnd();
+
+        if (head.equals(end)) {
+          return path;
+        }
+        for (Graph.Edge<Integer> e : graph.getEdges(head)) {
+          if (predicate(e)) {
+            Graph.VertexPath<Integer> p = new Graph.EfficientVertexPath<>(path, e);
+            queue.add(p);
+            mark(p);
+          }
+        }
+      }
+      return null;
+    }
+
+    abstract void prepare(Integer begin, Integer end);
+
+    abstract boolean predicate(Graph.Edge<Integer> edge);
+
+    abstract void mark(Graph.VertexPath<Integer> path);
+  }
+
+  private static class DijkstraPathQuery extends QueuedPathQuery {
+
+    private final long[] distance;
+
+    public DijkstraPathQuery(Graph<Integer> graph) {
+      super(graph, new PriorityQueue<>(
+          Comparator.comparingLong(Graph.VertexPath::getWeight)));
+      distance = new long[graph.getVertexes().size()];
+    }
+
+
+    @Override
+    void prepare(Integer begin, Integer end) {
+      IntStream.range(0, graph.getVertexes().size())
+          .forEach(i -> distance[i] = Integer.MAX_VALUE);
+      distance[begin] = 0;
+    }
+
+    @Override
+    boolean predicate(Graph.Edge<Integer> edge) {
+      return distance[edge.getFrom()] + edge.getWeight() < distance[edge.getTo()];
+    }
+
+    @Override
+    void mark(Graph.VertexPath<Integer> path) {
+      distance[path.getEnd()] = path.getWeight();
+    }
+  }
+
+  private static class BfsPathQuery extends QueuedPathQuery {
+
+    private final Set<Integer> visited = new HashSet<>();
+
+    public BfsPathQuery(Graph<Integer> graph) {
+      super(graph, new ArrayDeque<>());
+    }
+
+    @Override
+    void prepare(Integer begin, Integer end) {
+      visited.add(begin);
+    }
+
+    @Override
+    boolean predicate(Graph.Edge<Integer> edge) {
+      return !visited.contains(edge.getTo());
+    }
+
+    @Override
+    void mark(Graph.VertexPath<Integer> path) {
+      visited.add(path.getEnd());
+    }
+  }
+
+  private static class WarshallFloydQuery implements PathQuery<Integer> {
+
+    private Graph.VertexPath<Integer>[][] shortest;
+
+    private WarshallFloydQuery(Graph<Integer> graph) {
+      Set<Integer> nodes = graph.getVertexes();
+
+      shortest = new Graph.VertexPath[nodes.size()][nodes.size()];
+
+      for (int from : nodes) {
+        Set<Graph.Edge<Integer>> edges = graph.getEdges(from);
+        for (Graph.Edge<Integer> e : edges) {
+          shortest[e.getFrom()][e.getTo()] = new Graph.EfficientVertexPath<>(e);
+        }
+        shortest[from][from] = new Graph.EfficientVertexPath<>(from);
+      }
+
+      for (int relay : nodes) {
+        for (int from : nodes) {
+          for (int dest : nodes) {
+            Graph.VertexPath<Integer> pathA = shortest[from][relay];
+            Graph.VertexPath<Integer> pathB = shortest[relay][dest];
+            if (pathA != null && pathB != null) {
+              Graph.VertexPath<Integer> path = pathA.append(pathB);
+              if (shortest[from][dest] == null || path.getWeight() < shortest[from][dest]
+                  .getWeight()) {
+                shortest[from][dest] = path;
+              }
+            }
+          }
         }
       }
     }
-    return d[target];
+
+    @Override
+    public Graph.VertexPath<Integer> path(Integer begin, Integer end) {
+      return shortest[begin][end];
+    }
+  }
+
+  private static abstract class IntVertexGraph implements Graph<Integer> {
+  }
+
+  private static interface Graph<V> {
+
+    static class Edge<V> {
+
+      public Edge(V from, V to, long weight) {
+        this.from = from;
+        this.to = to;
+        this.weight = weight;
+      }
+
+      private final V from;
+
+      private final V to;
+      private final long weight;
+
+
+      V getFrom() {
+        return from;
+      }
+
+      V getTo() {
+        return to;
+      }
+
+      long getWeight() {
+        return weight;
+      }
+    }
+
+    static class ConstantWeightEdge<V> extends Edge<V> {
+
+      public ConstantWeightEdge(V from, V to) {
+        super(from, to, 1);
+      }
+    }
+
+    Set<V> getVertexes();
+
+    Set<Edge<V>> getEdges(V from);
+
+    static interface VertexPath<V> {
+
+      V getBegin();
+
+      V getEnd();
+
+      long getWeight();
+
+      VertexPath<V> append(VertexPath<V> other);
+    }
+
+    static class EfficientVertexPath<V> implements VertexPath<V> {
+
+      final V begin;
+      final V end;
+      final long weight;
+
+      public EfficientVertexPath(V begin) {
+        this.begin = begin;
+        this.end = begin;
+        this.weight = 0;
+      }
+
+      public EfficientVertexPath(V begin, V end, long weight) {
+        this.begin = begin;
+        this.end = end;
+        this.weight = weight;
+      }
+
+      public EfficientVertexPath(Edge<V> edge) {
+        this.begin = edge.getFrom();
+        this.end = edge.getTo();
+        this.weight = edge.getWeight();
+      }
+
+      public EfficientVertexPath(VertexPath<V> path, Edge<V> append) {
+        this.begin = path.getBegin();
+        if (!path.getEnd().equals(append.getFrom())) {
+          throw new IllegalStateException("not correct edge.");
+        }
+        this.end = append.getTo();
+        this.weight = path.getWeight() + append.getWeight();
+      }
+
+      public EfficientVertexPath(VertexPath<V> pathA, VertexPath<V> pathB) {
+        this.begin = pathA.getBegin();
+        if (!pathA.getEnd().equals(pathB.getBegin())) {
+          throw new IllegalStateException("not correct edge.");
+        }
+        this.end = pathB.getEnd();
+        this.weight = pathA.getWeight() + pathB.getWeight();
+      }
+
+      @Override
+      public V getBegin() {
+        return begin;
+      }
+
+      @Override
+      public V getEnd() {
+        return end;
+      }
+
+      @Override
+      public long getWeight() {
+        return weight;
+      }
+
+      @Override
+      public VertexPath<V> append(VertexPath<V> other) {
+        return new EfficientVertexPath<>(this, other);
+      }
+
+      @Override
+      public boolean equals(Object o) {
+        if (this == o) {
+          return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+          return false;
+        }
+        EfficientVertexPath<?> that = (EfficientVertexPath<?>) o;
+        return weight == that.weight &&
+            Objects.equals(begin, that.begin) &&
+            Objects.equals(end, that.end);
+      }
+
+      @Override
+      public int hashCode() {
+        return Objects.hash(begin, end, weight);
+      }
+    }
   }
 
   private static class Scanner {
