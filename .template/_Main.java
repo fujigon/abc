@@ -88,6 +88,10 @@ public class Main {
       }
       return comb[k];
     }
+
+    long repeatedCombination(int n, int k) {
+      return combination(n + k - 1, k);
+    }
   }
 
   private static class ModularCombination {
@@ -120,6 +124,10 @@ public class Main {
                   ) % mod
               ) * modular.inverse(factorial(k))
           ) % mod;
+    }
+
+    long repeatedCombination(int n, int k) {
+      return combination(n + k - 1, k);
     }
   }
 

@@ -18,7 +18,23 @@ public class MainTest {
     
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
-  
+
+  @Test
+  public void test2() {
+    String input = "200000 1000000000";
+    String expected = "607923868";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
+  }
+
+  @Test
+  public void test3() {
+    String input = "15 6";
+    String expected = "22583772";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
+  }
+
   private String execute(String input) {
     ByteArrayOutputStream os = new ByteArrayOutputStream();
     Main.solve(

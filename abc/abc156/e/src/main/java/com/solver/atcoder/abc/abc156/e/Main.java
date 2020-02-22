@@ -25,13 +25,12 @@ public class Main {
     int n = sc.nextInt();
     int k = sc.nextInt();
 
-    int moving = k % n;
     long ans = 0;
-    ModularNFixedCombination combination = new ModularNFixedCombination(n, 2 * 100000, MOD);
-    Modular modular = new Modular(MOD);
+    ModularCombination combination = new ModularCombination(2 * n, MOD);
 
-    for (int occupied = 1; occupied <= n; occupied++) {
-
+    for (int e = 0; e <= Math.min(k, n - 1); e++) {
+      ans += combination.combination(n, e) * combination.repeatedCombination(n - e, e);
+      ans %= MOD;
     }
     os.println(ans);
   }
@@ -93,6 +92,10 @@ public class Main {
       }
       return comb[k];
     }
+
+    long repeatedCombination(int n, int k) {
+      return combination(n + k - 1, k);
+    }
   }
 
   private static class ModularCombination {
@@ -125,6 +128,10 @@ public class Main {
                   ) % mod
               ) * modular.inverse(factorial(k))
           ) % mod;
+    }
+
+    long repeatedCombination(int n, int k) {
+      return combination(n + k - 1, k);
     }
   }
 
