@@ -13,8 +13,8 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "oder atc";
-    String expected = "atcoder";
+    String input = "3 2";
+    String expected = "10";
     
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
