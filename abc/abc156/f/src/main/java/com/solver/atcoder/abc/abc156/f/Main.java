@@ -1,3 +1,4 @@
+package com.solver.atcoder.abc.abc156.f;
 
 import java.io.InputStream;
 import java.io.IOException;
@@ -15,15 +16,52 @@ public class Main {
     Scanner sc = new Scanner(is);
 
     /* read */
-    String s = sc.next();
-    String t = sc.next();
+    int k = sc.nextInt();
+    int q = sc.nextInt();
+    long[] d = new long[k];
+    for (int i = 0; i < k; i++) {
+      d[i] = sc.nextInt();
+    }
 
-    os.println(t + s);
+    for (int i = 0; i < q; i++) {
+      int n = sc.nextInt();
+      int x = sc.nextInt();
+      int m = sc.nextInt();
+
+      long[] e = new long[k];
+
+      for (int j = 0; j < k; j++) {
+        e[j] = d[j] % m;
+      }
+
+      long ans = n - 1;
+
+      long same = 0;
+      long an_1 = x % m;
+      for (int j = 0; j < k; j++) {
+        long count = (n - 1) / k;
+        if (j < (n - 1) % k) {
+          count++;
+        }
+        if (e[j] == 0) {
+          same += count;
+        }
+        an_1 += e[j] * count;
+      }
+
+      ans -= an_1 / m;
+      ans -= same;
+      os.println(ans);
+    }
   }
 
   private static long gcd(long m, long n) {
-    if (m < n) return gcd(n, m);
-    if (n == 0) return m;
+    if (m < n) {
+      return gcd(n, m);
+    }
+    if (n == 0) {
+      return m;
+    }
     return gcd(n, m % n);
   }
 

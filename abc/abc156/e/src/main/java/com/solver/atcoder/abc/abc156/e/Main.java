@@ -1,9 +1,14 @@
+package com.solver.atcoder.abc.abc156.e;
 
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.math.*;
 import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Main {
 
@@ -11,24 +16,23 @@ public class Main {
     solve(System.in, System.out);
   }
 
+  private static long MOD = 1000000007;
+
   static void solve(InputStream is, PrintStream os) {
     Scanner sc = new Scanner(is);
 
     /* read */
-    String s = sc.next();
-    String t = sc.next();
+    int n = sc.nextInt();
+    int k = sc.nextInt();
 
-    os.println(t + s);
-  }
+    long ans = 0;
+    ModularCombination combination = new ModularCombination(2 * n, MOD);
 
-  private static long gcd(long m, long n) {
-    if (m < n) return gcd(n, m);
-    if (n == 0) return m;
-    return gcd(n, m % n);
-  }
-
-  private static long lcm(long m, long n) {
-    return m / gcd(m, n) * n;
+    for (int e = 0; e <= Math.min(k, n - 1); e++) {
+      ans += combination.combination(n, e) * combination.repeatedCombination(n - e, e);
+      ans %= MOD;
+    }
+    os.println(ans);
   }
 
   private static class Modular {

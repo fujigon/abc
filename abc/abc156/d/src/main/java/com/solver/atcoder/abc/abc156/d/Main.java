@@ -1,3 +1,4 @@
+package com.solver.atcoder.abc.abc156.d;
 
 import java.io.InputStream;
 import java.io.IOException;
@@ -11,24 +12,31 @@ public class Main {
     solve(System.in, System.out);
   }
 
+  private static long MOD = 1000000007;
+
   static void solve(InputStream is, PrintStream os) {
     Scanner sc = new Scanner(is);
 
     /* read */
-    String s = sc.next();
-    String t = sc.next();
+    int n = sc.nextInt();
+    int a = sc.nextInt();
+    int b = sc.nextInt();
 
-    os.println(t + s);
-  }
+    long ans = 0;
 
-  private static long gcd(long m, long n) {
-    if (m < n) return gcd(n, m);
-    if (n == 0) return m;
-    return gcd(n, m % n);
-  }
+    ModularNFixedCombination combination = new ModularNFixedCombination(n, 2 * 100000, MOD);
+    Modular modular = new Modular(MOD);
+    ans += modular.pow(2, n);
 
-  private static long lcm(long m, long n) {
-    return m / gcd(m, n) * n;
+    long nC0 = combination.combination(n, 0);
+    long nCa = combination.combination(n, a);
+    long nCb = combination.combination(n, b);
+    ans -= nC0 + nCa + nCb;
+
+    while (ans < 0) {
+      ans += MOD;
+    }
+    os.println(ans);
   }
 
   private static class Modular {
@@ -88,10 +96,6 @@ public class Main {
       }
       return comb[k];
     }
-
-    long repeatedCombination(int n, int k) {
-      return combination(n + k - 1, k);
-    }
   }
 
   private static class ModularCombination {
@@ -124,10 +128,6 @@ public class Main {
                   ) % mod
               ) * modular.inverse(factorial(k))
           ) % mod;
-    }
-
-    long repeatedCombination(int n, int k) {
-      return combination(n + k - 1, k);
     }
   }
 
