@@ -30,10 +30,10 @@ public class Main {
     FermatNFIxedCombination combination = new FermatNFIxedCombination(n, 2 * 100000, MOD);
     ans += combination.pow(2, n);
 
-    long nC1 = 1;
+    long nC0 = 1;
     long nCa = combination.combination(n, a);
     long nCb = combination.combination(n, b);
-    ans -= nC1 + nCa + nCb;
+    ans -= nC0 + nCa + nCb;
 
     while (ans < 0) {
       ans += MOD;
