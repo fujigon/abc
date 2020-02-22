@@ -13,12 +13,28 @@ public class MainTest {
 
   @Test
   public void test() {
-    String input = "oder atc";
-    String expected = "atcoder";
+    String input = "3 1\n"
+        + "3 1 4\n"
+        + "5 3 2";
+    String expected = "1";
     
     assertThat(execute(input + "\n"), is(expected + "\n"));
   }
-  
+
+  @Test
+  public void test1() {
+    String input = "7 3\n"
+        + "27 18 28 18 28 46 1000000000\n"
+        + "1000000000 1 7\n"
+        + "1000000000 2 10\n"
+        + "1000000000 3 12";
+    String expected = "224489796\n"
+        + "214285714\n"
+        + "559523809";
+
+    assertThat(execute(input + "\n"), is(expected + "\n"));
+  }
+
   private String execute(String input) {
     ByteArrayOutputStream os = new ByteArrayOutputStream();
     Main.solve(
