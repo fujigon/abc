@@ -1,6 +1,6 @@
 rootProject.name = 'atcoder'
 
-def contestTypes = ["abc", "agc", "others"]
+def contestTypes = ["abc", "agc", "others", "aoj"]
 def projects = []
 
 contestTypes.forEach { contestType ->
